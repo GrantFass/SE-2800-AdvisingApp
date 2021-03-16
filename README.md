@@ -7,3 +7,4 @@ JUnit Version: JUnit 5
   - Hunter Turcin
   - Grant Fass
   - Teresa Toohill
+  - Claudia Poptile
