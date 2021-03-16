@@ -2,6 +2,9 @@
 # Compiled class file
 *.class
 
+# Other files
+.idea
+
 # Log file
 *.log
 
