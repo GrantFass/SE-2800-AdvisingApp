@@ -4,6 +4,7 @@
 
 # Other files
 .idea
+.iml
 
 # Log file
 *.log
