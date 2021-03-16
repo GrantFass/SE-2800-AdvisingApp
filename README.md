@@ -6,3 +6,4 @@ JUnit Version: JUnit 5
 ## Authors
   - Hunter Turcin
   - Grant Fass
+  - Teresa Toohill
