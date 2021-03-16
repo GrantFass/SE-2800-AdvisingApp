@@ -3,8 +3,10 @@
 *.class
 
 # Other files
-.idea
-.iml
+.idea/*
+.iml/
+*.iml
+magana041group2.iml
 
 # Log file
 *.log
