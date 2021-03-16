@@ -6,6 +6,7 @@
 .idea/*
 .iml/
 *.iml
+**/*.iml
 magana041group2.iml
 
 # Log file
