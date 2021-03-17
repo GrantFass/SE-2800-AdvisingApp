@@ -1,10 +1,8 @@
 package sample.models;
 
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class SinglePrerequisiteTest {
     Course bi1010 = new Course("BI1010", 3, new NullPrerequisite(), "Human Anatomy and Physiology I");

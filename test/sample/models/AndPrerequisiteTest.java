@@ -1,10 +1,8 @@
 package sample.models;
 
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class AndPrerequisiteTest {
     Course bi102 = new Course("BI102", 4, new NullPrerequisite(), "Cell Biology and Genetics");
