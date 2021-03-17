@@ -10,7 +10,7 @@ package sample.models;
 /**
  * A course that may or may not depend on other courses.
  */
-public class Course {
+public class Course implements CurriculumItem {
     private final String code;
     private final int credits;
     private final Prerequisite prerequisite;
@@ -29,6 +29,11 @@ public class Course {
         this.credits = credits;
         this.prerequisite = prerequisite;
         this.description = description;
+    }
+
+    @Override
+    public boolean satisfiedBy(Course course) {
+        return code.equals(course.getCode());
     }
 
     public String getCode() {
