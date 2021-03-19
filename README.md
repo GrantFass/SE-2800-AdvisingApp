@@ -12,7 +12,10 @@ https://www.baeldung.com/junit-5-gradle
 https://commons.apache.org/proper/commons-csv/dependency-info.html
 https://stackoverflow.com/questions/25088381/trouble-adding-pdfbox-to-an-android-application-with-gradle
 
-
+followed the modular maven install for jfx here: https://openjfx.io/openjfx-docs/#maven
+https://howtodoinjava.com/junit5/junit5-maven-dependency/
+https://commons.apache.org/proper/commons-csv/dependency-info.html
+https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox/2.0.1
 
 # magana041group2
 Java Version: JDK 16
