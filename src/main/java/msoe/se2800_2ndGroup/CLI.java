@@ -40,8 +40,8 @@ public class CLI {
      * This constructor links a model to this instance so that it operates with the same information as the GUI
      *
      * @param model the model to link
-     * @author : Grant
-     * @since : 3/20/2021
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
      */
     public CLI(Model model) {
         this.model = model;
@@ -59,7 +59,7 @@ public class CLI {
      *  <a href="#{@link}">{@link "https://stackoverflow.com/a/21962055"}</a> Help exiting program through if statement
      *
      * @author : Grant Fass
-     * @since : 3/20/2021
+     * @since : Sat, 20 Mar 2021
      */
     public void processCommandLine() {
         try (Scanner in = new Scanner(System.in)) {

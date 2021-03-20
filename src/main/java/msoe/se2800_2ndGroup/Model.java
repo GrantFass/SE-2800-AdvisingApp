@@ -24,7 +24,6 @@ import javafx.application.Platform;
  *
  * @since : Saturday, 20 March 2021
  * @author : Grant
- *
  * Copyright (C): TBD
  */
 public class Model {
@@ -40,7 +39,7 @@ public class Model {
      *
      * @param action the method to run on the FX thread
      * @author : Grant Fass
-     * @since : 3/20/2021
+     * @since : Sat, 20 Mar 2021
      */
     private void ensureFXThread(Runnable action) {
         if (Platform.isFxApplicationThread()) {
@@ -60,7 +59,7 @@ public class Model {
      *  <a href="#{@link}">{@link "https://stackoverflow.com/a/21962055"}</a> Help exiting program through if statement
      *
      * @author : Grant Fass
-     * @since : 3/20/2021
+     * @since : Sat, 20 Mar 2021
      */
     public void exitProgram() {
         ensureFXThread(() -> System.exit(0));
