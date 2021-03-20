@@ -5,7 +5,7 @@
  * Name: Hunter Turcin
  * Created: 2021-03-16
  */
-package sample.models;
+package org.example.models;
 
 import java.util.HashMap;
 import java.util.Map;
