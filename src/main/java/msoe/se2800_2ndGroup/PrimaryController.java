@@ -1,4 +1,4 @@
-package org.example;
+package msoe.se2800_2ndGroup;
 
 import java.io.IOException;
 import javafx.fxml.FXML;

@@ -1,7 +1,7 @@
-module org.example {
+module msoe.se2800_2ndGroup {
     requires javafx.controls;
     requires javafx.fxml;
 
-    opens org.example to javafx.fxml;
-    exports org.example;
+    opens msoe.se2800_2ndGroup to javafx.fxml;
+    exports msoe.se2800_2ndGroup;
 }

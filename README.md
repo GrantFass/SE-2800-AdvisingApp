@@ -1,32 +1,45 @@
-Gradle Links:
-https://stackoverflow.com/questions/59335090/intellij-gradle-javafx-building-but-not-running
-https://stackoverflow.com/questions/52578072/gradle-openjfx11-error-javafx-runtime-components-are-missing
-https://github.com/openjfx/javafx-gradle-plugin
-https://openjfx.io/openjfx-docs/#gradle
-https://stackoverflow.com/questions/20700053/how-to-add-local-jar-file-dependency-to-build-gradle-file#:~:text=You%20can%20add%20jar%20doing,gradle%20%3A&text=jar'%5D)%20...%20%7D
-https://docs.gradle.org/current/userguide/dependency_management.html#sub:file_dependencies
-https://www.jetbrains.com/help/idea/getting-started-with-gradle.html
-https://www.jetbrains.com/help/idea/gradle.html#gradle_settings_access
-
-https://www.baeldung.com/junit-5-gradle
-https://commons.apache.org/proper/commons-csv/dependency-info.html
-https://stackoverflow.com/questions/25088381/trouble-adding-pdfbox-to-an-android-application-with-gradle
-
-followed the modular maven install for jfx here: https://openjfx.io/openjfx-docs/#maven
-https://howtodoinjava.com/junit5/junit5-maven-dependency/
-https://commons.apache.org/proper/commons-csv/dependency-info.html
-https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox/2.0.1
-
-# magana041group2
-Java Version: JDK 16
-JavaFX Version: SDK 16
-JUnit Version: JUnit 5
+# Advising Application
+<!--end lines with 2 spaces following the markdown linebreak format-->
+  - Group: 2  
+  - Class: SE 2800 041  
+  - Teacher: Dr. Magaña  
+  - Term: Spring 2020 - 2021  
+  - Affiliation: Milwaukee School of Engineering (MSOE)  
+  - Program Name: Advising Application  
 
 ## Authors
   - Hunter Turcin
   - Grant Fass
   - Teresa Toohill
   - Claudia Poptile
+  
+## Project Description
+<!-- this section should be updated as new features are added -->
+<!-- may want to add a demo section with images of the software running later -->
+<!-- follow the guide here: https://blog.bitsrc.io/how-to-write-beautiful-and-meaningful-readme-md-for-your-next-project-897045e3f991 -->
+Currently, nothing has been implemented  
+  
+## Technologies Used
+  - GitLab
+  - Intellij IDEA
+## Library Versions
+  ### Setup
+  - JDK: openjdk 15.0.2
+  - Maven: 11
+  ### Handled by Maven in pom.xml
+  - JUnit: 5.5.2
+  - Javafx: 15.0.1
+  - Apache Commons-CSV: 1.8
+  - Apache PDFBox: 2.0.1
+  
+## Maven Setup Resources
+  - [Java fx setup](https://openjfx.io/openjfx-docs/#maven)
+  - [Junit5 setup](https://howtodoinjava.com/junit5/junit5-maven-dependency/)
+  - [Apache Commons-CSV setup](https://commons.apache.org/proper/commons-csv/dependency-info.html)
+  - [Apache PDFBox setup](https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox/2.0.1)
+
+## Temporary Resource Links
+  - [GUI + Command Line](https://stackoverflow.com/questions/49675539/javafx-program-which-can-be-controlled-both-by-gui-and-command-line)
   
 ## Documentation Standard:
 All source code submitted must use JavaDoc commenting conventions and meet the minimum documentation standards below:
