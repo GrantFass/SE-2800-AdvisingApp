@@ -5,7 +5,7 @@
  * Name: Hunter Turcin
  * Created: 2021-03-16
  */
-package org.example.models;
+package msoe.se2800_2ndGroup.models;
 
 /**
  * A course or elective a person must take for a curriculum.

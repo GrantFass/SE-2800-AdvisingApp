@@ -1,4 +1,4 @@
-package org.example.models;
+package msoe.se2800_2ndGroup.models;
 
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;

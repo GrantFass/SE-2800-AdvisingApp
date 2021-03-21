@@ -1,4 +1,4 @@
-package org.example;
+package msoe.se2800_2ndGroup;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
+ * NOTE: this is the main for the program
+ * NOTE: if the package is refactored it must be manually changed in module-info.java
  * JavaFX App
  */
 public class App extends Application {
