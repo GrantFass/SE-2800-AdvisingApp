@@ -20,6 +20,14 @@
 - Claudia Poptile
 - Teresa Toohill
 - Hunter Turcin
+
+## Setup
+- Pull down openjdk version 16
+- Pull down the repository
+- Open the repository in intellij
+- Set pom.xml to be recognized as a maven repo (easiest to use popup in bottom right to do this)
+    - If the popup does not appear then go to File -> Invalidate Caches and Restart
+- Go to File -> Project Structure and change the SDK to openjdk version 16
   
 ## Project Description
 
