@@ -118,7 +118,7 @@ public class Model {
             //change hyphens and underscores to spaces, change double spaces to single spaces, trim spaces off start and end.
             String input = major.replaceAll("_", " ").replaceAll("-", " ").trim();
             while (input.contains("  ")) {
-                input = input.replaceAll("  ", " ");
+                input = input.replaceAll("[\\s]{2}", " ");
             }
             if (!input.matches("[a-zA-Z\\s]{1,99}")) {
                 throw new InvalidInputException("The specified input for major {" + major + "} did not match the expected pattern: /^[a-zA-Z\\s]{1,99}$");
@@ -151,9 +151,6 @@ public class Model {
      * @since : Sat, 20 Mar 2021
      */
     public static class InvalidInputException extends Exception {
-        public InvalidInputException(String errorMessage, Throwable throwable) {
-            super(errorMessage, throwable);
-        }
         public InvalidInputException(String errorMessage) {
             super(errorMessage);
         }
