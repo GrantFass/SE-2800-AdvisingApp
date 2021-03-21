@@ -28,6 +28,8 @@ import javafx.application.Platform;
  */
 public class Model {
 
+    String major;
+
     /**
      * This method runs the specified action or method on the FX thread to avoid errors.
      * Run methods by calling with the following format: ensureFXThread(() -> method());
@@ -63,5 +65,97 @@ public class Model {
      */
     public void exitProgram() {
         ensureFXThread(() -> System.exit(0));
+    }
+
+    /**
+     * This method process course recommendations and returns them as a String
+     *
+     * <Internal Operation Notes written in 3rd person declarative>
+     *     This method does not update the GUI directly so it does not need to call ensureFXThread
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "URL"}</a>: <description of help
+     *  <Student name>: <description of help>
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
+     */
+    public String getCourseRecommendation() {
+        //TODO: update errors
+        if (major.isBlank() || major.isEmpty()) {
+            //TODO: throw error if major is empty
+        }
+        else if (false) {
+            //TODO: throw error if course data empty
+        }
+        else if (false) {
+            //TODO: throw error if transcript is empty
+        }
+
+
+        return "";
+    }
+
+    /**
+     * This method stores the input text as a major if it is valid
+     *
+     * This method checks that the major only contains characters a-z case insensitive between 0 and 100 times also allowing whitespace.
+     * If the input string matches the regex then it is stored, otherwise an error is thrown
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/48523095"}</a>: Help Finding Regex
+     *
+     * @param major the major to store
+     * @throws InvalidInputException if the specified input for major does not match the regex.
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
+     */
+    public void storeMajor(String major) throws InvalidInputException {
+        if (major == null) {
+            throw new InvalidInputException("The specified input for major was null");
+        } else if (major.isEmpty() || major.isBlank()) {
+            throw new InvalidInputException("The specified input for major was empty or blank");
+        } else {
+            //change hyphens and underscores to spaces, change double spaces to single spaces, trim spaces off start and end.
+            String input = major.replaceAll("_", " ").replaceAll("-", " ").trim();
+            while (input.contains("  ")) {
+                input = input.replaceAll("  ", " ");
+            }
+            if (!input.matches("[a-zA-Z\\s]{1,99}")) {
+                throw new InvalidInputException("The specified input for major {" + major + "} did not match the expected pattern: /^[a-zA-Z\\s]{1,99}$");
+            } else {
+                this.major = input;
+            }
+        }
+    }
+
+    /**
+     * This method returns the current major
+     *
+     * This method returns the current value stored in the class instance variable for major
+     *
+     * @return the current major
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
+     */
+    public String getMajor() {
+        return this.major;
+    }
+
+    /**
+     * This class creates a custom checked exception for invalid input
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://www.baeldung.com/java-new-custom-exception"}</a>: Help creating custom exceptions
+     *
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
+     */
+    public static class InvalidInputException extends Exception {
+        public InvalidInputException(String errorMessage, Throwable throwable) {
+            super(errorMessage, throwable);
+        }
+        public InvalidInputException(String errorMessage) {
+            super(errorMessage);
+        }
     }
 }
