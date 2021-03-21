@@ -1,14 +1,33 @@
 /*
- * Course: SE2800 - 021
- * Spring 2020-21
- * Lab 1 - User Stories
- * Name: Hunter Turcin
- * Created: 2021-03-16
+ * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
+ * Class: SE 2800 041
+ * Group: 2
+ * Term: Spring 2020 - 2021
+ * Instructor: Dr. Magaña
+ * Affiliation: Milwaukee School of Engineering (MSOE)
+ * Project Name: Advising App
+ * Class Name: Course
+ * Creation Date: Tuesday, 16 March 2021
+ * Original Author: Hunter Turcin
+ * Description: A course that may or may not depend on other courses.
+ * The Course class is responsible for:
+ *     - associating a course code with a set of prerequisites
+ * Modification Log:
+ *     - File Created by Hunter Turcin on 2021-03-16
+ * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
 
 /**
- * A course that may or may not depend on other courses.
+ * Project Name: Advising App
+ * Class Name: Course
+ * Creation Date: Tuesday, 16 March 2021
+ * Original Author: Hunter Turcin
+ * Description: A course that may or may not depend on other courses.
+ * The Course class is responsible for:
+ *     - associating a course code with a set of prerequisites
+ * Modification Log:
+ *     - File Created by Hunter Turcin on 2021-03-16
  */
 public class Course implements CurriculumItem {
     private final String code;
@@ -23,6 +42,8 @@ public class Course implements CurriculumItem {
      * @param credits credit-hours per term
      * @param prerequisite any prerequisites
      * @param description human-readable description of course
+     * @author Hunter Turcin
+     * @since Sun, 16 Mar 2021
      */
     public Course(String code, int credits, Prerequisite prerequisite, String description) {
         this.code = code;

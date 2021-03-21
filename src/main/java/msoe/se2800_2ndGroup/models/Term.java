@@ -1,14 +1,33 @@
 /*
- * Course: SE2800 - 021
- * Spring 2020-21
- * Lab 1 - User Stories
- * Name: Hunter Turcin
- * Created: 2021-03-16
+ * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
+ * Class: SE 2800 041
+ * Group: 2
+ * Term: Spring 2020 - 2021
+ * Instructor: Dr. Magaña
+ * Affiliation: Milwaukee School of Engineering (MSOE)
+ * Project Name: Advising App
+ * Class Name: Term
+ * Creation Date: Tuesday, 16 March 2021
+ * Original Author: Hunter Turcin
+ * Description: A quarter of the year when courses take place.
+ * The Term class is responsible for:
+ *     - describing when a course happens
+ * Modification Log:
+ *     - File Created by Hunter Turcin on 2021-03-16
+ * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
 
 /**
- * Which term a course is for.
+ * Project Name: Advising App
+ * Class Name: Term
+ * Creation Date: Tuesday, 16 March 2021
+ * Original Author: Hunter Turcin
+ * Description: A quarter of the year when courses take place.
+ * The Term class is responsible for:
+ *     - describing when a course happens
+ * Modification Log:
+ *     - File Created by Hunter Turcin on 2021-03-16
  */
 public class Term {
     /**
@@ -39,6 +58,8 @@ public class Term {
      *
      * @param id the id of the term
      * @return the term
+     * @author Hunter Turcin
+     * @since Sun, 16 Mar 2021
      */
     public static Term fromId(int id) {
         return switch (id) {

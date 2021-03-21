@@ -1,9 +1,20 @@
 /*
- * Course: SE2800 - 021
- * Spring 2020-21
- * Lab 1 - User Stories
- * Name: Hunter Turcin
- * Created: 2021-03-16
+ * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
+ * Class: SE 2800 041
+ * Group: 2
+ * Term: Spring 2020 - 2021
+ * Instructor: Dr. Magaña
+ * Affiliation: Milwaukee School of Engineering (MSOE)
+ * Project Name: Advising App
+ * Class Name: Curriculum
+ * Creation Date: Tuesday, 16 March 2021
+ * Original Author: Hunter Turcin
+ * Description: A plan for graduation.
+ * The Course class is responsible for:
+ *     - verifying all courses have been taken to graduate
+ * Modification Log:
+ *     - File Created by Hunter Turcin on 2021-03-16
+ * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
 
@@ -13,7 +24,15 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * A plan for graduation.
+ * Project Name: Advising App
+ * Class Name: Curriculum
+ * Creation Date: Tuesday, 16 March 2021
+ * Original Author: Hunter Turcin
+ * Description: A plan for graduation.
+ * The Course class is responsible for:
+ *     - verifying all courses have been taken to graduate
+ * Modification Log:
+ *     - File Created by Hunter Turcin on 2021-03-16
  */
 public class Curriculum {
     private final List<CurriculumItem> items;
@@ -22,6 +41,8 @@ public class Curriculum {
      * Create a new curriculum.
      *
      * @param items courses and electives in this curriculum, in order
+     * @author Hunter Turcin
+     * @since Sun, 16 Mar 2021
      */
     public Curriculum(List<CurriculumItem> items) {
         this.items = items;
@@ -32,6 +53,8 @@ public class Curriculum {
      *
      * @param courses courses that have been taken already
      * @return unsatisfied items in curriculum order
+     * @author Hunter Turcin
+     * @since Sun, 16 Mar 2021
      */
     public List<CurriculumItem> getUnsatisfiedItems(Collection<Course> courses) {
         // key is item, value is completion status

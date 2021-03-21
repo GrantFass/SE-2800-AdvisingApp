@@ -1,16 +1,35 @@
 /*
- * Course: SE2800 - 021
- * Spring 2020-21
- * Lab 1 - User Stories
- * Name: Hunter Turcin
- * Created: 2021-03-16
+ * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
+ * Class: SE 2800 041
+ * Group: 2
+ * Term: Spring 2020 - 2021
+ * Instructor: Dr. Magaña
+ * Affiliation: Milwaukee School of Engineering (MSOE)
+ * Project Name: Advising App
+ * Class Name: AndPrerequisite
+ * Creation Date: Tuesday, 16 March 2021
+ * Original Author: Hunter Turcin
+ * Description: A prerequisite that requires both of two prerequisites to be satisfied.
+ * The AndPrerequisite class is responsible for:
+ *     - verifying if all of a set of prerequisites have been satisfied
+ * Modification Log:
+ *     - File Created by Hunter Turcin on 2021-03-16
+ * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
 
 import java.util.Collection;
 
 /**
- * A prerequisite that requires both of two prerequisites to be satisfied.
+ * Project Name: Advising App
+ * Class Name: AndPrerequisite
+ * Creation Date: Tuesday, 16 March 2021
+ * Original Author: Hunter Turcin
+ * Description: A prerequisite that requires both of two prerequisites to be satisfied.
+ * The AndPrerequisite class is responsible for:
+ *     - verifying if all of a set of prerequisites have been satisfied
+ * Modification Log:
+ *     - File Created by Hunter Turcin on 2021-03-16
  */
 public class AndPrerequisite implements Prerequisite {
     private final Prerequisite left;
@@ -21,6 +40,8 @@ public class AndPrerequisite implements Prerequisite {
      *
      * @param left first dependency
      * @param right second dependency
+     * @author Hunter Turcin
+     * @since Sun, 16 Mar 2021
      */
     public AndPrerequisite(Prerequisite left, Prerequisite right) {
         this.left = left;

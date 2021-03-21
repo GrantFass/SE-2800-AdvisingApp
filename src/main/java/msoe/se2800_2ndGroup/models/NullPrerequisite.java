@@ -1,16 +1,35 @@
 /*
- * Course: SE2800 - 021
- * Spring 2020-21
- * Lab 1 - User Stories
- * Name: Hunter Turcin
- * Created: 2021-03-16
+ * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
+ * Class: SE 2800 041
+ * Group: 2
+ * Term: Spring 2020 - 2021
+ * Instructor: Dr. Magaña
+ * Affiliation: Milwaukee School of Engineering (MSOE)
+ * Project Name: Advising App
+ * Class Name: NullPrerequisite
+ * Creation Date: Tuesday, 16 March 2021
+ * Original Author: Hunter Turcin
+ * Description: A lack of a prerequisite.
+ * The Elective class is responsible for:
+ *     - handling courses that have no prerequisite
+ * Modification Log:
+ *     - File Created by Hunter Turcin on 2021-03-16
+ * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
 
 import java.util.Collection;
 
 /**
- * A lack of a prerequisite; this prerequisite is always satisfied.
+ * Project Name: Advising App
+ * Class Name: NullPrerequisite
+ * Creation Date: Tuesday, 16 March 2021
+ * Original Author: Hunter Turcin
+ * Description: A lack of a prerequisite.
+ * The NullPrerequisite class is responsible for:
+ *     - handling courses that have no prerequisite
+ * Modification Log:
+ *     - File Created by Hunter Turcin on 2021-03-16
  */
 public class NullPrerequisite implements Prerequisite {
     @Override
