@@ -70,12 +70,8 @@ public class Model {
     /**
      * This method process course recommendations and returns them as a String
      *
-     * <Internal Operation Notes written in 3rd person declarative>
-     *     This method does not update the GUI directly so it does not need to call ensureFXThread
+     * This method does not update the GUI directly so it does not need to call ensureFXThread
      *
-     * Sources:
-     *  <a href="#{@link}">{@link "URL"}</a>: <description of help
-     *  <Student name>: <description of help>
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
@@ -90,7 +86,7 @@ public class Model {
         else if (false) {
             //TODO: throw error if transcript is empty
         }
-
+        //TODO: write method
 
         return "";
     }
