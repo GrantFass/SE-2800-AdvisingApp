@@ -40,8 +40,8 @@ public class CLI {
      * This constructor links a model to this instance so that it operates with the same information as the GUI
      *
      * @param model the model to link
-     * @author : Grant
-     * @since : 3/20/2021
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
      */
     public CLI(Model model) {
         this.model = model;
@@ -59,18 +59,53 @@ public class CLI {
      *  <a href="#{@link}">{@link "https://stackoverflow.com/a/21962055"}</a> Help exiting program through if statement
      *
      * @author : Grant Fass
-     * @since : 3/20/2021
+     * @since : Sat, 20 Mar 2021
      */
     public void processCommandLine() {
+        boolean debug = false;
         try (Scanner in = new Scanner(System.in)) {
             while (true) {
                 String input = in.next().trim().toLowerCase();
-                System.out.format("Your input: %s\n", input);
-                if (input.equals("quit")) {
-                    model.exitProgram();
+                if (debug) {
+                    System.out.format("Your input: %s\n", input);
+                }
+
+                switch (input) {
+                    case "quit" -> model.exitProgram();
+                    case "enable debug" -> debug = true;
+                    case "disable debug" -> debug = false;
+                    case "store major" -> {
+                        outputHyphenLine();
+                        System.out.print("Enter Major: ");
+                        String major = in.next().trim().toLowerCase();
+                        model.storeMajor(major);
+                        System.out.println("Major Stored");
+                        outputHyphenLine();
+                    }
+                    case "get course recommendation" -> {
+                        outputHyphenLine();
+                        String recommendations = model.getCourseRecommendation();
+                        System.out.println(recommendations);
+                        outputHyphenLine();
+                    }
                 }
             }
+        } catch (Model.InvalidInputException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * outputs a line of hyphens
+     *
+     * sends a line of hyphens to the standard output
+     *
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
+     */
+    public void outputHyphenLine() {
+        System.out.println("------------------------------");
     }
 
 }

@@ -41,7 +41,7 @@ public class SecondaryController extends Controller {
      *
      * @throws IOException this is thrown when there is an issue in loading the fxml resource
      * @author : Grant Fass
-     * @since : 3/20/2021
+     * @since : Sat, 20 Mar 2021
      */
     @FXML
     private void switchToPrimary() throws IOException {
