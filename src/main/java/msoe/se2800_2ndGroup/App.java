@@ -61,7 +61,8 @@ public class App extends Application {
      *
      * @param stage the stage displayed
      * @throws IOException this is thrown when there is an issue in loading the fxml resource
-     * @author Grant Fass
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
      */
     @Override
     public void start(Stage stage) throws IOException {
@@ -94,7 +95,8 @@ public class App extends Application {
      *
      * @param fxml the name of the resource excluding .fxml
      * @throws IOException this is thrown when there is an issue in loading the fxml resource
-     * @author Grant Fass
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
      */
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
@@ -111,7 +113,8 @@ public class App extends Application {
      * @param fxml the name of the resource excluding .fxml
      * @throws IOException this is thrown when there is an issue in loading the fxml resource
      * @return the Parent associated with the input fxml resouce name
-     * @author Grant Fass
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
      */
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
@@ -124,6 +127,8 @@ public class App extends Application {
      * calls the launch() method from FXML
      *
      * @param args the argument passed in for mains
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
      */
     public static void main(String[] args) {
         launch();
