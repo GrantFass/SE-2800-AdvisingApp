@@ -47,7 +47,7 @@ public abstract class Controller {
      *
      * @param model the model to be linked
      * @author : Grant Fass
-     * @since : 3/20/2021
+     * @since : Sat, 20 Mar 2021
      */
     public void setModel(Model model) {
         this.model = model;
@@ -65,7 +65,7 @@ public abstract class Controller {
      * @param fxml the fxml resource to switch to, excludes the .fxml from the name.
      * @throws IOException this is thrown when there is an issue in loading the fxml resource
      * @author : Grant Fass
-     * @since : 3/20/2021
+     * @since : Sat, 20 Mar 2021
      */
     public void switchTo(String fxml) throws IOException {
         App.setRoot(fxml);
