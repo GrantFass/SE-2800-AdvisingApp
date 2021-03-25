@@ -4,7 +4,11 @@ import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
+//import org.apache.pdfbox.tools.ImportFDF;
+//import org.apache.pdfbox.pdmodel.PDDocument;
+
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -49,12 +53,16 @@ public class ImportTranscript {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "No file was chosen.");
                     alert.showAndWait();
                 } else {
-                    //parse pdf for text
+                    //PDDocument doc = PDDocument.load(file);
+                    //String text = new PDFTextStripper().getText(doc);
                 }
             } catch (IllegalArgumentException notValid) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Not a valid file name.");
                 alert.showAndWait();
+            } catch (IOException event){
+                event.printStackTrace();
             }
-        }
+
+    }
     }
 }
