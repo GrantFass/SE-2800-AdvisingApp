@@ -2,6 +2,9 @@ package msoe.se2800_2ndGroup;
 
 import javafx.application.Platform;
 
+import java.io.File;
+import java.util.Scanner;
+
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
  * Class: SE 2800 041
@@ -14,13 +17,12 @@ import javafx.application.Platform;
  * Description:
  * * This class runs operations this way they are supported by both the GUI and CLI
  * The Model class is responsible for:
- * * <...>
- * * <...>
- * * <...>
- * * <...>
+ * * Defining the possible commands for the program
+ * * Defining methods that can run on both the CLI and GUI
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
  * * Created method to ensure actions run on the FX thread by Grant on Saturday, 20 March 2021
+ * * Add Method stubs and basic implementations for loading course data by Grant Fass on Fri, 26 Mar 2021
  *
  * @since : Saturday, 20 March 2021
  * @author : Grant
@@ -43,8 +45,8 @@ public class Model {
      * @author : Grant Fass
      * @since : Fri, 26 Mar 2021
      */
-    public String getDefaultCurriculumLocation() {
-        return (getClass().getResource("curriculum.csv")).toString();
+    public static String getDefaultCurriculumLocation() {
+        return (Model.class.getResource("curriculum.csv")).toString();
     }
 
     /**
@@ -60,8 +62,8 @@ public class Model {
      * @author : Grant Fass
      * @since : Fri, 26 Mar 2021
      */
-    public String getDefaultOfferingsLocation() {
-        return (getClass().getResource("offerings.csv")).toString();
+    public static String getDefaultOfferingsLocation() {
+        return (Model.class.getResource("offerings.csv")).toString();
     }
 
     /**
@@ -77,8 +79,8 @@ public class Model {
      * @author : Grant Fass
      * @since : Fri, 26 Mar 2021
      */
-    public String getDefaultPrerequisitesLocation() {
-        return (getClass().getResource("prerequisites_updated.csv")).toString();
+    public static String getDefaultPrerequisitesLocation() {
+        return (Model.class.getResource("prerequisites_updated.csv")).toString();
     }
 
     /**
@@ -127,6 +129,7 @@ public class Model {
      * @since : Sat, 20 Mar 2021
      */
     public String getCourseRecommendation() {
+        //TODO: FIXME
         //TODO: update errors
         if (major.isBlank() || major.isEmpty()) {
             //TODO: throw error if major is empty
@@ -188,14 +191,134 @@ public class Model {
         return this.major;
     }
 
-    public void loadCourseData() {
-
+    /**
+     * This method loads all of the course data
+     *
+     * This model loads the three required CSV files.
+     * The method queries the user to determine if the default CSV file locations should be used or if
+     * custom locations should be used.
+     * If custom locations are used then the specified input file paths are validated
+     * Each CSV file is then read into the program
+     *
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    public void loadCourseData() throws InvalidInputException {
+        //TODO: Test Me
+        /*
+        Steps:
+        1. get file locations
+            a. if default files then set the paths to the defaults
+            b. if not default then query the user for the path to each file
+                i. validate each of the file locations
+                    1. throw error if file is not valid?
+                ii. set the paths to the validated files
+        2. read in files
+            a. call the loader classes with the specified locations
+         */
+        boolean useDefaultFiles = useDefaultFilesQuery();
+        String curriculumLocation = getDefaultCurriculumLocation();
+        String offeringsLocation = getDefaultOfferingsLocation();
+        String prerequisitesLocation = getDefaultPrerequisitesLocation();
+        if (!useDefaultFiles) {
+            //get new locations and validate
+            curriculumLocation = getUserInputFileLocation("curriculum.csv");
+            offeringsLocation = getUserInputFileLocation("offerings.csv");
+            prerequisitesLocation = getUserInputFileLocation("prerequisites.csv");
+        }
+        //read files
+        //TODO: Read Files
     }
 
 
+    /**
+     * This method validates that the input location for a file matches specified criteria
+     *
+     * This method validates that the input location is valid by attempting to turn the location into
+     * a file then verifying that the file exists
+     *
+     * @param location the path to the file as a String
+     * @return True if the location passes validation, false otherwise
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    private boolean validateFileLocation(String location) {
+        //TODO: Test Me
+        File file = new File(location);
+        return file.exists();
+    }
 
-    public void selectCourseDataInputSource(String location) {
+    /**
+     * This method validates that the input location for a file matches specified criteria
+     *
+     * This method validates that the input location is valid by attempting to turn the location into
+     * a file then verifying that the file exists
+     * This overloaded method additionally checks that the file extension matches the input extension
+     *
+     * @param location the path to the file as a String
+     * @param expectedFileExtension the extension of the file that is expected.
+     * @return True if the location passes validation, false otherwise
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    private boolean validateFileLocation(String location, String expectedFileExtension) {
+        //TODO: Test Me
+        return validateFileLocation(location) && location.endsWith(expectedFileExtension);
+    }
 
+    /**
+     * This method determines if the default file location should be used or not
+     *
+     * This method queries the user about the file source to use
+     * The method then retrieves user input.
+     *
+     * @return true if default files should be used, false otherwise
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    private boolean useDefaultFilesQuery() {
+        //TODO: Test Me
+        boolean useDefault = true;
+        try (Scanner in = new Scanner(System.in)) {
+            System.out.println("Would you like to use the default file location (y/n)?");
+            String response = in.nextLine().toLowerCase().trim();
+            if (response.equals("n")) {
+                useDefault = false;
+            }
+        }
+        return useDefault;
+    }
+
+    /**
+     * This method queries the user for the location of a specified file and returns it
+     *
+     * This method uses the standard input and output streams for the system to query the user to retrieve
+     * the location of the file specified by the parameter String in the method header.
+     * The location of the user input file is then validated.
+     * If the validation fails then an Exception is thrown.
+     *
+     * @param nameOfFile the name of the file to query the user to enter the location for
+     * @throws InvalidInputException if there is a problem validating the file location input by the user
+     * @return the path to the file as a String or an error if there is a problem validating the location
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    private String getUserInputFileLocation(String nameOfFile) throws InvalidInputException {
+        //TODO: Test Me
+        String location = "";
+        try (Scanner in = new Scanner((System.in))) {
+            //query user and get file
+            System.out.format("Please enter the location to retrieve the %s file from: ", nameOfFile);
+            location = in.nextLine().toLowerCase().trim();
+            //validate
+            if (!validateFileLocation(location, ".csv")) {
+                throw new InvalidInputException("The specified location failed validation");
+            }
+        }
+        if (!location.isEmpty() && !location.isBlank()) {
+            return location;
+        }
+        throw new InvalidInputException("the specified location is empty or blank");
     }
 
     /**

@@ -21,6 +21,7 @@ import java.util.Scanner;
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
  * * Added method to run and a method to exit the program as an example by Grant on Saturday, 20 March 2021
+ * * Added case to load the course data CSV files by Grant Fass on Fri, 26 Mar 2021
  *
  * @since : Saturday, 20 March 2021
  * @author : Grant

@@ -19,12 +19,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * Description:
  * * This class contains tests for the Model.java class
  * The ModelTest class is responsible for:
- * * <...>
- * * <...>
- * * <...>
- * * <...>
+ * * testing the methods defined in Model.java
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
+ * * Create test for the storeMajor method by Grant on Saturday, 20 March 2021
+ * * Create tests for the default course data locations by Grant Fass on Fri, 26 Mar 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -201,8 +200,8 @@ class ModelTest {
      */
     @Test
     void getDefaultCurriculumLocation() {
-        assertNotNull(model.getDefaultCurriculumLocation());
-        assertTrue(model.getDefaultCurriculumLocation().contains("curriculum.csv"));
+        assertNotNull(Model.getDefaultCurriculumLocation());
+        assertTrue(Model.getDefaultCurriculumLocation().contains("curriculum.csv"));
     }
 
     /**
@@ -215,8 +214,8 @@ class ModelTest {
      */
     @Test
     void getDefaultOfferingsLocation() {
-        assertNotNull(model.getDefaultOfferingsLocation());
-        assertTrue(model.getDefaultOfferingsLocation().contains("offerings.csv"));
+        assertNotNull(Model.getDefaultOfferingsLocation());
+        assertTrue(Model.getDefaultOfferingsLocation().contains("offerings.csv"));
     }
 
     /**
@@ -229,7 +228,7 @@ class ModelTest {
      */
     @Test
     void getDefaultPrerequisitesLocation() {
-        assertNotNull(model.getDefaultPrerequisitesLocation());
-        assertTrue(model.getDefaultPrerequisitesLocation().contains("prerequisites_updated.csv"));
+        assertNotNull(Model.getDefaultPrerequisitesLocation());
+        assertTrue(Model.getDefaultPrerequisitesLocation().contains("prerequisites_updated.csv"));
     }
 }
