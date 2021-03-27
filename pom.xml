@@ -87,5 +87,25 @@
                 </dependencies>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>curriculum.csv</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>offerings.csv</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>prerequisites_updated.csv</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>

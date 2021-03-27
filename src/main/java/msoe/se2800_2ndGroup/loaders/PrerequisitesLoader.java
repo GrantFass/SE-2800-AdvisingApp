@@ -2,7 +2,7 @@ package msoe.se2800_2ndGroup.loaders;
 
 import java.io.Reader;
 
-import org.apache.commons.CSVParser;
+//import org.apache.commons.CSVParser;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -26,7 +26,8 @@ import org.apache.commons.CSVParser;
  * @since : Sunday, 21 March 2021
  */
 public class PrerequisitesLoader {
-    private final CSVParser parser;
+
+    //private final CSVParser parser;
 
     /**
      * Create a new prerequisites CSV document loader.

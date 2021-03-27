@@ -190,4 +190,46 @@ class ModelTest {
         }
         //endregion
     }
+
+    /**
+     * Test that the default location for the file is returning correctly
+     *
+     * This method tests that the returned value is not null, thus implying that the file exists
+     *
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    @Test
+    void getDefaultCurriculumLocation() {
+        assertNotNull(model.getDefaultCurriculumLocation());
+        assertTrue(model.getDefaultCurriculumLocation().contains("curriculum.csv"));
+    }
+
+    /**
+     * Test that the default location for the file is returning correctly
+     *
+     * This method tests that the returned value is not null, thus implying that the file exists
+     *
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    @Test
+    void getDefaultOfferingsLocation() {
+        assertNotNull(model.getDefaultOfferingsLocation());
+        assertTrue(model.getDefaultOfferingsLocation().contains("offerings.csv"));
+    }
+
+    /**
+     * Test that the default location for the file is returning correctly
+     *
+     * This method tests that the returned value is not null, thus implying that the file exists
+     *
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    @Test
+    void getDefaultPrerequisitesLocation() {
+        assertNotNull(model.getDefaultPrerequisitesLocation());
+        assertTrue(model.getDefaultPrerequisitesLocation().contains("prerequisites_updated.csv"));
+    }
 }

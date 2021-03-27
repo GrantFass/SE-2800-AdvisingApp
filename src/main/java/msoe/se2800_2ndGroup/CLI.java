@@ -65,14 +65,17 @@ public class CLI {
         boolean debug = false;
         try (Scanner in = new Scanner(System.in)) {
             while (true) {
-                String input = in.next().trim().toLowerCase();
+                String input = in.nextLine().trim().toLowerCase();
                 if (debug) {
                     System.out.format("Your input: %s\n", input);
                 }
 
                 switch (input) {
                     case "quit" -> model.exitProgram();
-                    case "enable debug" -> debug = true;
+                    case "enable debug" -> {
+                        System.out.println("Debug Enabled");
+                        debug = true;
+                    }
                     case "disable debug" -> debug = false;
                     case "store major" -> {
                         outputHyphenLine();
@@ -87,6 +90,9 @@ public class CLI {
                         String recommendations = model.getCourseRecommendation();
                         System.out.println(recommendations);
                         outputHyphenLine();
+                    }
+                    case "load course data" -> {
+                        model.loadCourseData();
                     }
                 }
             }

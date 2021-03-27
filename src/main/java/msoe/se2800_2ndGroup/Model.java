@@ -28,7 +28,58 @@ import javafx.application.Platform;
  */
 public class Model {
 
-    String major;
+    private String major;
+
+    /**
+     * This method returns the absolute path to the file in the method header as a String.
+     *
+     * This method uses the class.getResource method to find the required resource path
+     * This method relies on a resource link in pom.xml
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/44241904"}</a>: Help finding the location of the file
+     *
+     * @return the absolute path to the default location for curriculum.csv as a String
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    public String getDefaultCurriculumLocation() {
+        return (getClass().getResource("curriculum.csv")).toString();
+    }
+
+    /**
+     * This method returns the absolute path to the file in the method header as a String.
+     *
+     * This method uses the class.getResource method to find the required resource path
+     * This method relies on a resource link in pom.xml
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/44241904"}</a>: Help finding the location of the file
+     *
+     * @return the absolute path to the default location for curriculum.csv as a String
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    public String getDefaultOfferingsLocation() {
+        return (getClass().getResource("offerings.csv")).toString();
+    }
+
+    /**
+     * This method returns the absolute path to the file in the method header as a String.
+     *
+     * This method uses the class.getResource method to find the required resource path
+     * This method relies on a resource link in pom.xml
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/44241904"}</a>: Help finding the location of the file
+     *
+     * @return the absolute path to the default location for curriculum.csv as a String
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    public String getDefaultPrerequisitesLocation() {
+        return (getClass().getResource("prerequisites_updated.csv")).toString();
+    }
 
     /**
      * This method runs the specified action or method on the FX thread to avoid errors.
@@ -135,6 +186,16 @@ public class Model {
      */
     public String getMajor() {
         return this.major;
+    }
+
+    public void loadCourseData() {
+
+    }
+
+
+
+    public void selectCourseDataInputSource(String location) {
+
     }
 
     /**
