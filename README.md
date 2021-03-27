@@ -20,6 +20,14 @@
 - Claudia Poptile
 - Teresa Toohill
 - Hunter Turcin
+
+## Setup
+- Pull down openjdk version 16
+- Pull down the repository
+- Open the repository in intellij
+- Set pom.xml to be recognized as a maven repo (easiest to use popup in bottom right to do this)
+    - If the popup does not appear then go to File -> Invalidate Caches and Restart
+- Go to File -> Project Structure and change the SDK to openjdk version 16
   
 ## Project Description
 
@@ -55,87 +63,4 @@ Currently, nothing has been implemented
 - [GUI + Command Line](https://stackoverflow.com/questions/49675539/javafx-program-which-can-be-controlled-both-by-gui-and-command-line)
   
 ## Documentation Standard:
-See the samples in the comments below (only visible in the pulled repo)  
-All source code submitted must use JavaDoc commenting conventions and meet the minimum documentation standards below:
-
-The beginning of each source file should contain:
-- The name of the file.
-- A short description of the purpose of the class contained in the file.
-- The date it was originally written.
-- The original author.
-- A modification log (when appropriate) which describes:
-    - What modifications were made.
-    - When the modifications were made.
-    - Who made the modifications.
-   
-Each class method should contain the following documentation:
-- Explanatory notes regarding the overall usage of the method; that is, what the method does.
-- The parameters passed in the formal argument
-- What the method returns (if anything)
-- Any sources other than the author (Web URL, fellow student, etc.) that aided in the design of the method (and what aid was provided).
-- Explanatory notes regarding the internal workings and coding whose purpose is not immediately obvious to someone with your current level of programming knowledge
-
-[//]: # ( Note: replace the /* with <!--, the * with -, and the */ with --> for xml based files. )
-
-[//]: # (View the following link for any questions: https://www.oracle.com/technical-resources/articles/java/javadoc-tool.html )
-
-<!--- File Header:
-/*
- * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
- * Class: SE 2800 041
- * Group: 2
- * Term: Spring 2020 - 2021
- * Instructor: Dr. Magaña
- * Affiliation: Milwaukee School of Engineering (MSOE)
- * Project Name: Advising App
- * Class Name: ${NAME}
- * Creation Date: ${DAY_NAME_FULL}, ${DAY} ${MONTH_NAME_FULL} ${YEAR}
- * Original Author: <Name>
- * Description: <class description here>
- * The ${NAME} class is responsible for:
- *     - <...>
- *     - <...>
- *     - <...>
- *     - <...>
- * Modification Log:
- *     - File Created by <Name> on <Date>
- * Copyright (C): TBD
- */
---->
-
-<!--- Class Header:
-/**
- * Project Name: Advising App
- * Class Name: ${NAME}
- * Creation Date: ${DAY_NAME_FULL}, ${DAY} ${MONTH_NAME_FULL} ${YEAR}
- * Original Author: <Name>
- * Description: <class description here>
- * The ${NAME} class is responsible for:
- *     - <...>
- *     - <...>
- *     - <...>
- *     - <...>
- * Modification Log:
- *     - File Created by <Name> on <Date>
- */
---->
-
-[//]: # (Be sure to list API links under sources)
-
-<!--- Method Header:
-/**
- * <Method Purpose written in 3rd person declarative>
- * 
- * <Internal Operation Notes written in 3rd person declarative>
- * 
- * Sources:
- *     - <a href="#{@link}">{@link URL}</a>: <description of help
- *     - <Student name>: <description of help>
- * @param <parameter name> <what the parameter does>
- * @throws <Exception name> <why>
- * @return <what>
- * @author <name>
- */
---->
-
-
+- [View Documentation Standard Here](https://gitlab.com/msoe.edu/se/se2800s21/magana041group2/-/wikis/Intellij-Documentation-Setup)
