@@ -122,7 +122,7 @@ public class Model {
      * TODO: FIX METHOD SIGNATURE
      */
     public Collection<Curriculum> getCurricula() {
-        if (curricula == null || curricula.isEmpty()) {
+        if (curricula == null) {
             return new ArrayList<>();
         }
         return curricula;
