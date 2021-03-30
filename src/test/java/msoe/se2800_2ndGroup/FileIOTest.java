@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Modification Log:
  * * File Created by Grant on Tuesday, 30 March 2021
  * * Define basic versions of tests in javadoc by Grant Fass on Tue, 30 Mar 2021
+ * * Implement basic tests for validateFileLocation, useDefaultFilesQuery, and getUserInputFileLocation by Grant Fass on Tue, 30 Mar 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -149,11 +152,22 @@ class FileIOTest {
      *   method so this method will have few tests (this is because they are already handled by the aforementioned
      *   validation method). This method will primarily test that the proper exceptions are thrown, as well as a
      *   basic test for proper returned values.
+     * Note that this method relies on the default location getters from the Model.java class and will fail if any of
+     *   those three static location getters are failing.
      * @author : Grant Fass
      * @since : Tue, 30 Mar 2021
      */
     @Test
     void getUserInputFileLocation() {
-
+        // test that the user input location for a file that exists is returned correctly
+        try {
+            String data = Model.getDefaultCurriculumLocation();
+            assertEquals(data, FileIO.getUserInputFileLocation("Curriculum.csv", new ByteArrayInputStream(data.getBytes()), System.out));
+        } catch (Model.InvalidInputException e) {
+            fail();
+        }
+        // fail if file does not exist
+        String data = Model.getDefaultCurriculumLocation() + "TTTT";
+        assertThrows(Model.InvalidInputException.class, () -> FileIO.getUserInputFileLocation("Curriculum.csv", new ByteArrayInputStream(data.getBytes()), System.out));
     }
 }
