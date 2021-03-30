@@ -130,8 +130,6 @@ public class App extends Application {
      * @since : Sat, 20 Mar 2021
      */
     public static void main(String[] args) throws IOException {
-        ImportTranscript importTranscript = new ImportTranscript();
-        importTranscript.readInFile();
         launch();
     }
 
