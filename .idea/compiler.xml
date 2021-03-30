@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="magana041group2" target="16" />
+      <module name="AdvisingApp" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>

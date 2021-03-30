@@ -284,15 +284,16 @@ public class Model {
             offeringsLocation = getUserInputFileLocation("offerings.csv");
             prerequisitesLocation = getUserInputFileLocation("prerequisites.csv");
         }
-        //Create the loaders used to read in the files
-        Collection<Course> courses = new ArrayList<>(); //TODO: Fix Me
+        //Load the required courses first
+        Collection<Course> courses;
+        PrerequisitesLoader prerequisitesLoader = new PrerequisitesLoader(new FileReader(prerequisitesLocation));
+        prerequisiteCourses = courses = prerequisitesLoader.load();
+
+        //With the courses known, read the other files
         CurriculumLoader curriculumLoader = new CurriculumLoader(new FileReader(curriculumLocation), courses);
         OfferingsLoader offeringsLoader = new OfferingsLoader(new FileReader(offeringsLocation), courses);
-        PrerequisitesLoader prerequisitesLoader = new PrerequisitesLoader(new FileReader(prerequisitesLocation));
-        //Read in the files
         curricula = curriculumLoader.load();
         offerings = offeringsLoader.load();
-        prerequisiteCourses = prerequisitesLoader.load();
     }
 
     /**
