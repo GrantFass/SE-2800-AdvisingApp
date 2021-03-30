@@ -24,10 +24,9 @@ import java.io.IOException;
  * * This class uses JavaFX through Maven
  * * NOTE: if the package is refactored it must be manually changed in module-info.java
  * The App class is responsible for:
- * * <...>
- * * <...>
- * * <...>
- * * <...>
+ * * Launching the main GUI window for the program on startup
+ * * Launching the thread for the CLI on startup
+ * * Launching the program
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
  * * Added CLI setup by Grant on Saturday, 20 March 2021
@@ -130,7 +129,7 @@ public class App extends Application {
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         launch();
     }
 

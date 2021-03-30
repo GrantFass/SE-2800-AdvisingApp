@@ -19,12 +19,20 @@ import static org.junit.jupiter.api.Assertions.*;
  * Description:
  * * This class contains tests for the Model.java class
  * The ModelTest class is responsible for:
+<<<<<<< HEAD
  * * <...>
  * * <...>
  * * <...>
  * * <...>
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
+=======
+ * * testing the methods defined in Model.java
+ * Modification Log:
+ * * File Created by Grant on Saturday, 20 March 2021
+ * * Create test for the storeMajor method by Grant on Saturday, 20 March 2021
+ * * Create tests for the default course data locations by Grant Fass on Fri, 26 Mar 2021
+>>>>>>> 8461cec82d2990a806833a435d9e4fc049415e9e
  * <p>
  * Copyright (C): TBD
  *
@@ -189,5 +197,71 @@ class ModelTest {
             fail();
         }
         //endregion
+    }
+
+    /**
+     * Test that the default location for the file is returning correctly
+     *
+     * This method tests that the returned value is not null, thus implying that the file exists
+     *
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    @Test
+    void getDefaultCurriculumLocation() {
+        assertNotNull(Model.getDefaultCurriculumLocation());
+        assertTrue(Model.getDefaultCurriculumLocation().contains("curriculum.csv"));
+    }
+
+    /**
+     * Test that the default location for the file is returning correctly
+     *
+     * This method tests that the returned value is not null, thus implying that the file exists
+     *
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    @Test
+    void getDefaultOfferingsLocation() {
+        assertNotNull(Model.getDefaultOfferingsLocation());
+        assertTrue(Model.getDefaultOfferingsLocation().contains("offerings.csv"));
+    }
+
+    /**
+     * Test that the default location for the file is returning correctly
+     *
+     * This method tests that the returned value is not null, thus implying that the file exists
+     *
+     * @author : Grant Fass
+     * @since : Fri, 26 Mar 2021
+     */
+    @Test
+    void getDefaultPrerequisitesLocation() {
+        assertNotNull(Model.getDefaultPrerequisitesLocation());
+        assertTrue(Model.getDefaultPrerequisitesLocation().contains("prerequisites_updated.csv"));
+    }
+
+
+    @Test
+    void testGetCourseRecommendation() {
+        //TODO
+    }
+
+    @Test
+    void getCurricula() {
+
+        //TODO
+    }
+
+    @Test
+    void getOfferings() {
+
+        //TODO
+    }
+
+    @Test
+    void getPrerequisiteCourses() {
+
+        //TODO
     }
 }
