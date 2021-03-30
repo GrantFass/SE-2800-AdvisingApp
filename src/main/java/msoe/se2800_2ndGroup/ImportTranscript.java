@@ -38,6 +38,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
  */
 public class ImportTranscript {
     public void readInFile(){
+        //TODO: remove this since I do not think that we really need to ask the user if they want to read in a file after they have already selected that they would like to do so through the case statement in the CLI
         System.out.println("Do you want to read in a file (\"Y/N\")?");
         Scanner scanner = new Scanner(System.in);
         String answer = scanner.nextLine();
@@ -46,8 +47,7 @@ public class ImportTranscript {
         }
         if(answer.equalsIgnoreCase("Y")) {
             try {
-                System.out.println("Please enter path name:");
-                String pathName = scanner.nextLine();
+                String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf");
                 File file = new File(pathName);
 //                FileChooser fileChooser = new FileChooser();
 //                fileChooser.setTitle("Open Unofficial Transcript PDF");
@@ -55,6 +55,7 @@ public class ImportTranscript {
 //                        new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
 //                file = fileChooser.showOpenDialog(new Stage());
                 if (file == null) {
+                    //TODO: remove this, This is already covered by the getUserInputFileLocation method since it throws an error if there are issues validating that the user file exists.
                     Alert alert = new Alert(Alert.AlertType.ERROR, "No file was chosen.");
                     alert.showAndWait();
                 } else {
@@ -64,6 +65,7 @@ public class ImportTranscript {
                     String[] ignoreWords = new String[10];
                     ignoreWords[0] = "DO NOT READ THIS";
                     ArrayList<String> input = new ArrayList<>();
+                    //TODO: potentially replace with the enhanced for loop.
                     for(int j=0; j<words.length; j++){
                         for(int i=0; i<ignoreWords.length; i++) {
                             if ((!words[j].contains(ignoreWords[0])) && (!input.contains(words[j]))) {
@@ -81,8 +83,10 @@ public class ImportTranscript {
                 alert.showAndWait();
             } catch (IOException event){
                 event.printStackTrace();
+            } catch (Model.InvalidInputException e) {
+                System.out.println(e.getMessage());
             }
 
-    }
+        }
     }
 }

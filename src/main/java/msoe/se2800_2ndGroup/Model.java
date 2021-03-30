@@ -280,9 +280,9 @@ public class Model {
         //if the user wants to use custom locations then query them to retrieve the locations and validate the files
         if (!useDefaultFiles) {
             //get new locations and validate
-            curriculumLocation = getUserInputFileLocation("curriculum.csv");
-            offeringsLocation = getUserInputFileLocation("offerings.csv");
-            prerequisitesLocation = getUserInputFileLocation("prerequisites.csv");
+            curriculumLocation = getUserInputFileLocation("curriculum.csv", ".csv");
+            offeringsLocation = getUserInputFileLocation("offerings.csv", ".csv");
+            prerequisitesLocation = getUserInputFileLocation("prerequisites.csv", ".csv");
         }
         //Create the loaders used to read in the files
         Collection<Course> courses = new ArrayList<>(); //TODO: Fix Me

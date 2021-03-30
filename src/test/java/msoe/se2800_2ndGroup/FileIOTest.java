@@ -162,12 +162,12 @@ class FileIOTest {
         // test that the user input location for a file that exists is returned correctly
         try {
             String data = Model.getDefaultCurriculumLocation();
-            assertEquals(data, FileIO.getUserInputFileLocation("Curriculum.csv", new ByteArrayInputStream(data.getBytes()), System.out));
+            assertEquals(data, FileIO.getUserInputFileLocation("Curriculum.csv", ".csv", new ByteArrayInputStream(data.getBytes()), System.out));
         } catch (Model.InvalidInputException e) {
             fail();
         }
         // fail if file does not exist
         String data = Model.getDefaultCurriculumLocation() + "TTTT";
-        assertThrows(Model.InvalidInputException.class, () -> FileIO.getUserInputFileLocation("Curriculum.csv", new ByteArrayInputStream(data.getBytes()), System.out));
+        assertThrows(Model.InvalidInputException.class, () -> FileIO.getUserInputFileLocation("Curriculum.csv", ".csv", new ByteArrayInputStream(data.getBytes()), System.out));
     }
 }

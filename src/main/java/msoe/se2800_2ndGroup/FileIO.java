@@ -135,15 +135,17 @@ public class FileIO {
      *              pass in an input stream to better facilitate testing.
      *
      * @param nameOfFile the name of the file to query the user to enter the location for
+     * @param fileExtension the extension of the file to use / verify
      * @param inputStream the source for the input used to determine if default files should be used.
      *                    The value should usually be System.in. If a null value is entered it should
      *                    default to System.in
+     * @param outputStream the source for the text to be output to
      * @throws Model.InvalidInputException if there is a problem validating the file location input by the user
      * @return the path to the file as a String or an error if there is a problem validating the location
      * @author : Grant Fass
      * @since : Fri, 26 Mar 2021
      */
-    public static String getUserInputFileLocation(String nameOfFile, InputStream inputStream, PrintStream outputStream) throws Model.InvalidInputException {
+    public static String getUserInputFileLocation(String nameOfFile, String fileExtension, InputStream inputStream, PrintStream outputStream) throws Model.InvalidInputException {
         if (inputStream == null) {
             inputStream = System.in;
         }
@@ -153,7 +155,7 @@ public class FileIO {
             outputStream.format("Please enter the location to retrieve the %s file from: ", nameOfFile);
             location = in.nextLine().trim();
             //validate
-            if (!validateFileLocation(location, ".csv")) {
+            if (!validateFileLocation(location, fileExtension)) {
                 throw new Model.InvalidInputException("The specified location failed validation");
             }
         }
@@ -174,13 +176,14 @@ public class FileIO {
      * the default input source.
      *
      * @param nameOfFile the name of the file to query the user to enter the location for
+     * @param fileExtension the extension of the file to use / verify
      * @throws Model.InvalidInputException if there is a problem validating the file location input by the user
      * @return the path to the file as a String or an error if there is a problem validating the location
      * @author : Grant Fass
      * @since : Fri, 26 Mar 2021
      */
-    public static String getUserInputFileLocation(String nameOfFile) throws Model.InvalidInputException {
-        return getUserInputFileLocation(nameOfFile, System.in, System.out);
+    public static String getUserInputFileLocation(String nameOfFile, String fileExtension) throws Model.InvalidInputException {
+        return getUserInputFileLocation(nameOfFile, fileExtension, System.in, System.out);
     }
 
 }
