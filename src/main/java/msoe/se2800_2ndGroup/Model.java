@@ -63,7 +63,7 @@ public class Model {
      * @since : Fri, 26 Mar 2021
      */
     public static String getDefaultCurriculumLocation() {
-        return (Model.class.getResource("curriculum.csv")).toString();
+        return (ClassLoader.getSystemClassLoader().getResourceAsStream("/msoe.se2800_2ndGroup/curriculum.csv")).toString();
     }
 
     /**
@@ -80,7 +80,7 @@ public class Model {
      * @since : Fri, 26 Mar 2021
      */
     public static String getDefaultOfferingsLocation() {
-        return (Model.class.getResource("offerings.csv")).toString();
+        return (Model.class.getClassLoader().getResource("msoe.se2800_2ndGroup/offerings.csv")).toString();
     }
 
     /**
@@ -97,7 +97,7 @@ public class Model {
      * @since : Fri, 26 Mar 2021
      */
     public static String getDefaultPrerequisitesLocation() {
-        return (Model.class.getResource("prerequisites_updated.csv")).toString();
+        return (Model.class.getClassLoader().getResource("./prerequisites_updated.csv")).toString();
     }
 
     /**

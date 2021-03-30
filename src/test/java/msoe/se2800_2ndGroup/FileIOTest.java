@@ -40,11 +40,44 @@ class FileIOTest {
      * The overloaded validateFileLocation(location, expectedFileExtension) method tests if a file exists by calling
      *   the generic method and also validates that the location ends with the proper extension. Since this uses
      *   the generic method it should only need to test the location extension.
+     * Note that this method relies on the default location getters from the Model.java class and will fail if any of
+     *   those three static location getters are failing.
      * @author : Grant Fass
      * @since : Tue, 30 Mar 2021
      */
     @Test
     void validateFileLocation() {
+        // First test that files that should exist work with the generic method.
+        assertTrue(FileIO.validateFileLocation(Model.getDefaultCurriculumLocation()));
+        assertTrue(FileIO.validateFileLocation(Model.getDefaultOfferingsLocation()));
+        assertTrue(FileIO.validateFileLocation(Model.getDefaultPrerequisitesLocation()));
+        // Now test that files that should not exist return false
+        assertFalse(FileIO.validateFileLocation("C://ThisSHouldReturnFalse.doc"));
+        assertFalse(FileIO.validateFileLocation("C://somethingWrongHere.txt"));
+        assertFalse(FileIO.validateFileLocation("Z://T.gg"));
+        assertFalse(FileIO.validateFileLocation("d://somwhereOverTheMisspellign.q"));
+        // Test that empty values and null values return false
+        assertFalse(FileIO.validateFileLocation(""));
+        assertFalse(FileIO.validateFileLocation(null));
+        // Test that files that should exist return true with the correct extension
+        assertTrue(FileIO.validateFileLocation(Model.getDefaultCurriculumLocation(), ".csv"));
+        assertTrue(FileIO.validateFileLocation(Model.getDefaultOfferingsLocation(), ".CSV"));
+        assertTrue(FileIO.validateFileLocation(Model.getDefaultPrerequisitesLocation(), ".Csv"));
+        // Test that files that should exist return false with the wrong extension
+        assertFalse(FileIO.validateFileLocation(Model.getDefaultCurriculumLocation(), ".gg"));
+        assertFalse(FileIO.validateFileLocation(Model.getDefaultOfferingsLocation(), ".WRONG"));
+        assertFalse(FileIO.validateFileLocation(Model.getDefaultPrerequisitesLocation(), ".Doc"));
+        // Test that the overloaded method does not fatal with null or empty values
+        assertFalse(FileIO.validateFileLocation(Model.getDefaultCurriculumLocation(), ""));
+        assertFalse(FileIO.validateFileLocation(Model.getDefaultOfferingsLocation(), null));
+        assertFalse(FileIO.validateFileLocation("", ".Doc"));
+        assertFalse(FileIO.validateFileLocation(null, ".gg"));
+        assertFalse(FileIO.validateFileLocation("", ".csv"));
+        assertFalse(FileIO.validateFileLocation(null, ".csv"));
+        assertFalse(FileIO.validateFileLocation("", ""));
+        assertFalse(FileIO.validateFileLocation(null, ""));
+        assertFalse(FileIO.validateFileLocation("", null));
+        assertFalse(FileIO.validateFileLocation(null, null));
     }
 
     /**
@@ -55,6 +88,7 @@ class FileIOTest {
      */
     @Test
     void useDefaultFilesQuery() {
+
     }
 
     /**
@@ -68,5 +102,6 @@ class FileIOTest {
      */
     @Test
     void getUserInputFileLocation() {
+
     }
 }

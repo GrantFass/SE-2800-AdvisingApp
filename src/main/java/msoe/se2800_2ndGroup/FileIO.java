@@ -46,7 +46,9 @@ public class FileIO {
      * @since : Fri, 26 Mar 2021
      */
     public static boolean validateFileLocation(String location) {
-        //TODO: Test Me
+        if (location.isBlank() || location.isEmpty()) {
+            return false;
+        }
         File file = new File(location);
         return file.exists();
     }
@@ -65,7 +67,9 @@ public class FileIO {
      * @since : Fri, 26 Mar 2021
      */
     public static boolean validateFileLocation(String location, String expectedFileExtension) {
-        //TODO: Test Me
+        if (location.isBlank() || location.isEmpty()) {
+            return false;
+        }
         return location.endsWith(expectedFileExtension) && validateFileLocation(location);
     }
 
