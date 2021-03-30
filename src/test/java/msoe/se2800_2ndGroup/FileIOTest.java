@@ -100,50 +100,50 @@ class FileIOTest {
     void useDefaultFilesQuery() {
         // test that the method will return false for various capitalization of 'n' or 'no' with various leading and trailing spaces.
         String data = "n";
-        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "n  ";
-        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "  n";
-        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = " n ";
-        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "no";
-        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "no  ";
-        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "  no";
-        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "  no   ";
-        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "N";
-        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "No";
-        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "nO";
-        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "NO";
-        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         // test that the method returns true for most other cases
         data = "Y";
-        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "YES";
-        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "y";
-        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "yes";
-        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "a;dlfjk;";
-        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "13485";
-        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "asdf165";
-        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "generic input";
-        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "\n";
-        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         data = "";
-        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
     }
 
     /**
@@ -162,12 +162,12 @@ class FileIOTest {
         // test that the user input location for a file that exists is returned correctly
         try {
             String data = Model.getDefaultCurriculumLocation();
-            assertEquals(data, FileIO.getUserInputFileLocation("Curriculum.csv", new ByteArrayInputStream(data.getBytes()), System.out));
+            assertEquals(data, FileIO.getUserInputFileLocation("Curriculum.csv", new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         } catch (Model.InvalidInputException e) {
             fail();
         }
         // fail if file does not exist
         String data = Model.getDefaultCurriculumLocation() + "TTTT";
-        assertThrows(Model.InvalidInputException.class, () -> FileIO.getUserInputFileLocation("Curriculum.csv", new ByteArrayInputStream(data.getBytes()), System.out));
+        assertThrows(Model.InvalidInputException.class, () -> FileIO.getUserInputFileLocation("Curriculum.csv", new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
     }
 }

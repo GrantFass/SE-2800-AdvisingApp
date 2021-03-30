@@ -90,13 +90,13 @@ public class FileIO {
      * @author : Grant Fass
      * @since : Fri, 26 Mar 2021
      */
-    public static boolean useDefaultFilesQuery(InputStream inputStream) {
+    public static boolean useDefaultFilesQuery(InputStream inputStream, PrintStream outputStream) {
         if (inputStream == null) {
             inputStream = System.in;
         }
         boolean useDefault = true;
         try (Scanner in = new Scanner(inputStream)) {
-            System.out.println("Would you like to use the default file location (y/n)?");
+            outputStream.println("Would you like to use the default file location (y/n)?");
             String response = in.hasNext() ? in.nextLine().toLowerCase().trim() : "";
             if (response.equals("n") || response.equals("no")) {
                 useDefault = false;
@@ -118,7 +118,7 @@ public class FileIO {
      * @since : Tue, 30 Mar 2021
      */
     public static boolean useDefaultFilesQuery() {
-        return useDefaultFilesQuery(System.in);
+        return useDefaultFilesQuery(System.in, System.out);
     }
 
     /**
