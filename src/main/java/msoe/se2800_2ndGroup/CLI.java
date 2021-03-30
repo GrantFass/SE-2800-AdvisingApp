@@ -96,6 +96,10 @@ public class CLI {
                     case "load course data" -> {
                         model.loadCourseData();
                     }
+                    case "load pdf" -> {
+                        ImportTranscript importTranscript = new ImportTranscript();
+                        importTranscript.readInFile();
+                    }
                 }
             }
         } catch (Model.InvalidInputException | IOException e) {
