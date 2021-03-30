@@ -35,7 +35,8 @@
  Include a demo section with images of the software running later. 
  Follow the guide here: https://blog.bitsrc.io/how-to-write-beautiful-and-meaningful-readme-md-for-your-next-project-897045e3f991 )
 
-Currently, nothing has been implemented  
+Currently, no features have been fully completed.
+The program can be run from both a CLI and a GUI.
   
 ## Technologies Used
 - GitLab
