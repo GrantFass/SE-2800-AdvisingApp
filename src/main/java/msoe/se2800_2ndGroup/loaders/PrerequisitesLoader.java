@@ -1,8 +1,20 @@
 package msoe.se2800_2ndGroup.loaders;
 
+import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-//import org.apache.commons.CSVParser;
+import msoe.se2800_2ndGroup.models.AndPrerequisite;
+import msoe.se2800_2ndGroup.models.Course;
+import msoe.se2800_2ndGroup.models.NullPrerequisite;
+import msoe.se2800_2ndGroup.models.OrPrerequisite;
+import msoe.se2800_2ndGroup.models.Prerequisite;
+import msoe.se2800_2ndGroup.models.SinglePrerequisite;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -26,8 +38,12 @@ import java.io.Reader;
  * @since : Sunday, 21 March 2021
  */
 public class PrerequisitesLoader {
+    private static final String COURSE = "Course";
+    private static final String CREDITS = "Credits";
+    private static final String PREREQS = "Prereqs";
+    private static final String DESCRIPTION = "Description";
 
-    //private final CSVParser parser;
+    private final CSVParser parser;
 
     /**
      * Create a new prerequisites CSV document loader.
@@ -36,6 +52,67 @@ public class PrerequisitesLoader {
      * @since : Sun, 21 Mar 2021
      * @param reader CSV data source
      */
-    public PrerequisitesLoader(Reader reader) {
+    public PrerequisitesLoader(Reader reader) throws IOException {
+        parser = CSVFormat.DEFAULT.parse(reader);
+    }
+
+    /**
+     * Load courses from the CSV document.
+     *
+     * @author : Hunter Turcin
+     * @since : Mon, 29 Mar 2021
+     * @return loaded courses
+     */
+    public Collection<Course> load() {
+        // TODO: collect errors in one place to report to user
+        if (!checkHeaders()) {
+            return List.of();
+        }
+
+        final var courses = new ArrayList<Course>();
+
+        for (final var record : parser) {
+            final var course = loadCourse(record);
+            courses.add(course);
+        }
+
+        return courses;
+    }
+
+    private boolean checkHeaders() {
+        final var headers = parser.getHeaderNames();
+        final var expected = List.of(COURSE, CREDITS, PREREQS, DESCRIPTION);
+
+        return headers.size() == expected.size() && headers.containsAll(expected);
+    }
+
+    private Course loadCourse(CSVRecord record) {
+        final var code = record.get(COURSE);
+        final var credits = Integer.parseInt(CREDITS);
+        final var prerequisites = loadPrerequisite(record.get(PREREQS));
+        final var description = record.get(DESCRIPTION);
+
+        return new Course(code, credits, prerequisites, description);
+    }
+
+    private Prerequisite loadPrerequisite(String line) {
+        // AND has precedence over OR.
+        final var andCodes = line.split(" ");
+
+        Prerequisite outer = new NullPrerequisite();
+
+        for (final var andCode : andCodes) {
+            final var orCodes = line.split("\\|"); // match only pipe characters
+
+            Prerequisite inner = new NullPrerequisite();
+
+            for (final var orCode : orCodes) {
+                inner = new OrPrerequisite(inner, new SinglePrerequisite(orCode));
+            }
+
+            outer = new AndPrerequisite(outer, inner);
+        }
+
+        return outer;
     }
 }

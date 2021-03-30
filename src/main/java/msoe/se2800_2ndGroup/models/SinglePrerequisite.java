@@ -32,21 +32,21 @@ import java.util.Collection;
  *     - File Created by Hunter Turcin on 2021-03-16
  */
 public class SinglePrerequisite implements Prerequisite {
-    private final Course course;
+    private final String code;
 
     /**
      * Create a prerequisite that depends only on one course.
      *
-     * @param course the course to depend on
+     * @param code the course code to depend on
      * @author Hunter Turcin
      * @since Sun, 16 Mar 2021
      */
-    public SinglePrerequisite(Course course) {
-        this.course = course;
+    public SinglePrerequisite(String code) {
+        this.code = code;
     }
 
     @Override
-    public boolean satisfiedBy(Collection<Course> courses) {
-        return courses.contains(course);
+    public boolean satisfiedBy(Collection<String> codes) {
+        return codes.contains(code);
     }
 }

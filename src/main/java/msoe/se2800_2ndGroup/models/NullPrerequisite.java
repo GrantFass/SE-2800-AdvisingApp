@@ -33,7 +33,7 @@ import java.util.Collection;
  */
 public class NullPrerequisite implements Prerequisite {
     @Override
-    public boolean satisfiedBy(Collection<Course> courses) {
+    public boolean satisfiedBy(Collection<String> codes) {
         return true;
     }
 }

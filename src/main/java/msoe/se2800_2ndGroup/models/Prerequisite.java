@@ -35,10 +35,10 @@ public interface Prerequisite {
     /**
      * Check if the collection of courses satisfies this prerequisite.
      *
-     * @param courses courses to use for checking
+     * @param codes course codes to use for checking
      * @return whether or not the prerequisite is satisfied
      * @author Hunter Turcin
      * @since Sun, 16 Mar 2021
      */
-    boolean satisfiedBy(Collection<Course> courses);
+    boolean satisfiedBy(Collection<String> codes);
 }

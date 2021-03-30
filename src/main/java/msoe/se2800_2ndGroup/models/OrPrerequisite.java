@@ -49,7 +49,7 @@ public class OrPrerequisite implements Prerequisite {
     }
 
     @Override
-    public boolean satisfiedBy(Collection<Course> courses) {
-        return left.satisfiedBy(courses) || right.satisfiedBy(courses);
+    public boolean satisfiedBy(Collection<String> codes) {
+        return left.satisfiedBy(codes) || right.satisfiedBy(codes);
     }
 }
