@@ -137,7 +137,7 @@ public class Model {
      * TODO: FIX METHOD SIGNATURE
      */
     public Collection<Offering> getOfferings() {
-        if (offerings == null || offerings.isEmpty()) {
+        if (offerings == null) {
             return new ArrayList<>();
         }
         return offerings;
@@ -152,7 +152,7 @@ public class Model {
      * TODO: FIX METHOD SIGNATURE
      */
     public Collection<Course> getPrerequisiteCourses() {
-        if (prerequisiteCourses == null || prerequisiteCourses.isEmpty()) {
+        if (prerequisiteCourses == null) {
             return new ArrayList<>();
         }
         return prerequisiteCourses;
