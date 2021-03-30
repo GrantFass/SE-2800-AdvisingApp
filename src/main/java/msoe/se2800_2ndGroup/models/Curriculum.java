@@ -35,16 +35,19 @@ import java.util.List;
  *     - File Created by Hunter Turcin on 2021-03-16
  */
 public class Curriculum {
+    private final String major;
     private final List<CurriculumItem> items;
 
     /**
      * Create a new curriculum.
      *
      * @param items courses and electives in this curriculum, in order
+     * @param major code of major this is for
      * @author Hunter Turcin
      * @since Sun, 16 Mar 2021
      */
-    public Curriculum(List<CurriculumItem> items) {
+    public Curriculum(String major, List<CurriculumItem> items) {
+        this.major = major;
         this.items = items;
     }
 
@@ -83,5 +86,9 @@ public class Curriculum {
         }
 
         return unsatisfied;
+    }
+
+    public String getMajor() {
+        return major;
     }
 }
