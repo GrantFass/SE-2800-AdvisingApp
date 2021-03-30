@@ -96,6 +96,10 @@
                     per: https://maven.apache.org/plugins/maven-resources-plugin/examples/include-exclude.html
                     -->
                     <include>**/*.csv</include>
+                    <!--
+                    Include the fxml resources
+                    -->
+                    <include>**/*.fxml</include>
                 </includes>
             </resource>
         </resources>
