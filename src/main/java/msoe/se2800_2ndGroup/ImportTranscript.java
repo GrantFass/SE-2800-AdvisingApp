@@ -5,6 +5,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Scanner;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -58,7 +60,21 @@ public class ImportTranscript {
                 } else {
                     PDDocument doc = PDDocument.load(file);
                     String text = new PDFTextStripper().getText(doc);
-                    System.out.println(text);
+                    String[] words = text.split("\n");
+                    String[] ignoreWords = new String[10];
+                    ignoreWords[0] = "DO NOT READ THIS";
+                    ArrayList<String> input = new ArrayList<>();
+                    for(int j=0; j<words.length; j++){
+                        for(int i=0; i<ignoreWords.length; i++) {
+                            if ((!words[j].contains(ignoreWords[0])) && (!input.contains(words[j]))) {
+                                input.add(words[j]);
+                            }
+                        }
+                    }
+                    for(int k = 0; k<input.size(); ++k){
+                        System.out.println(input.get(k));
+                    }
+
                 }
             } catch (IllegalArgumentException notValid) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Not a valid file name.");
