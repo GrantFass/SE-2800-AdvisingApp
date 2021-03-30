@@ -68,7 +68,7 @@ class FileIOTest {
         assertFalse(FileIO.validateFileLocation(Model.getDefaultOfferingsLocation(), ".WRONG"));
         assertFalse(FileIO.validateFileLocation(Model.getDefaultPrerequisitesLocation(), ".Doc"));
         // Test that the overloaded method does not fatal with null or empty values
-        assertFalse(FileIO.validateFileLocation(Model.getDefaultCurriculumLocation(), ""));
+        assertTrue(FileIO.validateFileLocation(Model.getDefaultCurriculumLocation(), ""));
         assertFalse(FileIO.validateFileLocation(Model.getDefaultOfferingsLocation(), null));
         assertFalse(FileIO.validateFileLocation("", ".Doc"));
         assertFalse(FileIO.validateFileLocation(null, ".gg"));

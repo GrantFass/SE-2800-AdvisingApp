@@ -46,7 +46,7 @@ public class FileIO {
      * @since : Fri, 26 Mar 2021
      */
     public static boolean validateFileLocation(String location) {
-        if (location.isBlank() || location.isEmpty()) {
+        if (location == null || location.isBlank() || location.isEmpty()) {
             return false;
         }
         File file = new File(location);
@@ -67,10 +67,10 @@ public class FileIO {
      * @since : Fri, 26 Mar 2021
      */
     public static boolean validateFileLocation(String location, String expectedFileExtension) {
-        if (location.isBlank() || location.isEmpty()) {
+        if (location == null || location.isBlank() || location.isEmpty() || expectedFileExtension == null) {
             return false;
         }
-        return location.endsWith(expectedFileExtension) && validateFileLocation(location);
+        return location.toLowerCase().endsWith(expectedFileExtension.toLowerCase()) && validateFileLocation(location);
     }
 
     /**

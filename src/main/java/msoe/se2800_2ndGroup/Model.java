@@ -63,7 +63,7 @@ public class Model {
      * @since : Fri, 26 Mar 2021
      */
     public static String getDefaultCurriculumLocation() {
-        return (Model.class.getResource("curriculum.csv")).toString();
+        return (Model.class.getResource("curriculum.csv")).toString().replace("file:/", "");
     }
 
     /**
@@ -80,7 +80,7 @@ public class Model {
      * @since : Fri, 26 Mar 2021
      */
     public static String getDefaultOfferingsLocation() {
-        return (Model.class.getResource("offerings.csv")).toString();
+        return (Model.class.getResource("offerings.csv")).toString().replace("file:/", "");
     }
 
     /**
@@ -97,7 +97,7 @@ public class Model {
      * @since : Fri, 26 Mar 2021
      */
     public static String getDefaultPrerequisitesLocation() {
-        return (Model.class.getResource("prerequisites_updated.csv")).toString();
+        return (Model.class.getResource("prerequisites_updated.csv")).toString().replace("file:/", "");
     }
 
     /**
