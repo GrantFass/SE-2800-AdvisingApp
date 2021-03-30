@@ -6,8 +6,8 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
-//import org.apache.pdfbox.tools.ImportFDF;
-//import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 
 
 /**
@@ -38,23 +38,27 @@ public class ImportTranscript {
     public void readInFile(){
         System.out.println("Do you want to read in a file (\"Y/N\")?");
         Scanner scanner = new Scanner(System.in);
-        while(!(scanner.nextLine().equalsIgnoreCase("Y") && scanner.nextLine().equalsIgnoreCase("N"))){
+        String answer = scanner.nextLine();
+        while(!(answer.equalsIgnoreCase("Y") || answer.equalsIgnoreCase("N"))){
             System.out.println("Please enter a \"Y\" or \"N\"");
         }
-        if(scanner.nextLine().equalsIgnoreCase("Y")) {
-            File file;
+        if(answer.equalsIgnoreCase("Y")) {
             try {
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Open Unofficial Transcript PDF");
-                fileChooser.getExtensionFilters().addAll(
-                        new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-                file = fileChooser.showOpenDialog(new Stage());
+                System.out.println("Please enter path name:");
+                String pathName = scanner.nextLine();
+                File file = new File(pathName);
+//                FileChooser fileChooser = new FileChooser();
+//                fileChooser.setTitle("Open Unofficial Transcript PDF");
+//                fileChooser.getExtensionFilters().addAll(
+//                        new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+//                file = fileChooser.showOpenDialog(new Stage());
                 if (file == null) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "No file was chosen.");
                     alert.showAndWait();
                 } else {
-                    //PDDocument doc = PDDocument.load(file);
-                    //String text = new PDFTextStripper().getText(doc);
+                    PDDocument doc = PDDocument.load(file);
+                    String text = new PDFTextStripper().getText(doc);
+                    System.out.println(text);
                 }
             } catch (IllegalArgumentException notValid) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Not a valid file name.");
