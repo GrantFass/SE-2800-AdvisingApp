@@ -7,6 +7,7 @@ import msoe.se2800_2ndGroup.models.Elective;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.HashMap;
  * * loading a curriculum CSV
  * Modification Log:
  * * File Created by turcinh on Sunday, 29 March 2021
+ * * Modify javadoc for constructor slightly by Grant Fass on Tue, 30 Mar 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -41,7 +43,8 @@ public class CurriculumLoader {
     /**
      * Create a new curriculum CSV loader.
      *
-     * @param reader data source
+     * @param reader The Reader object created with a FileReader containing the path to the file to be read.
+     * @param courses courses to use
      * @author : First last
      * @since : Mon, 29 Mar 2021
      */

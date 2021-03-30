@@ -31,6 +31,7 @@ import org.apache.commons.csv.CSVRecord;
  * * loading a prerequisites CSV
  * Modification Log:
  * * File Created by turcinh on Sunday, 21 March 2021
+ * * Modify javadoc for constructor slightly by Grant Fass on Tue, 30 Mar 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -48,9 +49,9 @@ public class PrerequisitesLoader {
     /**
      * Create a new prerequisites CSV document loader.
      *
+     * @param reader The Reader object created with a FileReader containing the path to the file to be read.
      * @author : Hunter Turcin
      * @since : Sun, 21 Mar 2021
-     * @param reader CSV data source
      */
     public PrerequisitesLoader(Reader reader) throws IOException {
         parser = CSVFormat.DEFAULT.parse(reader);
@@ -59,9 +60,9 @@ public class PrerequisitesLoader {
     /**
      * Load courses from the CSV document.
      *
+     * @return loaded courses
      * @author : Hunter Turcin
      * @since : Mon, 29 Mar 2021
-     * @return loaded courses
      */
     public Collection<Course> load() {
         // TODO: collect errors in one place to report to user

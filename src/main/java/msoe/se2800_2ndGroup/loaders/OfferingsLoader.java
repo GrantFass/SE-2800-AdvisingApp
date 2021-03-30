@@ -27,6 +27,7 @@ import java.util.HashMap;
  * * loading an offerings CSV
  * Modification Log:
  * * File Created by turcinh on Sunday, 29 March 2021
+ * * Modify javadoc for constructor slightly by Grant Fass on Tue, 30 Mar 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -41,8 +42,8 @@ public class OfferingsLoader {
 
     /**
      * Create a new offerings CSV loader.
-     * 
-     * @param reader data source
+     *
+     * @param reader The Reader object created with a FileReader containing the path to the file to be read.
      * @param courses courses to use
      * @throws IOException could not read data
      * @author : Hunter Turcin
