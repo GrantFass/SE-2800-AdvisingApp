@@ -91,15 +91,14 @@ public class FileIO {
      * @since : Fri, 26 Mar 2021
      */
     public static boolean useDefaultFilesQuery(InputStream inputStream) {
-        //TODO: Test Me
         if (inputStream == null) {
             inputStream = System.in;
         }
         boolean useDefault = true;
         try (Scanner in = new Scanner(inputStream)) {
             System.out.println("Would you like to use the default file location (y/n)?");
-            String response = in.nextLine().toLowerCase().trim();
-            if (response.equals("n")) {
+            String response = in.hasNext() ? in.nextLine().toLowerCase().trim() : "";
+            if (response.equals("n") || response.equals("no")) {
                 useDefault = false;
             }
         }

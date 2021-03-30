@@ -3,6 +3,8 @@ package msoe.se2800_2ndGroup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -83,12 +85,62 @@ class FileIOTest {
     /**
      * This method tests the overloaded useDefaultFilesQuery(inputStream) method by passing in different inputs
      *   and comparing the outputs
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://stackoverflow.com/questions/1647907/junit-how-to-simulate-system-in-testing"}</a>:
+     *  Help defining a custom input stream
+     *
      * @author : Grant Fass
      * @since : Tue, 30 Mar 2021
      */
     @Test
     void useDefaultFilesQuery() {
-
+        // test that the method will return false for various capitalization of 'n' or 'no' with various leading and trailing spaces.
+        String data = "n";
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "n  ";
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "  n";
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = " n ";
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "no";
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "no  ";
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "  no";
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "  no   ";
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "N";
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "No";
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "nO";
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "NO";
+        assertFalse(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        // test that the method returns true for most other cases
+        data = "Y";
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "YES";
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "y";
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "yes";
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "a;dlfjk;";
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "13485";
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "asdf165";
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "generic input";
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "\n";
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
+        data = "";
+        assertTrue(FileIO.useDefaultFilesQuery(new ByteArrayInputStream(data.getBytes())));
     }
 
     /**
