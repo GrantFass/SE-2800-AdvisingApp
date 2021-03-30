@@ -1,5 +1,6 @@
 package msoe.se2800_2ndGroup;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -21,7 +22,8 @@ import java.util.Scanner;
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
  * * Added method to run and a method to exit the program as an example by Grant on Saturday, 20 March 2021
- *
+ * * Added case to load the course data CSV files by Grant Fass on Fri, 26 Mar 2021
+ * * Added exception to catch block since new exception is thrown by loading course data by Grant Fass on Tue, 30 Mar 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  *
@@ -65,14 +67,17 @@ public class CLI {
         boolean debug = false;
         try (Scanner in = new Scanner(System.in)) {
             while (true) {
-                String input = in.next().trim().toLowerCase();
+                String input = in.nextLine().trim().toLowerCase();
                 if (debug) {
                     System.out.format("Your input: %s\n", input);
                 }
 
                 switch (input) {
                     case "quit" -> model.exitProgram();
-                    case "enable debug" -> debug = true;
+                    case "enable debug" -> {
+                        System.out.println("Debug Enabled");
+                        debug = true;
+                    }
                     case "disable debug" -> debug = false;
                     case "store major" -> {
                         outputHyphenLine();
@@ -88,9 +93,12 @@ public class CLI {
                         System.out.println(recommendations);
                         outputHyphenLine();
                     }
+                    case "load course data" -> {
+                        model.loadCourseData();
+                    }
                 }
             }
-        } catch (Model.InvalidInputException e) {
+        } catch (Model.InvalidInputException | IOException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
