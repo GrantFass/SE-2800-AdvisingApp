@@ -36,4 +36,16 @@ class AndPrerequisiteTest {
     void testSatisfiedWhenBothGivenWithOthers() {
         assertTrue(bi2020.getPrerequisite().satisfiedBy(List.of("BI102", "CH200", "CH222", "CH223")));
     }
+
+    @Test
+    void testEquals() {
+        AndPrerequisite expected = new AndPrerequisite(new SinglePrerequisite("BI102"), new SinglePrerequisite("CH223"));
+        assertEquals(expected, bi2020.getPrerequisite());
+    }
+
+    @Test
+    void testNotEquals() {
+        AndPrerequisite unexpected = new AndPrerequisite(new NullPrerequisite(), new SinglePrerequisite("CH223"));
+        assertNotEquals(unexpected, bi2020.getPrerequisite());
+    }
 }
