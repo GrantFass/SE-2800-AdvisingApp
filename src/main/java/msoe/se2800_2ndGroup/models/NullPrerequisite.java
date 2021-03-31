@@ -30,8 +30,14 @@ import java.util.Collection;
  *     - handling courses that have no prerequisite
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - equals added by Hunter Turcin on 2021-03-31
  */
 public class NullPrerequisite implements Prerequisite {
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof NullPrerequisite;
+    }
+
     @Override
     public boolean satisfiedBy(Collection<String> codes) {
         return true;

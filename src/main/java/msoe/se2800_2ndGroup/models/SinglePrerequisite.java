@@ -30,6 +30,7 @@ import java.util.Collection;
  *     - handling cases where only one course is needed for another
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - equals added by Hunter Turcin on 2021-03-31
  */
 public class SinglePrerequisite implements Prerequisite {
     private final String code;
@@ -43,6 +44,16 @@ public class SinglePrerequisite implements Prerequisite {
      */
     public SinglePrerequisite(String code) {
         this.code = code;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof SinglePrerequisite) {
+            SinglePrerequisite other = (SinglePrerequisite) object;
+            return code.equals(other.code);
+        } else {
+            return false;
+        }
     }
 
     @Override
