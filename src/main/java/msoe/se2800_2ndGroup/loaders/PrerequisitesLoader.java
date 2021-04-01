@@ -54,7 +54,7 @@ public class PrerequisitesLoader {
      * @since : Sun, 21 Mar 2021
      */
     public PrerequisitesLoader(Reader reader) throws IOException {
-        parser = CSVFormat.DEFAULT.parse(reader);
+        parser = CSVFormat.DEFAULT.withHeader().parse(reader);
     }
 
     /**
@@ -89,7 +89,7 @@ public class PrerequisitesLoader {
 
     private Course loadCourse(CSVRecord record) {
         final var code = record.get(COURSE);
-        final var credits = Integer.parseInt(CREDITS);
+        final var credits = Integer.parseInt(record.get(CREDITS));
         final var prerequisites = loadPrerequisite(record.get(PREREQS));
         final var description = record.get(DESCRIPTION);
 
