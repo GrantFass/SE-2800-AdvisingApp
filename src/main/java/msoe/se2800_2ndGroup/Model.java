@@ -183,6 +183,22 @@ public class Model {
         return "";
     }
 
+    public String viewPrerequisiteCourses(String course){
+        //TODO: validate course- maybe create a new method
+
+        Course selected = null;
+        //TODO: search through prereq. list for course, return prereqs.
+        //Below code is just testing- does not work
+        for (Course prerequisiteCourse: prerequisiteCourses){
+            if (prerequisiteCourse.getCode().equals(course)){
+                selected = prerequisiteCourse;
+            } else {
+                selected = null;
+            }
+        }
+        return selected.getPrerequisite().toString();
+    }
+
     /**
      * This method runs the specified action or method on the FX thread to avoid errors.
      * Run methods by calling with the following format: ensureFXThread(() -> method());

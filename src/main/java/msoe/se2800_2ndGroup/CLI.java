@@ -100,6 +100,13 @@ public class CLI {
                         ImportTranscript importTranscript = new ImportTranscript();
                         importTranscript.readInFile();
                     }
+                    case "view prerequisites" -> {
+                        System.out.println("Enter course: ");
+                        String course = in.next();
+                        String prerequisites = model.viewPrerequisiteCourses(course);
+                        System.out.println(prerequisites);
+                        outputHyphenLine();
+                    }
                 }
             }
         } catch (Model.InvalidInputException | IOException e) {
