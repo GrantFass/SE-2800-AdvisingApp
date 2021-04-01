@@ -46,4 +46,16 @@ class OrPrerequisiteTest {
     void testNotSatisfiedWhenBothMissingWithOthers() {
         assertFalse(cs2711.getPrerequisite().satisfiedBy(List.of("BA1220")));
     }
+
+    @Test
+    void testEquals() {
+        OrPrerequisite expected = new OrPrerequisite(new SinglePrerequisite("CS1011"), new SinglePrerequisite("SE1011"));
+        assertEquals(expected, cs2711.getPrerequisite());
+    }
+
+    @Test
+    void testNotEquals() {
+        OrPrerequisite unexpected = new OrPrerequisite(new SinglePrerequisite("CS1011"), new NullPrerequisite());
+        assertNotEquals(unexpected, cs2711.getPrerequisite());
+    }
 }

@@ -26,4 +26,14 @@ class SinglePrerequisiteTest {
     void testSatisfiedByMultipleCourseList() {
         assertTrue(bi1020.getPrerequisite().satisfiedBy(List.of("BI1030", "BI1010")));
     }
+
+    @Test
+    void testEquals() {
+        assertEquals(new SinglePrerequisite("BI1010"), bi1020.getPrerequisite());
+    }
+
+    @Test
+    void testNotEquals() {
+        assertNotEquals(new SinglePrerequisite("CH200"), bi1020.getPrerequisite());
+    }
 }

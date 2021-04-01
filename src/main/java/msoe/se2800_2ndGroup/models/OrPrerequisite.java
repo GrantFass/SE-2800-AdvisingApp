@@ -30,6 +30,7 @@ import java.util.Collection;
  *     - handling classes with "one of the following" prerequisites
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - equals added by Hunter Turcin on 2021-03-31
  */
 public class OrPrerequisite implements Prerequisite {
     private final Prerequisite left;
@@ -46,6 +47,16 @@ public class OrPrerequisite implements Prerequisite {
     public OrPrerequisite(Prerequisite left, Prerequisite right) {
         this.left = left;
         this.right = right;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof OrPrerequisite) {
+            OrPrerequisite other = (OrPrerequisite) object;
+            return left.equals(other.left) && right.equals(other.right);
+        } else {
+            return false;
+        }
     }
 
     @Override

@@ -24,6 +24,7 @@ import java.util.Scanner;
  * * Added method to run and a method to exit the program as an example by Grant on Saturday, 20 March 2021
  * * Added case to load the course data CSV files by Grant Fass on Fri, 26 Mar 2021
  * * Added exception to catch block since new exception is thrown by loading course data by Grant Fass on Tue, 30 Mar 2021
+ * * Load course data is now passed a scanner
  * @since : Saturday, 20 March 2021
  * @author : Grant
  *
@@ -73,7 +74,7 @@ public class CLI {
                 }
 
                 switch (input) {
-                    case "quit" -> model.exitProgram();
+                    case "exit", "quit" -> model.exitProgram();
                     case "enable debug" -> {
                         System.out.println("Debug Enabled");
                         debug = true;
@@ -94,7 +95,11 @@ public class CLI {
                         outputHyphenLine();
                     }
                     case "load course data" -> {
-                        model.loadCourseData();
+                        long startTime = System.nanoTime();
+                        outputHyphenLine();
+                        model.loadCourseData(in);
+                        System.out.format("Load complete in %d milliseconds\n", (System.nanoTime() - startTime) / 1000000); //divide by 1000000 to get milliseconds
+                        outputHyphenLine();
                     }
                     case "load pdf" -> {
                         ImportTranscript importTranscript = new ImportTranscript();
