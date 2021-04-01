@@ -50,12 +50,12 @@ public class OfferingsLoader {
      * @since : Mon, 29 Mar 2021
      */
     public OfferingsLoader(Reader reader, Collection<Course> courses) throws IOException {
-        this.parser = CSVFormat.DEFAULT.parse(reader);
+        this.parser = CSVFormat.DEFAULT.withHeader().parse(reader);
         this.courses = courses;
     }
 
     public Collection<Offering> load() {
-        final var majors = parser.getHeaderNames();
+        final var majors = new ArrayList<>(parser.getHeaderNames());
         majors.remove(COURSE);
         final var offerings = new ArrayList<Offering>();
 
