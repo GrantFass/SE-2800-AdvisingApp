@@ -38,7 +38,7 @@ public class PrerequisitesLoaderTest {
                 { "TEST3", new Course("TEST3", 0, new NullPrerequisite(), "Test Course") },
                 { "TEST4", new Course("TEST4", 0, new NullPrerequisite(), "Test Course") },
                 { "NULL", new Course("NULL", 1, new NullPrerequisite(), "Testing NullPrerequisite") },
-                { "SINGLE", new Course("SIMPLE", 2, new SinglePrerequisite("NULL"), "Testing SinglePrerequisite") },
+                { "SINGLE", new Course("SINGLE", 2, new SinglePrerequisite("NULL"), "Testing SinglePrerequisite") },
                 { "AND", new Course("AND", 3, new AndPrerequisite(new SinglePrerequisite("NULL"), new SinglePrerequisite("SINGLE")), "Testing AndPrerequisite") },
                 { "OR", new Course("OR", 4, new OrPrerequisite(new SinglePrerequisite("NULL"), new SinglePrerequisite("SINGLE")), "Testing OrPrerequisite") },
                 { "NESTED1", new Course("NESTED1", 5, new AndPrerequisite(new OrPrerequisite(new SinglePrerequisite("TEST1"), new SinglePrerequisite("TEST2")), new SinglePrerequisite("TEST3")), "Testing or-and-single nesting") },
