@@ -113,6 +113,8 @@ public class PrerequisitesLoader {
 
             if (orCodes.length > 1) {
                 outer = new AndPrerequisite(outer, inner);
+            } else if (!orCodes[0].isEmpty()) {
+                outer = new SinglePrerequisite(orCodes[0]);
             }
         }
 
