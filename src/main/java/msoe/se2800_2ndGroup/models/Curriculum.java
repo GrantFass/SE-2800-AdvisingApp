@@ -14,14 +14,12 @@
  *     - verifying all courses have been taken to graduate
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Project Name: Advising App
@@ -33,6 +31,7 @@ import java.util.List;
  *     - verifying all courses have been taken to graduate
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  */
 public class Curriculum {
     private final String major;
@@ -49,6 +48,26 @@ public class Curriculum {
     public Curriculum(String major, List<CurriculumItem> items) {
         this.major = major;
         this.items = items;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Curriculum) {
+            final var other = (Curriculum) object;
+            return major.equals(other.major) && items.equals(other.items);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(major, items);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Curriculum(major=\"%s\", items=%s)", major, items.toString());
     }
 
     /**

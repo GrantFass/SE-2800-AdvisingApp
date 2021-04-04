@@ -14,9 +14,12 @@
  *     - describing when a course happens
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
+
+import java.util.Objects;
 
 /**
  * Project Name: Advising App
@@ -28,6 +31,7 @@ package msoe.se2800_2ndGroup.models;
  *     - describing when a course happens
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  */
 public class Term {
     /**
@@ -51,6 +55,26 @@ public class Term {
     private Term(int id, String season) {
         this.id = id;
         this.season = season;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Term) {
+            final var other = (Term) object;
+            return id == other.id && season.equals(other.season);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, season);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Term(id=%d, season=\"%s\")", id, season);
     }
 
     /**

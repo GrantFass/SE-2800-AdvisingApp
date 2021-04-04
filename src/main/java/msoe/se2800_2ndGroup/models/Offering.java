@@ -14,12 +14,14 @@
  *     - tracking when which major can take a course
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Project Name: Advising App
@@ -31,6 +33,7 @@ import java.util.Map;
  *     - tracking when which major can take a course
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  */
 public class Offering {
     private final Course course;
@@ -45,6 +48,26 @@ public class Offering {
      */
     public Offering(Course course) {
         this.course = course;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Offering) {
+            final var other = (Offering) object;
+            return course.equals(other.course) && majorAvailability.equals(other.majorAvailability);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(course, majorAvailability);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Offering(course=%s, majorAvailability=%s)", course, majorAvailability);
     }
 
     /**
