@@ -111,7 +111,9 @@ public class PrerequisitesLoader {
                 inner = new OrPrerequisite(inner, new SinglePrerequisite(orCode));
             }
 
-            outer = new AndPrerequisite(outer, inner);
+            if (orCodes.length > 1) {
+                outer = new AndPrerequisite(outer, inner);
+            }
         }
 
         return outer;
