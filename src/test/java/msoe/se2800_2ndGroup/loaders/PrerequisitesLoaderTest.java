@@ -14,14 +14,19 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-class PrerequisitesLoaderTest {
-    static Collection<Course> courses;
+public class PrerequisitesLoaderTest {
+    private final String code;
+    private final Course course;
 
-    private String code;
-    private Course course;
+    private static Collection<Course> courses;
+
+    public PrerequisitesLoaderTest(String code, Course course) {
+        this.code = code;
+        this.course = course;
+    }
 
     @Parameters
-    static Collection<Object[]> parameters() throws IOException {
+    public static Collection<Object[]> data() throws IOException {
         InputStreamReader reader = new InputStreamReader(PrerequisitesLoaderTest.class.getResourceAsStream("prerequisites_varied.csv"));
         PrerequisitesLoader loader = new PrerequisitesLoader(reader);
         courses = loader.load();
@@ -34,7 +39,7 @@ class PrerequisitesLoaderTest {
     }
 
     @Test
-    void testCourseEquals() {
+    public void testCourseEquals() {
         assertEquals(course, getCourse(code));
     }
 
