@@ -4,14 +4,14 @@ TEST2,0,,Test Course
 TEST3,0,,Test Course
 TEST4,0,,Test Course
 NULL,1,,Testing NullPrerequisite
-SIMPLE,2,NULL,Testing SimplePrerequisite
-AND,3,NULL SIMPLE,Testing AndPrerequisite
-OR,4,NULL|SIMPLE,Testing OrPrerequisite
-NESTED1,5,TEST1|TEST2 TEST3,Testing or-and-simple nesting
-NESTED2,5,TEST1 TEST2|TEST3,Testing simple-and-or nesting
+SINGLE,2,NULL,Testing SinglePrerequisite
+AND,3,NULL SINGLE,Testing AndPrerequisite
+OR,4,NULL|SINGLE,Testing OrPrerequisite
+NESTED1,5,TEST1|TEST2 TEST3,Testing or-and-single nesting
+NESTED2,5,TEST1 TEST2|TEST3,Testing single-and-or nesting
 NESTED3,5,TEST1|TEST2 TEST3|TEST4,Testing or-and-or nesting
-NESTED4,5,TEST1 TEST2 TEST3,Testing and-and-simple nesting
-NESTED5,5,TEST1 TEST2|TEST3 TEST4,Testing simple-and-or-and-simple nesting
-NESTED6,5,TEST1|TEST2|TEST3,Testing or-or-simple nesting
+NESTED4,5,TEST1 TEST2 TEST3,Testing and-and-single nesting
+NESTED5,5,TEST1 TEST2|TEST3 TEST4,Testing single-and-or-and-single nesting
+NESTED6,5,TEST1|TEST2|TEST3,Testing or-or-single nesting
 NESTED7,5,TEST1|TEST2|TEST3|TEST4,Testing or-or-or nesting
 NESTED8,5,TEST1 TEST2 TEST3 TEST4,Testing and-and-and nesting
