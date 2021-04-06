@@ -48,7 +48,7 @@ public class PrerequisitesLoaderTest {
                 { "NESTED5", new Course("NESTED5", 5, new AndPrerequisite(new AndPrerequisite(new SinglePrerequisite("TEST1"), new OrPrerequisite(new SinglePrerequisite("TEST2"), new SinglePrerequisite("TEST3"))), new SinglePrerequisite("TEST4")), "Testing single-and-or-and-single nesting") },
                 { "NESTED6", new Course("NESTED6", 5, new OrPrerequisite(new OrPrerequisite(new SinglePrerequisite("TEST1"), new SinglePrerequisite("TEST2")), new SinglePrerequisite("TEST3")), "Testing or-or-single nesting") },
                 { "NESTED7", new Course("NESTED7", 5, new OrPrerequisite(new OrPrerequisite(new OrPrerequisite(new SinglePrerequisite("TEST1"), new SinglePrerequisite("TEST2")), new SinglePrerequisite("TEST3")), new SinglePrerequisite("TEST4")), "Testing or-or-or nesting") },
-                { "NESTED8", new Course("NESTED8", 5, new AndPrerequisite(new AndPrerequisite(new SinglePrerequisite("TEST1"), new SinglePrerequisite("TEST2")), new AndPrerequisite(new SinglePrerequisite("TEST3"), new SinglePrerequisite("TEST4"))), "Testing and-and-and nesting") },
+                { "NESTED8", new Course("NESTED8", 5, new AndPrerequisite(new AndPrerequisite(new AndPrerequisite(new SinglePrerequisite("TEST1"), new SinglePrerequisite("TEST2")), new SinglePrerequisite("TEST3")), new SinglePrerequisite("TEST4")), "Testing and-and-and nesting") },
         });
     }
 
