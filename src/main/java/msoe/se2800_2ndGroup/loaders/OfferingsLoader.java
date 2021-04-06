@@ -74,13 +74,7 @@ public class OfferingsLoader {
 
             for (final var major : majors) {
                 final var termId = record.get(major);
-                Term term;
-
-                if (!termId.isEmpty()) {
-                    term = Term.fromId(termId);
-                } else {
-                    term = null;
-                }
+                final var term = Term.fromId(termId);
 
                 offering.putAvailability(major, term);
             }
