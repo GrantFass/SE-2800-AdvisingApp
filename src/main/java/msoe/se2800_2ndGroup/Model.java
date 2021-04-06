@@ -188,6 +188,9 @@ public class Model {
     public String viewPrerequisiteCourses(String course){
         //TODO: validate course- maybe create a new method
 
+        // replace whitespaces, hyphens, underscores
+        course = course.toUpperCase().replaceAll("\\s+","").replaceAll("_", "").replaceAll("-", "").trim();
+
         Course selected = null;
         //TODO: search through prereq. list for course, return prereqs.
         //Below code is just testing- does not work
@@ -197,8 +200,14 @@ public class Model {
             } else {
                 selected = null;
             }
+//            System.out.println(prerequisiteCourse.getCode());
+//            System.out.println(prerequisiteCourse.getPrerequisite());
         }
-        return selected.getPrerequisite().toString();
+        if (selected != null) {
+            return selected.getPrerequisite().toString();
+        } else {
+            return "No prereqs. found";
+        }
     }
 
     /**
