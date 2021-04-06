@@ -98,23 +98,27 @@ public class PrerequisitesLoader {
 
     private Prerequisite loadPrerequisite(String line) {
         // AND has precedence over OR.
-        final var andCodes = line.split(" ");
+        final var andCodes = line.split("\\s");
 
         Prerequisite outer = new NullPrerequisite();
 
         for (final var andCode : andCodes) {
-            final var orCodes = line.split("\\|"); // match only pipe characters
-
-            Prerequisite inner = new NullPrerequisite();
-
-            for (final var orCode : orCodes) {
-                inner = new OrPrerequisite(inner, new SinglePrerequisite(orCode));
-            }
+            final var orCodes = andCode.split("\\|"); // match only pipe characters
 
             if (orCodes.length > 1) {
+                Prerequisite inner = new NullPrerequisite();
+
+                for (final var orCode : orCodes) {
+                    inner = new OrPrerequisite(inner, new SinglePrerequisite(orCode));
+                }
+
                 outer = new AndPrerequisite(outer, inner);
             } else if (!orCodes[0].isEmpty()) {
-                outer = new SinglePrerequisite(orCodes[0]);
+                if (outer instanceof NullPrerequisite) {
+                    outer = new SinglePrerequisite(orCodes[0]);
+                } else {
+                    outer = new AndPrerequisite(outer, new SinglePrerequisite(orCodes[0]));
+                }
             }
         }
 
