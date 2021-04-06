@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Scanner;
 
@@ -38,7 +39,8 @@ import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
  * * Add Method stubs and basic implementations for loading course data by Grant Fass on Fri, 26 Mar 2021
  * * Update course data loading implementation with changes from Hunter T. yesterday by Grant Fass on Tue, 30 Mar 2021
  * * Transferred methods from Model.java to FileIO.java by Grant Fass on Tue, 30 Mar 2021
- * * Create new method to load course data that is passed a scanner
+ * * Create new method to load course data that is passed a scanner by Grant Fass on Tue, 30 Mar 2021
+ * * Create method to load course data on startup by Grant Fass on Tue, 6 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  * Copyright (C): TBD
@@ -166,22 +168,75 @@ public class Model {
      *
      * This method does not update the GUI directly so it does not need to call ensureFXThread
      *
+     * @throws InvalidInputException when the major does not exist in the list of offerings
+     * @return //TODO
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
-    public String getCourseRecommendation() {
-        //TODO: FIXME
+    public String getCourseRecommendation() throws InvalidInputException {
+        /*
+        Going to need to read through each line in the offerings data structure
+        each offering has a course and a majorAvailability
+        each course has the following:
+            a code as a String: EX. "CS2400"
+            credits as an int: EX. 3
+            prerequisite as nested AndPrerequisites and OrPrerequisites which eventually lead to SinglePrerequisites which give the course code
+            description as a String: EX. "Introduction to Artificial Intelligence"
+        majorAvailability is a hash map.
+            the keys are strings for each of the majors: EX. "EE"
+            the values are Term objects.
+                each term has an id and a season. both formatted as Strings
+                if the term id is blank, or the season is never then the course is never available for the specified major
+                otherwise the id should match the season: EX. id="3", season="Spring"
+         */
+
+        /*
+        TODO Steps:
+        0. verify that a major is stored at the moment
+        1. go through entire list of offerings
+             a. store the offerings available to the stored major by the term they are available for.
+        2. remove courses that are already completed according to the transcript
+        3. remove any courses that prerequisites are not satisfied for (ADD TOGGLE POSSIBLY)
+        4. Build outputs
+            prioritize courses that are required for a lot of others
+         */
+        ArrayList<String> potentialMajors = new ArrayList<>(Arrays.asList("EE", "BSE PT", "CE", "UX", "AE", "NU", "CS", "AS", "SE", "MIS", "ME", "BME", "IE", "ME A"));
+        //TODO: FIXME && TEST_ME
         //TODO: update errors
-        if (major.isBlank() || major.isEmpty()) {
+        if (major == null || major.isBlank() || major.isEmpty()) {
             //TODO: throw error if major is empty
-        }
-        else if (false) {
+        } else if (offerings.isEmpty()) {
             //TODO: throw error if course data empty
+        } else if (!potentialMajors.contains(major)) { // TODO: check if this can be simplified or more dynamic
+            //TODO: throw error since major is not input correctly
         }
         else if (false) {
             //TODO: throw error if transcript is empty
+        } else {
+            //TODO: write method.
+            ArrayList<Offering> fallOfferings = new ArrayList<>();
+            ArrayList<Offering> winterOfferings = new ArrayList<>();
+            ArrayList<Offering> springOfferings = new ArrayList<>();
+            //collect the offerings by term available for the major
+            for(Offering offering : offerings) {
+                try {
+                    if (offering.getAvailability(major).getSeason().equalsIgnoreCase("fall")) {
+                        fallOfferings.add(offering);
+                    } else if (offering.getAvailability(major).getSeason().equalsIgnoreCase("winter")) {
+                        winterOfferings.add(offering);
+                    } else if (offering.getAvailability(major).getSeason().equalsIgnoreCase("spring")) {
+                        springOfferings.add(offering);
+                    } else {
+                        //TODO: log that skipping?
+                        //this means the course is not available for the specified major
+                    }
+                } catch (NullPointerException e) {
+                    throw new InvalidInputException(String.format("The specified major %s was not found which means it was not input correctly", major));
+                }
+            }
+            System.out.print("");
         }
-        //TODO: write method
+
 
         return "";
     }
@@ -251,7 +306,7 @@ public class Model {
             if (!input.matches("[a-zA-Z\\s]{1,99}")) {
                 throw new InvalidInputException("The specified input for major {" + major + "} did not match the expected pattern: /^[a-zA-Z\\s]{1,99}$");
             } else {
-                this.major = input;
+                this.major = input.toUpperCase();
             }
         }
     }

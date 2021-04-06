@@ -24,7 +24,8 @@ import java.util.Scanner;
  * * Added method to run and a method to exit the program as an example by Grant on Saturday, 20 March 2021
  * * Added case to load the course data CSV files by Grant Fass on Fri, 26 Mar 2021
  * * Added exception to catch block since new exception is thrown by loading course data by Grant Fass on Tue, 30 Mar 2021
- * * Load course data is now passed a scanner
+ * * Load course data is now passed a scanner by Grant Fass on Tue, 30 Mar 2021
+ * * Load course data on program start by Grant Fass on Tue, 6 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  *
@@ -86,7 +87,7 @@ public class CLI {
                     case "disable debug" -> debug = false;
                     case "store major" -> {
                         outputHyphenLine();
-                        System.out.print("Enter Major: ");
+                        System.out.print("Enter Major Abbreviation: ");
                         String major = in.next().trim().toLowerCase();
                         model.storeMajor(major);
                         System.out.println("Major Stored");
