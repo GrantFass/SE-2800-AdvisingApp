@@ -73,12 +73,11 @@ public class OfferingsLoader {
             final var offering = new Offering(course);
 
             for (final var major : majors) {
-                final var termString = record.get(major);
+                final var termId = record.get(major);
                 Term term;
 
-                if (!termString.isEmpty()) {
-                    final var termNumber = Integer.parseInt(termString);
-                    term = Term.fromId(termNumber);
+                if (!termId.isEmpty()) {
+                    term = Term.fromId(termId);
                 } else {
                     term = null;
                 }
