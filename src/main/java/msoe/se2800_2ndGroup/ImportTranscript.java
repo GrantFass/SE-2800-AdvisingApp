@@ -5,7 +5,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -49,6 +48,7 @@ public class ImportTranscript {
             try {
                 String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf");
                 File file = new File(pathName);
+                //For future use with a GUI
 //                FileChooser fileChooser = new FileChooser();
 //                fileChooser.setTitle("Open Unofficial Transcript PDF");
 //                fileChooser.getExtensionFilters().addAll(
@@ -62,15 +62,27 @@ public class ImportTranscript {
                     PDDocument doc = PDDocument.load(file);
                     String text = new PDFTextStripper().getText(doc);
                     String[] words = text.split("\n");
-                    String[] ignoreWords = new String[10];
-                    ignoreWords[0] = "DO NOT READ THIS";
+                    String[] ignoreWords = new String[]{"Milwaukee School of Engineering", "Unofficial Transcript",
+                            "ID", "NAME", "SSN", "DATE PRINTED", "Undergraduate Division", "Course", "Number",
+                            "Transfer Work", "Organization", "Term Totals", "Cumulative Totals", "Total Credits Earned",
+                            "Quarter", "Page", "Major Totals", "* * *   End of Academic Record * * *", "DEGREE SOUGHT",
+                            "Qual", "Pts GPA", "Cred", "HrsGrade"};
                     ArrayList<String> input = new ArrayList<>();
                     //TODO: potentially replace with the enhanced for loop.
+                    boolean accessed = false;
+                    boolean accessable = false;
                     for(int j=0; j<words.length; j++){
+                        accessable = false;
+                        //TODO: Move interior for loop into method
                         for(int i=0; i<ignoreWords.length; i++) {
-                            if ((!words[j].contains(ignoreWords[0])) && (!input.contains(words[j]))) {
-                                input.add(words[j]);
+                            if (words[j].contains(ignoreWords[i])) {
+                                accessable = true;
                             }
+                        }
+                        if(accessable){
+                            words[j] = " ";
+                        } else {
+                            input.add(words[j]);
                         }
                     }
                     for(int k = 0; k<input.size(); ++k){
@@ -86,6 +98,7 @@ public class ImportTranscript {
             } catch (Model.InvalidInputException e) {
                 System.out.println(e.getMessage());
             }
+            //TODO: file errors reading in
 
         }
     }
