@@ -48,6 +48,14 @@ public class OfferingsLoaderTest {
 
         return Arrays.asList(new Object[][] {
                 { "SAME", new Offering(TEST_COURSES.get("SAME"), Map.of("MAJOR", Term.FALL, "MINOR", Term.FALL, "HAS SPACE", Term.FALL)) },
+                { "DIFFERENT", new Offering(TEST_COURSES.get("DIFFERENT"), Map.of("MAJOR", Term.FALL, "MINOR", Term.WINTER, "HAS SPACE", Term.SPRING)) },
+                { "BLANK1", new Offering(TEST_COURSES.get("BLANK1"), Map.of("MAJOR", Term.NEVER, "MINOR", Term.WINTER, "HAS SPACE", Term.SPRING)) },
+                { "BLANK2", new Offering(TEST_COURSES.get("BLANK2"), Map.of("MAJOR", Term.FALL, "MINOR", Term.NEVER, "HAS SPACE", Term.SPRING)) },
+                { "BLANK3", new Offering(TEST_COURSES.get("BLANK3"), Map.of("MAJOR", Term.FALL, "MINOR", Term.WINTER, "HAS SPACE", Term.NEVER)) },
+                { "2BLANK1", new Offering(TEST_COURSES.get("2BLANK1"), Map.of("MAJOR", Term.FALL, "MINOR", Term.NEVER, "HAS SPACE", Term.NEVER)) },
+                { "2BLANK2", new Offering(TEST_COURSES.get("2BLANK2"), Map.of("MAJOR", Term.NEVER, "MINOR", Term.WINTER, "HAS SPACE", Term.NEVER)) },
+                { "2BLANK3", new Offering(TEST_COURSES.get("2BLANK3"), Map.of("MAJOR", Term.NEVER, "MINOR", Term.NEVER, "HAS SPACE", Term.SPRING)) },
+                { "3BLANK", new Offering(TEST_COURSES.get("3BLANK"), Map.of("MAJOR", Term.NEVER, "MINOR", Term.NEVER, "HAS SPACE", Term.NEVER)) },
         });
     }
 
