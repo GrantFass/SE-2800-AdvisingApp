@@ -65,8 +65,12 @@ public class CLI {
      * @since : Sat, 20 Mar 2021
      */
     public void processCommandLine() {
+
         boolean debug = false;
         try (Scanner in = new Scanner(System.in)) {
+            //Load default course data on startup
+            long startTime = System.nanoTime();
+            System.out.format("%s in %d milliseconds\n", model.loadDefaultCourseData(), (System.nanoTime() - startTime) / 1000000); //divide by 1000000 to get milliseconds
             while (true) {
                 String input = in.nextLine().trim().toLowerCase();
                 if (debug) {
@@ -95,10 +99,9 @@ public class CLI {
                         outputHyphenLine();
                     }
                     case "load course data" -> {
-                        long startTime = System.nanoTime();
+                        startTime = System.nanoTime();
                         outputHyphenLine();
-                        model.loadCourseData(in);
-                        System.out.format("Load complete in %d milliseconds\n", (System.nanoTime() - startTime) / 1000000); //divide by 1000000 to get milliseconds
+                        System.out.format("%s in %d milliseconds\n", model.loadCourseData(in), (System.nanoTime() - startTime) / 1000000); //divide by 1000000 to get milliseconds
                         outputHyphenLine();
                     }
                     case "load pdf" -> {

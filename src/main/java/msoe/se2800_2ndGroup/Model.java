@@ -8,6 +8,7 @@ import msoe.se2800_2ndGroup.models.Course;
 import msoe.se2800_2ndGroup.models.Curriculum;
 import msoe.se2800_2ndGroup.models.Offering;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -256,6 +257,51 @@ public class Model {
     }
 
     /**
+     * Loads in the prerequisites, curriculum, and offerings csv files from the locations that are specified.
+     * These locations do not have any checks or verification on them. Thus this method is meant to be called from
+     * other locations after verification has occurred such as in loadDefaultCourseData() and loadCourseData().
+     *
+     * @param curriculumLocation the verified location to use for curriculum.csv
+     * @param offeringsLocation the verified location to use for offerings.csv
+     * @param prerequisitesLocation the verified location to use for prerequisites.csv
+     * @throws IOException when there are issues reading in the CSV files
+     * @return A formatted string containing the number of lines loaded into each file.
+     * @author : Grant Fass
+     * @since : Tue, 6 Apr 2021
+     */
+    private String loadCoursesFromSpecifiedLocations(String curriculumLocation, String offeringsLocation, String prerequisitesLocation) throws IOException {
+        //Load the required courses first
+        Collection<Course> courses;
+        PrerequisitesLoader prerequisitesLoader = new PrerequisitesLoader(new FileReader(prerequisitesLocation));
+        prerequisiteCourses = courses = prerequisitesLoader.load();
+
+        //With the courses known, read the other files
+        CurriculumLoader curriculumLoader = new CurriculumLoader(new FileReader(curriculumLocation), courses);
+        OfferingsLoader offeringsLoader = new OfferingsLoader(new FileReader(offeringsLocation), courses);
+        curricula = curriculumLoader.load();
+        offerings = offeringsLoader.load();
+        return String.format("Loaded %d prerequisites, %d curricula, and %d offerings", prerequisiteCourses.size(), curricula.size(), offerings.size());
+    }
+
+    /**
+     * This method loads in all of the course data from the default locations
+     *
+     * This method is usually meant to be called on program startup so that the user can start working right away with
+     * some of the files being loaded.
+     *
+     * @throws IOException when there are issues reading the CSV files in.
+     * @return A formatted string containing the number of lines loaded into each file.
+     * @author : Grant Fass
+     * @since : Tue, 6 Apr 2021
+     */
+    public String loadDefaultCourseData() throws IOException {
+        String curriculumLocation = getDefaultCurriculumLocation();
+        String offeringsLocation = getDefaultOfferingsLocation();
+        String prerequisitesLocation = getDefaultPrerequisitesLocation();
+        return loadCoursesFromSpecifiedLocations(curriculumLocation, offeringsLocation, prerequisitesLocation);
+    }
+
+    /**
      * This method loads all of the course data
      *
      * This model loads the three required CSV files.
@@ -265,16 +311,17 @@ public class Model {
      * Each CSV file is then read into the program through the use of Loader objects that utilize the
      * Apache Commons-CSV library.
      * Note that this method calls static methods from FileIO.java class
-     * This is the overloaded version that is passed a scanner so that the program does not create one scanner inside another
+     * This is passed a scanner so that the program does not create one scanner inside another
+     * This method is thought to be called from the CLI.
      *
      * @param in An existing scanner to use to query the user for input
      * @throws InvalidInputException when there is an issue with the user input locations for the files
      * @throws IOException if there is an issue reading in the CSV files
+     * @return A formatted string containing the number of lines loaded into each file.
      * @author : Grant Fass
      * @since : Thu, 1 Apr 2021
      */
-    public void loadCourseData(Scanner in) throws InvalidInputException, IOException {
-        //TODO: Test Me
+    public String loadCourseData(Scanner in) throws InvalidInputException, IOException {
         //Ask the user if default file locations should be used or if a custom location should be used
         boolean useDefaultFiles = useDefaultFilesQuery(in);
         //set the locations to the default
@@ -288,59 +335,8 @@ public class Model {
             offeringsLocation = getUserInputFileLocation("offerings.csv");
             prerequisitesLocation = getUserInputFileLocation("prerequisites.csv");
         }
-        //Load the required courses first
-        Collection<Course> courses;
-        PrerequisitesLoader prerequisitesLoader = new PrerequisitesLoader(new FileReader(prerequisitesLocation));
-        prerequisiteCourses = courses = prerequisitesLoader.load();
 
-        //With the courses known, read the other files
-        CurriculumLoader curriculumLoader = new CurriculumLoader(new FileReader(curriculumLocation), courses);
-        OfferingsLoader offeringsLoader = new OfferingsLoader(new FileReader(offeringsLocation), courses);
-        curricula = curriculumLoader.load();
-        offerings = offeringsLoader.load();
-    }
-
-    /**
-     * This method loads all of the course data
-     *
-     * This model loads the three required CSV files.
-     * The method queries the user to determine if the default CSV file locations should be used or if
-     * custom locations should be used.
-     * If custom locations are used then the specified input file paths are validated
-     * Each CSV file is then read into the program through the use of Loader objects that utilize the
-     * Apache Commons-CSV library.
-     * Note that this method calls static methods from FileIO.java class
-     *
-     * @throws InvalidInputException when there is an issue with the user input locations for the files
-     * @throws IOException if there is an issue reading in the CSV files
-     * @author : Grant Fass
-     * @since : Fri, 26 Mar 2021
-     */
-    public void loadCourseData() throws InvalidInputException, IOException {
-        //TODO: Test Me
-        //Ask the user if default file locations should be used or if a custom location should be used
-        boolean useDefaultFiles = useDefaultFilesQuery();
-        //set the locations to the default
-        String curriculumLocation = getDefaultCurriculumLocation();
-        String offeringsLocation = getDefaultOfferingsLocation();
-        String prerequisitesLocation = getDefaultPrerequisitesLocation();
-        //if the user wants to use custom locations then query them to retrieve the locations and validate the files
-        if (!useDefaultFiles) {
-            //get new locations and validate
-            curriculumLocation = getUserInputFileLocation("curriculum.csv");
-            offeringsLocation = getUserInputFileLocation("offerings.csv");
-            prerequisitesLocation = getUserInputFileLocation("prerequisites.csv");
-        }
-        //Load the required courses first
-        Collection<Course> courses;
-        PrerequisitesLoader prerequisitesLoader = new PrerequisitesLoader(new FileReader(prerequisitesLocation));
-        prerequisiteCourses = courses = prerequisitesLoader.load();
-
-        //With the courses known, read the other files
-        CurriculumLoader curriculumLoader = new CurriculumLoader(new FileReader(curriculumLocation), courses);
-        OfferingsLoader offeringsLoader = new OfferingsLoader(new FileReader(offeringsLocation), courses);
-        curricula = curriculumLoader.load();
-        offerings = offeringsLoader.load();
+        return loadCoursesFromSpecifiedLocations(curriculumLocation, offeringsLocation, prerequisitesLocation);
     }
 
     /**
