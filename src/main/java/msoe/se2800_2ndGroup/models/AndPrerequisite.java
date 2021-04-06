@@ -14,11 +14,14 @@
  *     - verifying if all of a set of prerequisites have been satisfied
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - equals added by Hunter Turcin on 2021-03-31
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Project Name: Advising App
@@ -30,6 +33,8 @@ import java.util.Collection;
  *     - verifying if all of a set of prerequisites have been satisfied
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - equals added by Hunter Turcin on 2021-03-31
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  */
 public class AndPrerequisite implements Prerequisite {
     private final Prerequisite left;
@@ -46,6 +51,26 @@ public class AndPrerequisite implements Prerequisite {
     public AndPrerequisite(Prerequisite left, Prerequisite right) {
         this.left = left;
         this.right = right;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof AndPrerequisite) {
+            AndPrerequisite other = (AndPrerequisite) object;
+            return left.equals(other.left) && right.equals(other.right);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(left, right);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("AndPrerequisite(left=%s, right=%s)", left, right);
     }
 
     @Override

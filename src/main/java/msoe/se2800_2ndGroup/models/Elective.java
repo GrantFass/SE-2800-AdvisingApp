@@ -14,11 +14,13 @@
  *     - verifying it has been satisfied by an appropriate course
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -32,6 +34,7 @@ import java.util.function.Predicate;
  *     - verifying it has been satisfied by an appropriate course
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  */
 public class Elective implements CurriculumItem {
     // Information based on https://csse.msoe.us/se/se35/
@@ -59,6 +62,26 @@ public class Elective implements CurriculumItem {
             case "TECHEL" -> course -> course.getCode().startsWith("TC");
             default -> throw new IllegalArgumentException("unknown elective code: " + code);
         };
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Elective) {
+            final var other = (Elective) object;
+            return code.equals(other.code);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(code);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Elective(code=\"%s\")", code);
     }
 
     @Override

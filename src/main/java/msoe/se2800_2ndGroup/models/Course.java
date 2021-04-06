@@ -14,9 +14,12 @@
  *     - associating a course code with a set of prerequisites
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
+
+import java.util.Objects;
 
 /**
  * Project Name: Advising App
@@ -28,6 +31,7 @@ package msoe.se2800_2ndGroup.models;
  *     - associating a course code with a set of prerequisites
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  */
 public class Course implements CurriculumItem {
     private final String code;
@@ -50,6 +54,30 @@ public class Course implements CurriculumItem {
         this.credits = credits;
         this.prerequisite = prerequisite;
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Course) {
+            Course other = (Course) object;
+            return code.equals(other.code)
+                   && credits == other.credits
+                   && prerequisite.equals(other.prerequisite)
+                   && description.equals(other.description);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, credits, prerequisite, description);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Course(code=\"%s\", credits=%d, prerequisite=%s, description=\"%s\")",
+                             code, credits, prerequisite.toString(), description);
     }
 
     @Override

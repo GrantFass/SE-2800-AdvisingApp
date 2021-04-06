@@ -50,12 +50,12 @@ public class OfferingsLoader {
      * @since : Mon, 29 Mar 2021
      */
     public OfferingsLoader(Reader reader, Collection<Course> courses) throws IOException {
-        this.parser = CSVFormat.DEFAULT.parse(reader);
+        this.parser = CSVFormat.DEFAULT.withHeader().parse(reader);
         this.courses = courses;
     }
 
     public Collection<Offering> load() {
-        final var majors = parser.getHeaderNames();
+        final var majors = new ArrayList<>(parser.getHeaderNames());
         majors.remove(COURSE);
         final var offerings = new ArrayList<Offering>();
 
@@ -73,8 +73,8 @@ public class OfferingsLoader {
             final var offering = new Offering(course);
 
             for (final var major : majors) {
-                final var termNumber = Integer.parseInt(record.get(major));
-                final var term = Term.fromId(termNumber);
+                final var termId = record.get(major);
+                final var term = Term.fromId(termId);
 
                 offering.putAvailability(major, term);
             }
