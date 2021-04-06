@@ -11,10 +11,7 @@ import msoe.se2800_2ndGroup.models.Offering;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Scanner;
+import java.util.*;
 
 import static msoe.se2800_2ndGroup.FileIO.getUserInputFileLocation;
 import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
@@ -174,6 +171,7 @@ public class Model {
      * @since : Sat, 20 Mar 2021
      */
     public String getCourseRecommendation() throws InvalidInputException {
+        //TODO: divide me into methods
         /*
         Going to need to read through each line in the offerings data structure
         each offering has a course and a majorAvailability
@@ -200,17 +198,16 @@ public class Model {
         4. Build outputs
             prioritize courses that are required for a lot of others
          */
-        ArrayList<String> potentialMajors = new ArrayList<>(Arrays.asList("EE", "BSE PT", "CE", "UX", "AE", "NU", "CS", "AS", "SE", "MIS", "ME", "BME", "IE", "ME A"));
+        Set<String> potentialMajors = new HashSet<>(Arrays.asList("EE", "BSE PT", "CE", "UX", "AE", "NU", "CS", "AS", "SE", "MIS", "ME", "BME", "IE", "ME A"));
         //TODO: FIXME && TEST_ME
         //TODO: update errors
         if (major == null || major.isBlank() || major.isEmpty()) {
-            //TODO: throw error if major is empty
+            throw new InvalidInputException("The specified major is missing or blank");
         } else if (offerings.isEmpty()) {
-            //TODO: throw error if course data empty
+            throw new InvalidInputException("There are no offerings loaded right now");
         } else if (!potentialMajors.contains(major)) { // TODO: check if this can be simplified or more dynamic
-            //TODO: throw error since major is not input correctly
-        }
-        else if (false) {
+            throw new InvalidInputException(String.format("The specified major %s was not found within the listing of acceptable majors which means it was not input correctly", major));
+        } else if (false) {
             //TODO: throw error if transcript is empty
         } else {
             //TODO: write method.
@@ -218,8 +215,8 @@ public class Model {
             ArrayList<Offering> winterOfferings = new ArrayList<>();
             ArrayList<Offering> springOfferings = new ArrayList<>();
             //collect the offerings by term available for the major
-            for(Offering offering : offerings) {
-                try {
+            try {
+                for (Offering offering : offerings) {
                     if (offering.getAvailability(major).getSeason().equalsIgnoreCase("fall")) {
                         fallOfferings.add(offering);
                     } else if (offering.getAvailability(major).getSeason().equalsIgnoreCase("winter")) {
@@ -230,15 +227,66 @@ public class Model {
                         //TODO: log that skipping?
                         //this means the course is not available for the specified major
                     }
-                } catch (NullPointerException e) {
-                    throw new InvalidInputException(String.format("The specified major %s was not found which means it was not input correctly", major));
                 }
+            } catch (NullPointerException e) {
+                throw new InvalidInputException(String.format("The specified major %s was not found which means it was not input correctly", major));
             }
+            /*
+            TODO: REPLACE ME with code for transcripts
+             assume fall for testing
+             manually insert completed courses for testing
+             FassG completed courses not including WIP.
+             */
+            String targetTerm = "spring";
+            Set<String> completedCourses = new HashSet<>(Arrays.asList("CS1011", "HU445", "HU446", "MA136", "MA262",
+                    "GS1001", "GS1003", "CH200", "GS1002", "BA2220", "CS1021", "MA137", "PH2011", "BA3444", "CS2852",
+                    "MA2314", "PH2021", "CS2911", "HU4480", "MA2310", "MA2323", "SE2030", "SS415AM", "CS2300", "CS2711",
+                    "SE2811"));
+
+            //start computing recommendations
+            ArrayList<Offering> uncompleted;
+            switch (targetTerm) {
+                case "fall":
+                    uncompleted = getUncompletedOfferings(fallOfferings, completedCourses);
+                    break;
+                case "winter":
+                    uncompleted = getUncompletedOfferings(winterOfferings, completedCourses);
+                    break;
+                case "spring":
+                    uncompleted = getUncompletedOfferings(springOfferings, completedCourses);
+                    break;
+                default:
+                    //do math to guess the next term coming up
+            }
+
             System.out.print("");
         }
 
 
         return "";
+    }
+
+    /**
+     * this method takes the offerings for a given term and the completed courses up till now and returns the list of offerings not yet taken
+     *
+     * this method goes through all of the available offerings for a given term.
+     * for each of the offerings in the term it checks if the course code is in the set of completed courses
+     * if the offering is not in the set of completed courses then it is added to the output ArrayList.
+     *
+     * @param offeringsForGivenTerm the ArrayList of offerings for a given term
+     * @param completedCourses the Set containing all of the courses that have been completed so far. (contains the course codes as strings)
+     * @return the list of offerings not yet taken for a given term
+     * @author : Grant Fass
+     * @since : Tue, 6 Apr 2021
+     */
+    private ArrayList<Offering> getUncompletedOfferings(ArrayList<Offering> offeringsForGivenTerm, Set<String> completedCourses) {
+        ArrayList<Offering> offeringsNotYetTaken = new ArrayList<>();
+        for (Offering offering: offeringsForGivenTerm) {
+            if (!completedCourses.contains(offering.getCourse().getCode())) {
+                offeringsNotYetTaken.add(offering);
+            }
+        }
+        return offeringsNotYetTaken;
     }
 
     /**
