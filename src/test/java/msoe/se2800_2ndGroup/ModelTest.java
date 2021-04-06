@@ -255,4 +255,58 @@ class ModelTest {
 
         //TODO
     }
+
+    @Test
+    void viewPrerequisiteCourses() {
+        //TODO: add some tests!
+
+        //region Invalid courses
+        //endregion
+
+        //region Valid courses
+        try {
+            // Ideal inputs - single/and/or prerequisites
+            Assertions.assertEquals("BI1010", model.viewPrerequisiteCourses("BI1020"));
+            Assertions.assertEquals("BI102 and CH223", model.viewPrerequisiteCourses("BI2020"));
+            Assertions.assertEquals("CE2812 or EE2930", model.viewPrerequisiteCourses("CE3200"));
+
+            // Capitalization
+            Assertions.assertEquals("BI1010", model.viewPrerequisiteCourses("Bi1020"));
+            Assertions.assertEquals("BI102 and CH223", model.viewPrerequisiteCourses("bi2020"));
+            Assertions.assertEquals("CE2812 or EE2930", model.viewPrerequisiteCourses("cE3200"));
+
+            // Single Whitespaces
+            Assertions.assertEquals("BI1010", model.viewPrerequisiteCourses("BI 1020"));
+            Assertions.assertEquals("BI102 and CH223", model.viewPrerequisiteCourses("BI20 20"));
+            Assertions.assertEquals("CE2812 or EE2930", model.viewPrerequisiteCourses("C E 3 2 0 0"));
+            Assertions.assertEquals("BI1010", model.viewPrerequisiteCourses(" BI1030 "));
+
+            // Multiple Whitespaces
+            Assertions.assertEquals("BI1010", model.viewPrerequisiteCourses("BI   1020"));
+            Assertions.assertEquals("BI102 and CH223", model.viewPrerequisiteCourses("BI20   20"));
+            Assertions.assertEquals("CE2812 or EE2930", model.viewPrerequisiteCourses("C   E   3   2   0   0"));
+            Assertions.assertEquals("BI1010", model.viewPrerequisiteCourses("   BI1030   "));
+
+            // Hyphens
+            Assertions.assertEquals("BI1010", model.viewPrerequisiteCourses("BI-1020"));
+            Assertions.assertEquals("BI102 and CH223", model.viewPrerequisiteCourses("BI20-20"));
+            Assertions.assertEquals("CE2812 or EE2930", model.viewPrerequisiteCourses("C-E-3-2-0-0"));
+            Assertions.assertEquals("BI1010", model.viewPrerequisiteCourses("-BI1030-"));
+            Assertions.assertEquals("CE1901", model.viewPrerequisiteCourses(" -C -E -1 -9 -1 -1 - "));
+
+            // Underscores
+            Assertions.assertEquals("BI1010", model.viewPrerequisiteCourses("BI_1020"));
+            Assertions.assertEquals("BI102 and CH223", model.viewPrerequisiteCourses("BI20_20"));
+            Assertions.assertEquals("CE2812 or EE2930", model.viewPrerequisiteCourses("C_E_3_2_0_0"));
+            Assertions.assertEquals("BI1010", model.viewPrerequisiteCourses("_BI1030_"));
+            Assertions.assertEquals("CE1901", model.viewPrerequisiteCourses(" _C _E _1 _9 _1 _1 _ "));
+
+
+
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        //endregion
+
+    }
 }
