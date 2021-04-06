@@ -106,13 +106,18 @@ public class PrerequisitesLoader {
             final var orCodes = andCode.split("\\|"); // match only pipe characters
 
             if (orCodes.length > 1) {
-                Prerequisite inner = new NullPrerequisite();
+                Prerequisite inner = new OrPrerequisite(new SinglePrerequisite(orCodes[0]), new SinglePrerequisite(orCodes[1]));
 
-                for (final var orCode : orCodes) {
+                for (var i = 2; i < orCodes.length; i++) {
+                    final var orCode = orCodes[i];
                     inner = new OrPrerequisite(inner, new SinglePrerequisite(orCode));
                 }
 
-                outer = new AndPrerequisite(outer, inner);
+                if (outer instanceof NullPrerequisite) {
+                    outer = inner;
+                } else {
+                    outer = new AndPrerequisite(outer, inner);
+                }
             } else if (!orCodes[0].isEmpty()) {
                 if (outer instanceof NullPrerequisite) {
                     outer = new SinglePrerequisite(orCodes[0]);
