@@ -37,7 +37,7 @@ import java.util.Objects;
  */
 public class Offering {
     private final Course course;
-    private final Map<String, Term> majorAvailability = new HashMap<>();
+    private final Map<String, Term> majorAvailability;
 
     /**
      * Create a new offering.
@@ -48,6 +48,12 @@ public class Offering {
      */
     public Offering(Course course) {
         this.course = course;
+        majorAvailability = new HashMap<>();
+    }
+
+    public Offering(Course course, Map<String, Term> majorAvailability) {
+        this.course = course;
+        this.majorAvailability = majorAvailability;
     }
 
     @Override
