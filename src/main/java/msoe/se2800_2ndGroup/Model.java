@@ -6,6 +6,7 @@ import msoe.se2800_2ndGroup.loaders.OfferingsLoader;
 import msoe.se2800_2ndGroup.loaders.PrerequisitesLoader;
 import msoe.se2800_2ndGroup.models.Course;
 import msoe.se2800_2ndGroup.models.Curriculum;
+import msoe.se2800_2ndGroup.models.CurriculumItem;
 import msoe.se2800_2ndGroup.models.Offering;
 
 import java.io.FileNotFoundException;
@@ -254,6 +255,7 @@ public class Model {
                     break;
                 case "spring":
                     uncompleted = getUncompletedOfferings(springOfferings, completedCourses);
+                    ArrayList<Course> temp = getCurriculaExcludingCompletedCourses(completedCourses);
                     break;
                 default:
                     //do math to guess the next term coming up
@@ -282,12 +284,31 @@ public class Model {
     private ArrayList<Offering> getUncompletedOfferings(ArrayList<Offering> offeringsForGivenTerm, Set<String> completedCourses) {
         ArrayList<Offering> offeringsNotYetTaken = new ArrayList<>();
         for (Offering offering: offeringsForGivenTerm) {
-            if (!completedCourses.contains(offering.getCourse().getCode())) {
+            if (!completedCourses.contains(offering.getCourse().code())) {
                 offeringsNotYetTaken.add(offering);
             }
         }
         return offeringsNotYetTaken;
     }
+
+    //TODO: Add javadocs
+    /*
+    determine if this method is even necessary once the getUnsatisfiedItems method can be used.
+     */
+    private ArrayList<Course> getCurriculaExcludingCompletedCourses(Set<String> completedCourses) throws InvalidInputException {
+        boolean foundCurriculum = false;
+        for (Curriculum curriculum: curricula) {
+            if (curriculum.major().equalsIgnoreCase(major)) {
+                foundCurriculum = true;
+                //curriculum.getUnsatisfiedItems() //TODO: FIX ME / Implement me once transcript is working.
+            }
+        }
+        if (!foundCurriculum) {
+            throw new InvalidInputException("Curriculum for selected major not found");
+        }
+        return new ArrayList<>();
+    }
+
 
     /**
      * This method runs the specified action or method on the FX thread to avoid errors.
