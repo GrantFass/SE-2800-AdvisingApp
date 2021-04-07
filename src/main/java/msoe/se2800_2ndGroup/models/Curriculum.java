@@ -15,11 +15,15 @@
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Project Name: Advising App
@@ -28,48 +32,13 @@ import java.util.*;
  * Original Author: Hunter Turcin
  * Description: A plan for graduation.
  * The Course class is responsible for:
- *     - verifying all courses have been taken to graduate
+ * - verifying all courses have been taken to graduate
  * Modification Log:
- *     - File Created by Hunter Turcin on 2021-03-16
- *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ * - File Created by Hunter Turcin on 2021-03-16
+ * - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ * - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  */
-public class Curriculum {
-    private final String major;
-    private final List<CurriculumItem> items;
-
-    /**
-     * Create a new curriculum.
-     *
-     * @param items courses and electives in this curriculum, in order
-     * @param major code of major this is for
-     * @author Hunter Turcin
-     * @since Sun, 16 Mar 2021
-     */
-    public Curriculum(String major, List<CurriculumItem> items) {
-        this.major = major;
-        this.items = items;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (object instanceof Curriculum) {
-            final var other = (Curriculum) object;
-            return major.equals(other.major) && items.equals(other.items);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(major, items);
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Curriculum(major=\"%s\", items=%s)", major, items.toString());
-    }
-
+public record Curriculum(String major, List<CurriculumItem> items) {
     /**
      * Determine which curriculum items are not yet satisfied.
      *
@@ -105,9 +74,5 @@ public class Curriculum {
         }
 
         return unsatisfied;
-    }
-
-    public String getMajor() {
-        return major;
     }
 }

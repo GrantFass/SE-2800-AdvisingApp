@@ -15,6 +15,7 @@
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
@@ -34,6 +35,7 @@ import java.util.Objects;
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  */
 public class Offering {
     private final Course course;
@@ -51,6 +53,14 @@ public class Offering {
         majorAvailability = new HashMap<>();
     }
 
+    /**
+     * Create a new offering in an easier way.
+     *
+     * @param course course this offering is for
+     * @param majorAvailability map of availability
+     * @author Hunter Turcin
+     * @since Wed, 7 Apr 2021
+     */
     public Offering(Course course, Map<String, Term> majorAvailability) {
         this.course = course;
         this.majorAvailability = majorAvailability;
@@ -58,12 +68,9 @@ public class Offering {
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof Offering) {
-            final var other = (Offering) object;
-            return course.equals(other.course) && majorAvailability.equals(other.majorAvailability);
-        } else {
-            return false;
-        }
+        return object instanceof Offering other
+               && course.equals(other.course)
+               && majorAvailability.equals(other.majorAvailability);
     }
 
     @Override

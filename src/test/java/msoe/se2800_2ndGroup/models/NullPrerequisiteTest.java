@@ -9,21 +9,21 @@ class NullPrerequisiteTest {
 
     @Test
     void testSatisfiedByNothing() {
-        assertTrue(ba1220.getPrerequisite().satisfiedBy(List.of()));
+        assertTrue(ba1220.prerequisite().satisfiedBy(List.of()));
     }
 
     @Test
     void testSatisfiedBySomething() {
-        assertTrue(ba1220.getPrerequisite().satisfiedBy(List.of("BI102")));
+        assertTrue(ba1220.prerequisite().satisfiedBy(List.of("BI102")));
     }
 
     @Test
     void testEquals() {
-        assertEquals(new NullPrerequisite(), ba1220.getPrerequisite());
+        assertEquals(new NullPrerequisite(), ba1220.prerequisite());
     }
 
     @Test
     void testNotEquals() {
-        assertNotEquals(new SinglePrerequisite("invalid"), ba1220.getPrerequisite());
+        assertNotEquals(new SinglePrerequisite("invalid"), ba1220.prerequisite());
     }
 }
