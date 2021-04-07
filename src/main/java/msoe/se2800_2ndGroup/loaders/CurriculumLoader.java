@@ -49,7 +49,7 @@ public class CurriculumLoader {
      * @since : Mon, 29 Mar 2021
      */
     public CurriculumLoader(Reader reader, Collection<Course> courses) throws IOException {
-        this.parser = CSVFormat.DEFAULT.parse(reader);
+        this.parser = CSVFormat.DEFAULT.withHeader().parse(reader);
         this.courses = courses;
     }
 
@@ -75,11 +75,13 @@ public class CurriculumLoader {
                     }
                 }
 
-                if (item == null) {
+                if (item == null && !code.isEmpty()) {
                     item = new Elective(code);
                 }
 
-                map.get(major).add(item);
+                if (item != null) {
+                    map.get(major).add(item);
+                }
             }
         }
 
