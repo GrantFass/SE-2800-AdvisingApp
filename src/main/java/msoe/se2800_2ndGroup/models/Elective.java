@@ -15,6 +15,7 @@
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
@@ -35,6 +36,7 @@ import java.util.function.Predicate;
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  */
 public class Elective implements CurriculumItem {
     // Information based on https://csse.msoe.us/se/se35/
@@ -56,22 +58,17 @@ public class Elective implements CurriculumItem {
         this.code = code;
         this.predicate = switch (code) {
             case "FREE" -> course -> true;
-            case "SCIEL" -> course -> sciencePrefixes.stream().anyMatch(prefix -> course.getCode().startsWith(prefix)) && course.getCredits() == 4;
-            case "MASCIEL" -> course -> mathSciencePrefixes.stream().anyMatch(prefix -> course.getCode().startsWith(prefix));
-            case "HUSS" -> course -> humanitiesSocialSciencePrefixes.stream().anyMatch(prefix -> course.getCode().startsWith(prefix));
-            case "TECHEL" -> course -> course.getCode().startsWith("TC");
+            case "SCIEL" -> course -> sciencePrefixes.stream().anyMatch(prefix -> course.code().startsWith(prefix)) && course.credits() == 4;
+            case "MASCIEL" -> course -> mathSciencePrefixes.stream().anyMatch(prefix -> course.code().startsWith(prefix));
+            case "HUSS" -> course -> humanitiesSocialSciencePrefixes.stream().anyMatch(prefix -> course.code().startsWith(prefix));
+            case "TECHEL" -> course -> course.code().startsWith("TC");
             default -> throw new IllegalArgumentException("unknown elective code: " + code);
         };
     }
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof Elective) {
-            final var other = (Elective) object;
-            return code.equals(other.code);
-        } else {
-            return false;
-        }
+        return object instanceof Elective other && code.equals(other.code);
     }
 
     @Override

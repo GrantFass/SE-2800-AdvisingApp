@@ -107,7 +107,7 @@ public class CurriculumLoaderTest {
         Curriculum result = null;
 
         for (final var curriculum : curricula) {
-            if (curriculum.getMajor().equals(code)) {
+            if (curriculum.major().equals(code)) {
                 result = curriculum;
                 break;
             }

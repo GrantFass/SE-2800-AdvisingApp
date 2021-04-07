@@ -61,7 +61,7 @@ public class PrerequisitesLoaderTest {
         Course result = null;
 
         for (Course course : courses) {
-            if (course.getCode().equals(code)) {
+            if (course.code().equals(code)) {
                 result = course;
                 break;
             }

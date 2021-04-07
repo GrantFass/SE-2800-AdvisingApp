@@ -15,6 +15,7 @@
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
@@ -32,6 +33,7 @@ import java.util.Objects;
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  */
 public class Term {
     /**
@@ -64,12 +66,9 @@ public class Term {
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof Term) {
-            final var other = (Term) object;
-            return id.equals(other.id) && season.equals(other.season);
-        } else {
-            return false;
-        }
+        return object instanceof Term other
+               && id.equals(other.id)
+               && season.equals(other.season);
     }
 
     @Override

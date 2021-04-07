@@ -68,7 +68,7 @@ public class OfferingsLoaderTest {
         Offering result = null;
 
         for (final var offering : offerings) {
-            if (offering.getCourse().getCode().equals(code)) {
+            if (offering.getCourse().code().equals(code)) {
                 result = offering;
                 break;
             }
