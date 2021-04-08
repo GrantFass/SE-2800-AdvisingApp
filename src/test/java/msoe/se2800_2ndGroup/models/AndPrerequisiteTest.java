@@ -9,31 +9,43 @@ class AndPrerequisiteTest {
 
     @Test
     void testNotSatisfiedWhenOnlyLeftGiven() {
-        assertFalse(bi2020.getPrerequisite().satisfiedBy(List.of("BI102")));
+        assertFalse(bi2020.prerequisite().satisfiedBy(List.of("BI102")));
     }
 
     @Test
     void testNotSatisfiedWhenOnlyRightGiven() {
-        assertFalse(bi2020.getPrerequisite().satisfiedBy(List.of("CH223")));
+        assertFalse(bi2020.prerequisite().satisfiedBy(List.of("CH223")));
     }
 
     @Test
     void testNotSatisfiedWhenLeftMissing() {
-        assertFalse(bi2020.getPrerequisite().satisfiedBy(List.of("CH200", "CH222", "CH223")));
+        assertFalse(bi2020.prerequisite().satisfiedBy(List.of("CH200", "CH222", "CH223")));
     }
 
     @Test
     void testNotSatisfiedWhenRightMissing() {
-        assertFalse(bi2020.getPrerequisite().satisfiedBy(List.of("BI102", "CH200", "CH222")));
+        assertFalse(bi2020.prerequisite().satisfiedBy(List.of("BI102", "CH200", "CH222")));
     }
 
     @Test
     void testSatisfiedWhenBothGivenAlone() {
-        assertTrue(bi2020.getPrerequisite().satisfiedBy(List.of("BI102", "CH223")));
+        assertTrue(bi2020.prerequisite().satisfiedBy(List.of("BI102", "CH223")));
     }
 
     @Test
     void testSatisfiedWhenBothGivenWithOthers() {
-        assertTrue(bi2020.getPrerequisite().satisfiedBy(List.of("BI102", "CH200", "CH222", "CH223")));
+        assertTrue(bi2020.prerequisite().satisfiedBy(List.of("BI102", "CH200", "CH222", "CH223")));
+    }
+
+    @Test
+    void testEquals() {
+        AndPrerequisite expected = new AndPrerequisite(new SinglePrerequisite("BI102"), new SinglePrerequisite("CH223"));
+        assertEquals(expected, bi2020.prerequisite());
+    }
+
+    @Test
+    void testNotEquals() {
+        AndPrerequisite unexpected = new AndPrerequisite(new NullPrerequisite(), new SinglePrerequisite("CH223"));
+        assertNotEquals(unexpected, bi2020.prerequisite());
     }
 }
