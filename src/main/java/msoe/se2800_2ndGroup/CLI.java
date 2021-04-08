@@ -109,6 +109,25 @@ public class CLI {
                         ImportTranscript importTranscript = new ImportTranscript();
                         importTranscript.readInFile();
                     }
+                    case "view course offerings" -> {
+                        outputHyphenLine();
+                        boolean fall = false;
+                        boolean winter = false;
+                        boolean spring = false;
+                        System.out.print("Would you like to display fall courses? (y/n): ");
+                        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
+                            fall = true;
+                        }
+                        System.out.print("Would you like to display winter courses? (y/n): ");
+                        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
+                            winter = true;
+                        }
+                        System.out.print("Would you like to display spring courses? (y/n): ");
+                        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
+                            spring = true;
+                        }
+                        System.out.println(model.getCourseOfferingsAsString(fall, winter, spring));
+                    }
                 }
             }
         } catch (Model.InvalidInputException | IOException e) {

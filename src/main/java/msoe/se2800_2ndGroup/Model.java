@@ -162,6 +162,120 @@ public class Model {
     }
 
     /**
+     * This method collects all of the offerings available in for the terms that are given
+     *
+     * This method goes through all of the offerings that were stored during course data loading.
+     * For each of the offerings it will determine if it is available for the given term and major.
+     * This method uses the stored major.
+     *
+     * @param displayFall a boolean representing weather or not to collect Offerings for the fall term
+     * @param displayWinter a boolean representing weather or not to collect Offerings for the winter term
+     * @param displaySpring a boolean representing weather or not to collect Offerings for the spring term
+     * @return an ArrayList of Offerings from the selected terms
+     * @throws InvalidInputException the major was not found.
+     * @author : Grant Fass
+     * @since : Wed, 7 Apr 2021
+     */
+    public ArrayList<Offering> getCourseOfferings(boolean displayFall, boolean displayWinter, boolean displaySpring) throws InvalidInputException {
+        verifyMajor();
+        ArrayList<Offering> offerings = new ArrayList<>();
+        //collect the offerings by term available for the major
+        try {
+            for (Offering offering : this.offerings) {
+                if (offering.getAvailability(major).getSeason().equalsIgnoreCase("fall") && displayFall) {
+                    offerings.add(offering);
+                } else if (offering.getAvailability(major).getSeason().equalsIgnoreCase("winter") && displayWinter) {
+                    offerings.add(offering);
+                } else if (offering.getAvailability(major).getSeason().equalsIgnoreCase("spring") && displaySpring) {
+                    offerings.add(offering);
+                } else {
+                    //TODO: log that skipping?
+                    //this means the course is not available for the specified major
+                }
+            }
+        } catch (NullPointerException e) {
+            throw new InvalidInputException(String.format("The specified major %s was not found which means it was not input correctly", major));
+        }
+        return offerings;
+    }
+
+    /**
+     * This method returns the list of offerings for the input terms as a readable string.
+     *
+     * This method gets the ArrayList of offerings for the input terms.
+     * This method then iterates through the offerings and extracts the useful information to a string.
+     * This string is then appended to a string builder which is returned.
+     *
+     * @param displayFall a boolean representing weather or not to collect Offerings for the fall term
+     * @param displayWinter a boolean representing weather or not to collect Offerings for the winter term
+     * @param displaySpring a boolean representing weather or not to collect Offerings for the spring term
+     * @return the offerings for the input terms as a string.
+     * @throws InvalidInputException the major was not found.
+     * @author : Grant Fass
+     * @since : Wed, 7 Apr 2021
+     */
+    public String getCourseOfferingsAsString(boolean displayFall, boolean displayWinter, boolean displaySpring) throws InvalidInputException {
+        if (!displayFall && !displayWinter && !displaySpring) {
+            return "No Terms Selected\n";
+        }
+        ArrayList<Offering> courseOfferings = getCourseOfferings(displayFall, displayWinter, displaySpring);
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("%7s %2s | %40s : %s\n", "CODE", "CR", "DESCRIPTION", "PREREQUISITES"));
+        for (Offering o: courseOfferings) {
+            //format is CODE CREDITS | DESCRIPTION : PRERECS
+            builder.append(String.format("%7s %2s | %40s : %s\n", o.getCourse().code(), o.getCourse().credits(), o.getCourse().description(), o.getCourse().prerequisite()));
+        }
+        return builder.toString();
+    }
+
+    /**
+     * this method will check to see if the stored major is valid
+     *
+     * This method will first check that the stored major is not null, blank, or empty; throwing an error if it is.
+     * This method will then check that the major is formatted correctly in its Abbreviated Code form.
+     * This method will throw an error if the stored major does not exist, or is improperly formatted.
+     * @throws InvalidInputException if the stored major does not exist, or is improperly formatted.
+     * @author : Grant Fass
+     * @since : Wed, 7 Apr 2021
+     */
+    private void verifyMajor() throws InvalidInputException {
+        Set<String> potentialMajors = new HashSet<>(Arrays.asList("EE", "BSE PT", "CE", "UX", "AE", "NU", "CS", "AS", "SE", "MIS", "ME", "BME", "IE", "ME A"));
+        if (major == null || major.isBlank() || major.isEmpty()) {
+            throw new InvalidInputException("The specified major is missing or blank");
+        } else if (!potentialMajors.contains(major)) { // TODO: check if this can be simplified or more dynamic
+            throw new InvalidInputException(String.format("The specified major %s was not found within the listing of acceptable majors which means it was not input correctly", major));
+        }
+    }
+
+    /**
+     * This method will verify that the course data offerings is loaded and is not empty
+     *
+     * This method checks to see that the collection of offerings is not empty.
+     *
+     * @throws InvalidInputException if the collection of offerings is empty
+     * @author : Grant Fass
+     * @since : Wed, 7 Apr 2021
+     */
+    private void verifyOfferings() throws InvalidInputException {
+        if (offerings.isEmpty()) {
+            throw new InvalidInputException("There are no offerings loaded right now");
+        }
+    }
+
+    /**
+     * This method will verify that the user transcript has been loaded
+     *
+     * //TODO:
+     *
+     * @throws InvalidInputException //TODO
+     * @author : Grant Fass
+     * @since : Wed, 7 Apr 2021
+     */
+    private void verifyTranscript() throws InvalidInputException {
+        //TODO:
+    }
+
+    /**
      * This method process course recommendations and returns them as a String
      *
      * This method does not update the GUI directly so it does not need to call ensureFXThread
@@ -199,70 +313,29 @@ public class Model {
         4. Build outputs
             prioritize courses that are required for a lot of others
          */
-        Set<String> potentialMajors = new HashSet<>(Arrays.asList("EE", "BSE PT", "CE", "UX", "AE", "NU", "CS", "AS", "SE", "MIS", "ME", "BME", "IE", "ME A"));
         //TODO: FIXME && TEST_ME
-        //TODO: update errors
-        if (major == null || major.isBlank() || major.isEmpty()) {
-            throw new InvalidInputException("The specified major is missing or blank");
-        } else if (offerings.isEmpty()) {
-            throw new InvalidInputException("There are no offerings loaded right now");
-        } else if (!potentialMajors.contains(major)) { // TODO: check if this can be simplified or more dynamic
-            throw new InvalidInputException(String.format("The specified major %s was not found within the listing of acceptable majors which means it was not input correctly", major));
-        } else if (false) {
-            //TODO: throw error if transcript is empty
-        } else {
-            //TODO: write method.
-            ArrayList<Offering> fallOfferings = new ArrayList<>();
-            ArrayList<Offering> winterOfferings = new ArrayList<>();
-            ArrayList<Offering> springOfferings = new ArrayList<>();
-            //collect the offerings by term available for the major
-            try {
-                for (Offering offering : offerings) {
-                    if (offering.getAvailability(major).getSeason().equalsIgnoreCase("fall")) {
-                        fallOfferings.add(offering);
-                    } else if (offering.getAvailability(major).getSeason().equalsIgnoreCase("winter")) {
-                        winterOfferings.add(offering);
-                    } else if (offering.getAvailability(major).getSeason().equalsIgnoreCase("spring")) {
-                        springOfferings.add(offering);
-                    } else {
-                        //TODO: log that skipping?
-                        //this means the course is not available for the specified major
-                    }
-                }
-            } catch (NullPointerException e) {
-                throw new InvalidInputException(String.format("The specified major %s was not found which means it was not input correctly", major));
-            }
+        verifyMajor();
+        verifyOfferings();
+        verifyTranscript();
+
             /*
             TODO: REPLACE ME with code for transcripts
              assume fall for testing
              manually insert completed courses for testing
              FassG completed courses not including WIP.
              */
-            String targetTerm = "spring";
-            Set<String> completedCourses = new HashSet<>(Arrays.asList("CS1011", "HU445", "HU446", "MA136", "MA262",
-                    "GS1001", "GS1003", "CH200", "GS1002", "BA2220", "CS1021", "MA137", "PH2011", "BA3444", "CS2852",
-                    "MA2314", "PH2021", "CS2911", "HU4480", "MA2310", "MA2323", "SE2030", "SS415AM", "CS2300", "CS2711",
-                    "SE2811"));
+        String targetTerm = "spring";
+        Set<String> completedCourses = new HashSet<>(Arrays.asList("CS1011", "HU445", "HU446", "MA136", "MA262",
+                "GS1001", "GS1003", "CH200", "GS1002", "BA2220", "CS1021", "MA137", "PH2011", "BA3444", "CS2852",
+                "MA2314", "PH2021", "CS2911", "HU4480", "MA2310", "MA2323", "SE2030", "SS415AM", "CS2300", "CS2711",
+                "SE2811"));
 
-            //start computing recommendations
-            ArrayList<Offering> uncompleted;
-            switch (targetTerm) {
-                case "fall":
-                    uncompleted = getUncompletedOfferings(fallOfferings, completedCourses);
-                    break;
-                case "winter":
-                    uncompleted = getUncompletedOfferings(winterOfferings, completedCourses);
-                    break;
-                case "spring":
-                    uncompleted = getUncompletedOfferings(springOfferings, completedCourses);
-                    ArrayList<Course> temp = getCurriculaExcludingCompletedCourses(completedCourses);
-                    break;
-                default:
-                    //do math to guess the next term coming up
-            }
+        //start computing recommendations
+        ArrayList<Offering> offeringsForTerm = getCourseOfferings(false, false, true);
+        ArrayList<Offering> uncompleted = getUncompletedOfferings(offeringsForTerm, completedCourses);
+        ArrayList<Course> temp = getCurriculaExcludingCompletedCourses(completedCourses);
 
-            System.out.print("");
-        }
+        System.out.print("");
 
 
         return "";
