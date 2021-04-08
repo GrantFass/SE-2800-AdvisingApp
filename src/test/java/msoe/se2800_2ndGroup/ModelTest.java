@@ -19,11 +19,20 @@ import static org.junit.jupiter.api.Assertions.*;
  * Description:
  * * This class contains tests for the Model.java class
  * The ModelTest class is responsible for:
+<<<<<<< HEAD
+ * * <...>
+ * * <...>
+ * * <...>
+ * * <...>
+ * Modification Log:
+ * * File Created by Grant on Saturday, 20 March 2021
+=======
  * * testing the methods defined in Model.java
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
  * * Create test for the storeMajor method by Grant on Saturday, 20 March 2021
  * * Create tests for the default course data locations by Grant Fass on Fri, 26 Mar 2021
+>>>>>>> 8461cec82d2990a806833a435d9e4fc049415e9e
  * <p>
  * Copyright (C): TBD
  *

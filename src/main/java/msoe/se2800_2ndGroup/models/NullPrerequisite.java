@@ -14,11 +14,14 @@
  *     - handling courses that have no prerequisite
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - equals added by Hunter Turcin on 2021-03-31
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Project Name: Advising App
@@ -31,11 +34,22 @@ import java.util.Collection;
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
  *     - equals added by Hunter Turcin on 2021-03-31
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  */
 public class NullPrerequisite implements Prerequisite {
     @Override
     public boolean equals(Object object) {
         return object instanceof NullPrerequisite;
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "NullPrerequisite()";
     }
 
     @Override
