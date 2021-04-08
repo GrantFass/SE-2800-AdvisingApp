@@ -26,6 +26,7 @@ import java.util.Scanner;
  * * Added exception to catch block since new exception is thrown by loading course data by Grant Fass on Tue, 30 Mar 2021
  * * Load course data is now passed a scanner by Grant Fass on Tue, 30 Mar 2021
  * * Load course data on program start by Grant Fass on Tue, 6 Apr 2021
+ * * Implement CLI entry to view course offerings by term by Grant Fass on Wed, 7 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  *
@@ -108,6 +109,25 @@ public class CLI {
                     case "load pdf" -> {
                         ImportTranscript importTranscript = new ImportTranscript();
                         importTranscript.readInFile();
+                    }
+                    case "view course offerings" -> {
+                        outputHyphenLine();
+                        boolean fall = false;
+                        boolean winter = false;
+                        boolean spring = false;
+                        System.out.print("Would you like to display fall courses? (y/n): ");
+                        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
+                            fall = true;
+                        }
+                        System.out.print("Would you like to display winter courses? (y/n): ");
+                        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
+                            winter = true;
+                        }
+                        System.out.print("Would you like to display spring courses? (y/n): ");
+                        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
+                            spring = true;
+                        }
+                        System.out.println(model.getCourseOfferingsAsString(fall, winter, spring));
                     }
                 }
             }
