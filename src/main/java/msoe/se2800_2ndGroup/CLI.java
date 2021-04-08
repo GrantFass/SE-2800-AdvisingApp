@@ -26,6 +26,7 @@ import java.util.Scanner;
  * * Added exception to catch block since new exception is thrown by loading course data by Grant Fass on Tue, 30 Mar 2021
  * * Load course data is now passed a scanner by Grant Fass on Tue, 30 Mar 2021
  * * Load course data on program start by Grant Fass on Tue, 6 Apr 2021
+ * * Implement CLI entry to view course offerings by term by Grant Fass on Wed, 7 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  *

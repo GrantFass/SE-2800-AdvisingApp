@@ -39,6 +39,7 @@ import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
  * * Transferred methods from Model.java to FileIO.java by Grant Fass on Tue, 30 Mar 2021
  * * Create new method to load course data that is passed a scanner by Grant Fass on Tue, 30 Mar 2021
  * * Create method to load course data on startup by Grant Fass on Tue, 6 Apr 2021
+ * * Implement methods to get and view course offerings by term by Grant Fass on Wed, 7 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  * Copyright (C): TBD
@@ -117,6 +118,7 @@ public class Model {
     }
 
     /**
+     * TODO: test me
      * This method returns the curriculum when called.
      * This method will return an empty ArrayList whenever curricula has not been loaded
      * @return the curricula stored in the program
@@ -125,13 +127,11 @@ public class Model {
      * TODO: FIX METHOD SIGNATURE
      */
     public Collection<Curriculum> getCurricula() {
-        if (curricula == null) {
-            return new ArrayList<>();
-        }
-        return curricula;
+        return Objects.requireNonNullElseGet(curricula, ArrayList::new);
     }
 
     /**
+     * TODO: test me
      * This method returns the course offerings when called.
      * This method will return an empty ArrayList whenever the offerings have not been loaded
      * @return the course offerings stored in the program
@@ -140,13 +140,11 @@ public class Model {
      * TODO: FIX METHOD SIGNATURE
      */
     public Collection<Offering> getOfferings() {
-        if (offerings == null) {
-            return new ArrayList<>();
-        }
-        return offerings;
+        return Objects.requireNonNullElseGet(offerings, ArrayList::new);
     }
 
     /**
+     * TODO: test me
      * This method returns the prerequisite courses when called.
      * This method will return an empty ArrayList whenever the prerequisite courses have not been loaded
      * @return the prerequisite courses stored in the program
@@ -155,13 +153,11 @@ public class Model {
      * TODO: FIX METHOD SIGNATURE
      */
     public Collection<Course> getPrerequisiteCourses() {
-        if (prerequisiteCourses == null) {
-            return new ArrayList<>();
-        }
-        return prerequisiteCourses;
+        return Objects.requireNonNullElseGet(prerequisiteCourses, ArrayList::new);
     }
 
     /**
+     * TODO: test me
      * This method collects all of the offerings available in for the terms that are given
      *
      * This method goes through all of the offerings that were stored during course data loading.
@@ -188,9 +184,6 @@ public class Model {
                     offerings.add(offering);
                 } else if (offering.getAvailability(major).getSeason().equalsIgnoreCase("spring") && displaySpring) {
                     offerings.add(offering);
-                } else {
-                    //TODO: log that skipping?
-                    //this means the course is not available for the specified major
                 }
             }
         } catch (NullPointerException e) {
@@ -200,6 +193,7 @@ public class Model {
     }
 
     /**
+     * TODO: test me
      * This method returns the list of offerings for the input terms as a readable string.
      *
      * This method gets the ArrayList of offerings for the input terms.
@@ -223,12 +217,32 @@ public class Model {
         builder.append(String.format("%7s %2s | %40s : %s\n", "CODE", "CR", "DESCRIPTION", "PREREQUISITES"));
         for (Offering o: courseOfferings) {
             //format is CODE CREDITS | DESCRIPTION : PRERECS
-            builder.append(String.format("%7s %2s | %40s : %s\n", o.getCourse().code(), o.getCourse().credits(), o.getCourse().description(), o.getCourse().prerequisite()));
+            builder.append(getOfferingAsString(o));
         }
         return builder.toString();
     }
 
     /**
+     * TODO: test me
+     * This method extracts the important information from a given offering and returns a string containing the values
+     *
+     * This method uses String formatting to display a passed offering in a readable format.
+     * The format is CODE CREDITS | DESCRIPTION : PREREQUISITES.
+     * @param offering the offering to extract information from
+     * @return an offerings information in a string format
+     * @throws InvalidInputException if the offering was null
+     * @author : Grant Fass
+     * @since : Wed, 7 Apr 2021
+     */
+    private String getOfferingAsString(Offering offering) throws InvalidInputException {
+        if (offering == null) {
+            throw new InvalidInputException("The input offering was null");
+        }
+        return String.format("%7s %2s | %40s : %s\n", offering.getCourse().code(), offering.getCourse().credits(), offering.getCourse().description(), offering.getCourse().prerequisite());
+    }
+
+    /**
+     * TODO: test me
      * this method will check to see if the stored major is valid
      *
      * This method will first check that the stored major is not null, blank, or empty; throwing an error if it is.
@@ -248,6 +262,7 @@ public class Model {
     }
 
     /**
+     * TODO: test me
      * This method will verify that the course data offerings is loaded and is not empty
      *
      * This method checks to see that the collection of offerings is not empty.
@@ -263,6 +278,8 @@ public class Model {
     }
 
     /**
+     * TODO: test me
+     * TODO: implement me
      * This method will verify that the user transcript has been loaded
      *
      * //TODO:
@@ -276,6 +293,7 @@ public class Model {
     }
 
     /**
+     * TODO: test me
      * This method process course recommendations and returns them as a String
      *
      * This method does not update the GUI directly so it does not need to call ensureFXThread
@@ -286,7 +304,6 @@ public class Model {
      * @since : Sat, 20 Mar 2021
      */
     public String getCourseRecommendation() throws InvalidInputException {
-        //TODO: divide me into methods
         /*
         Going to need to read through each line in the offerings data structure
         each offering has a course and a majorAvailability
@@ -342,6 +359,7 @@ public class Model {
     }
 
     /**
+     * TODO: test me
      * this method takes the offerings for a given term and the completed courses up till now and returns the list of offerings not yet taken
      *
      * this method goes through all of the available offerings for a given term.
@@ -366,6 +384,7 @@ public class Model {
 
     //TODO: Add javadocs
     /*
+     * TODO: test me
     determine if this method is even necessary once the getUnsatisfiedItems method can be used.
      */
     private ArrayList<Course> getCurriculaExcludingCompletedCourses(Set<String> completedCourses) throws InvalidInputException {
@@ -499,6 +518,7 @@ public class Model {
     }
 
     /**
+     * TODO: test me
      * This method loads all of the course data
      *
      * This model loads the three required CSV files.
