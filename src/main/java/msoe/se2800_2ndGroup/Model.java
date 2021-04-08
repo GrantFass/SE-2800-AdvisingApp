@@ -12,6 +12,9 @@ import msoe.se2800_2ndGroup.models.Offering;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Scanner;
 import java.util.*;
 
 import static msoe.se2800_2ndGroup.FileIO.getUserInputFileLocation;

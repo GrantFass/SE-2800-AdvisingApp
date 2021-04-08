@@ -34,6 +34,15 @@ package msoe.se2800_2ndGroup.models;
  * - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  */
 public record Course(String code, int credits, Prerequisite prerequisite, String description) implements CurriculumItem {
+    /**
+     * Create a course where only the code is known.
+     *
+     * @param code the course code
+     */
+    public Course(String code) {
+        this(code, 0, new NullPrerequisite(), "");
+    }
+
     @Override
     public boolean satisfiedBy(Course course) {
         return code.equals(course.code);
