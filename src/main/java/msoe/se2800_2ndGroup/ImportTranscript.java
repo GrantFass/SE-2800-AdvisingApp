@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import msoe.se2800_2ndGroup.models.Course;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
@@ -35,6 +36,8 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * @since : Saturday, 20 March 2021
  */
 public class ImportTranscript {
+    private ArrayList<Course> courses = new ArrayList<Course>();
+
     public void readInFile(Scanner scanner) {
         try {
             //TODO: Verify this is fixed after feature 16 is merged in
@@ -94,6 +97,12 @@ public class ImportTranscript {
                     if (findRemovableWords.get(x).matches(".*\\d.*")) {
                         courseCodes.add(findRemovableWords.get(x));
                     }
+                }
+
+                //Course objects created
+                for (int i = 0; i < courseCodes.size(); i++){
+                    Course course = new Course(courseCodes.get(i));
+                    courses.add(course);
                 }
 
                 for (int k = 0; k < findRemovableWords.size(); ++k) {
