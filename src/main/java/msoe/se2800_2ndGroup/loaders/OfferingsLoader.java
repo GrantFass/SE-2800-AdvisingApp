@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -28,6 +27,7 @@ import java.util.HashMap;
  * Modification Log:
  * * File Created by turcinh on Sunday, 29 March 2021
  * * Modify javadoc for constructor slightly by Grant Fass on Tue, 30 Mar 2021
+ * * code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  * <p>
  * Copyright (C): TBD
  *
@@ -50,12 +50,17 @@ public class OfferingsLoader {
      * @since : Mon, 29 Mar 2021
      */
     public OfferingsLoader(Reader reader, Collection<Course> courses) throws IOException {
-        this.parser = CSVFormat.DEFAULT.parse(reader);
+        this.parser = CSVFormat.DEFAULT.withHeader().parse(reader);
         this.courses = courses;
     }
 
+    /**
+     * Create model classes from the offerings file.
+     *
+     * @return all offerings
+     */
     public Collection<Offering> load() {
-        final var majors = parser.getHeaderNames();
+        final var majors = new ArrayList<>(parser.getHeaderNames());
         majors.remove(COURSE);
         final var offerings = new ArrayList<Offering>();
 
@@ -64,7 +69,7 @@ public class OfferingsLoader {
             Course course = null;
 
             for (final var searchCourse : courses) {
-                if (searchCourse.getCode().equals(code)) {
+                if (searchCourse.code().equals(code)) {
                     course = searchCourse;
                     break;
                 }
@@ -73,8 +78,8 @@ public class OfferingsLoader {
             final var offering = new Offering(course);
 
             for (final var major : majors) {
-                final var termNumber = Integer.parseInt(record.get(major));
-                final var term = Term.fromId(termNumber);
+                final var termId = record.get(major);
+                final var term = Term.fromId(termId);
 
                 offering.putAvailability(major, term);
             }

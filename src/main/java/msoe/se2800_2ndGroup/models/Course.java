@@ -14,6 +14,8 @@
  *     - associating a course code with a set of prerequisites
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
@@ -25,51 +27,15 @@ package msoe.se2800_2ndGroup.models;
  * Original Author: Hunter Turcin
  * Description: A course that may or may not depend on other courses.
  * The Course class is responsible for:
- *     - associating a course code with a set of prerequisites
+ * - associating a course code with a set of prerequisites
  * Modification Log:
- *     - File Created by Hunter Turcin on 2021-03-16
+ * - File Created by Hunter Turcin on 2021-03-16
+ * - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ * - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  */
-public class Course implements CurriculumItem {
-    private final String code;
-    private final int credits;
-    private final Prerequisite prerequisite;
-    private final String description;
-
-    /**
-     * Create a new course.
-     *
-     * @param code course registration code
-     * @param credits credit-hours per term
-     * @param prerequisite any prerequisites
-     * @param description human-readable description of course
-     * @author Hunter Turcin
-     * @since Sun, 16 Mar 2021
-     */
-    public Course(String code, int credits, Prerequisite prerequisite, String description) {
-        this.code = code;
-        this.credits = credits;
-        this.prerequisite = prerequisite;
-        this.description = description;
-    }
-
+public record Course(String code, int credits, Prerequisite prerequisite, String description) implements CurriculumItem {
     @Override
     public boolean satisfiedBy(Course course) {
-        return code.equals(course.getCode());
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public int getCredits() {
-        return credits;
-    }
-
-    public Prerequisite getPrerequisite() {
-        return prerequisite;
-    }
-
-    public String getDescription() {
-        return description;
+        return code.equals(course.code);
     }
 }

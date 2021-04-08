@@ -9,21 +9,31 @@ class SinglePrerequisiteTest {
 
     @Test
     void testCourseDoesNotSatisfyOwnPrerequisite() {
-        assertFalse(bi1020.getPrerequisite().satisfiedBy(List.of("BI1020")));
+        assertFalse(bi1020.prerequisite().satisfiedBy(List.of("BI1020")));
     }
 
     @Test
     void testNotSatisfiedByBlankList() {
-        assertFalse(bi1020.getPrerequisite().satisfiedBy(List.of()));
+        assertFalse(bi1020.prerequisite().satisfiedBy(List.of()));
     }
 
     @Test
     void testSatisfiedBySingleCourseList() {
-        assertTrue(bi1020.getPrerequisite().satisfiedBy(List.of("BI1010")));
+        assertTrue(bi1020.prerequisite().satisfiedBy(List.of("BI1010")));
     }
 
     @Test
     void testSatisfiedByMultipleCourseList() {
-        assertTrue(bi1020.getPrerequisite().satisfiedBy(List.of("BI1030", "BI1010")));
+        assertTrue(bi1020.prerequisite().satisfiedBy(List.of("BI1030", "BI1010")));
+    }
+
+    @Test
+    void testEquals() {
+        assertEquals(new SinglePrerequisite("BI1010"), bi1020.prerequisite());
+    }
+
+    @Test
+    void testNotEquals() {
+        assertNotEquals(new SinglePrerequisite("CH200"), bi1020.prerequisite());
     }
 }

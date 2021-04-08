@@ -7,7 +7,6 @@ import msoe.se2800_2ndGroup.models.Elective;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -30,6 +29,7 @@ import java.util.HashMap;
  * Modification Log:
  * * File Created by turcinh on Sunday, 29 March 2021
  * * Modify javadoc for constructor slightly by Grant Fass on Tue, 30 Mar 2021
+ * * code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  * <p>
  * Copyright (C): TBD
  *
@@ -49,10 +49,15 @@ public class CurriculumLoader {
      * @since : Mon, 29 Mar 2021
      */
     public CurriculumLoader(Reader reader, Collection<Course> courses) throws IOException {
-        this.parser = CSVFormat.DEFAULT.parse(reader);
+        this.parser = CSVFormat.DEFAULT.withHeader().parse(reader);
         this.courses = courses;
     }
 
+    /**
+     * Create model classes from a curriculum file.
+     *
+     * @return all curricula
+     */
     public Collection<Curriculum> load() {
         // major to curriculum items
         final var map = new HashMap<String, ArrayList<CurriculumItem>>();
@@ -69,17 +74,19 @@ public class CurriculumLoader {
                 CurriculumItem item = null;
 
                 for (final var course : courses) {
-                    if (course.getCode().equals(code)) {
+                    if (course.code().equals(code)) {
                         item = course;
                         break;
                     }
                 }
 
-                if (item == null) {
+                if (item == null && !code.isEmpty()) {
                     item = new Elective(code);
                 }
 
-                map.get(major).add(item);
+                if (item != null) {
+                    map.get(major).add(item);
+                }
             }
         }
 

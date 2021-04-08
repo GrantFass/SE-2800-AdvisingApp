@@ -14,11 +14,14 @@
  *     - verifying it has been satisfied by an appropriate course
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  * Copyright (C): 2021
  */
 package msoe.se2800_2ndGroup.models;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -32,6 +35,8 @@ import java.util.function.Predicate;
  *     - verifying it has been satisfied by an appropriate course
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
+ *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
+ *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  */
 public class Elective implements CurriculumItem {
     // Information based on https://csse.msoe.us/se/se35/
@@ -53,12 +58,28 @@ public class Elective implements CurriculumItem {
         this.code = code;
         this.predicate = switch (code) {
             case "FREE" -> course -> true;
-            case "SCIEL" -> course -> sciencePrefixes.stream().anyMatch(prefix -> course.getCode().startsWith(prefix)) && course.getCredits() == 4;
-            case "MASCIEL" -> course -> mathSciencePrefixes.stream().anyMatch(prefix -> course.getCode().startsWith(prefix));
-            case "HUSS" -> course -> humanitiesSocialSciencePrefixes.stream().anyMatch(prefix -> course.getCode().startsWith(prefix));
-            case "TECHEL" -> course -> course.getCode().startsWith("TC");
+            case "SCIEL" -> course -> sciencePrefixes.stream().anyMatch(prefix -> course.code().startsWith(prefix)) && course.credits() == 4;
+            case "MASCIEL" -> course -> mathSciencePrefixes.stream().anyMatch(prefix -> course.code().startsWith(prefix));
+            case "HUSS" -> course -> humanitiesSocialSciencePrefixes.stream().anyMatch(prefix -> course.code().startsWith(prefix));
+            case "TECHEL" -> course -> course.code().startsWith("TC");
+            case "BUSEL" -> course -> course.code().startsWith("BS");//TODO: check me @HUNTER T.
             default -> throw new IllegalArgumentException("unknown elective code: " + code);
         };
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Elective other && code.equals(other.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(code);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Elective(code=\"%s\")", code);
     }
 
     @Override

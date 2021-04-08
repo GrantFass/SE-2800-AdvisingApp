@@ -54,7 +54,7 @@ public class PrerequisitesLoader {
      * @since : Sun, 21 Mar 2021
      */
     public PrerequisitesLoader(Reader reader) throws IOException {
-        parser = CSVFormat.DEFAULT.parse(reader);
+        parser = CSVFormat.DEFAULT.withHeader().parse(reader);
     }
 
     /**
@@ -89,7 +89,7 @@ public class PrerequisitesLoader {
 
     private Course loadCourse(CSVRecord record) {
         final var code = record.get(COURSE);
-        final var credits = Integer.parseInt(CREDITS);
+        final var credits = Integer.parseInt(record.get(CREDITS));
         final var prerequisites = loadPrerequisite(record.get(PREREQS));
         final var description = record.get(DESCRIPTION);
 
@@ -98,20 +98,33 @@ public class PrerequisitesLoader {
 
     private Prerequisite loadPrerequisite(String line) {
         // AND has precedence over OR.
-        final var andCodes = line.split(" ");
+        final var andCodes = line.split("\\s");
 
         Prerequisite outer = new NullPrerequisite();
 
         for (final var andCode : andCodes) {
-            final var orCodes = line.split("\\|"); // match only pipe characters
+            final var orCodes = andCode.split("\\|"); // match only pipe characters
 
-            Prerequisite inner = new NullPrerequisite();
+            if (orCodes.length > 1) {
+                Prerequisite inner = new OrPrerequisite(new SinglePrerequisite(orCodes[0]), new SinglePrerequisite(orCodes[1]));
 
-            for (final var orCode : orCodes) {
-                inner = new OrPrerequisite(inner, new SinglePrerequisite(orCode));
+                for (var i = 2; i < orCodes.length; i++) {
+                    final var orCode = orCodes[i];
+                    inner = new OrPrerequisite(inner, new SinglePrerequisite(orCode));
+                }
+
+                if (outer instanceof NullPrerequisite) {
+                    outer = inner;
+                } else {
+                    outer = new AndPrerequisite(outer, inner);
+                }
+            } else if (!orCodes[0].isEmpty()) {
+                if (outer instanceof NullPrerequisite) {
+                    outer = new SinglePrerequisite(orCodes[0]);
+                } else {
+                    outer = new AndPrerequisite(outer, new SinglePrerequisite(orCodes[0]));
+                }
             }
-
-            outer = new AndPrerequisite(outer, inner);
         }
 
         return outer;
