@@ -2,7 +2,6 @@ package msoe.se2800_2ndGroup;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
@@ -26,6 +25,7 @@ import java.util.Scanner;
  * Modification Log:
  * * File Created by Grant on Tuesday, 30 March 2021
  * * Transferred methods from Model.java to FileIO.java by Grant Fass on Tue, 30 Mar 2021
+ * * Create new method to query user to use default file location that is passed a scanner
  * <p>
  * Copyright (C): TBD
  *
@@ -77,6 +77,27 @@ public class FileIO {
      * This method determines if the default file location should be used or not
      *
      * This method queries the user about the file source to use
+     * The method then retrieves user input from the passed in scanner
+     *
+     * @param in the scanner used to query the user
+     * @return true if default files should be used, false otherwise
+     * @author : Grant Fass
+     * @since : Thu, 1 Apr 2021
+     */
+    public static boolean useDefaultFilesQuery(Scanner in) {
+        boolean useDefault = true;
+        System.out.println("Would you like to use the default file location (y/n)?");
+        String response = in.hasNext() ? in.nextLine().toLowerCase().trim() : "";
+        if (response.equals("n") || response.equals("no")) {
+            useDefault = false;
+        }
+        return useDefault;
+    }
+
+    /**
+     * This method determines if the default file location should be used or not
+     *
+     * This method queries the user about the file source to use
      * The method then retrieves user input from the specified input source
      *
      * Sources:
@@ -119,6 +140,40 @@ public class FileIO {
      */
     public static boolean useDefaultFilesQuery() {
         return useDefaultFilesQuery(System.in, System.out);
+    }
+
+    /**
+     * This method queries the user for the location of a specified file and returns it
+     *
+     * This method uses the passed in scanner to query the user to retrieve
+     * the location of the file specified by the parameter String in the method header.
+     * The location of the user input file is then validated.
+     * If the validation fails then an Exception is thrown.
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/6416179"}</a>: Helped determine how to
+     *              pass in an input stream to better facilitate testing.
+     *
+     * @param nameOfFile the name of the file to query the user to enter the location for
+     * @param in An existing scanner to use to query the user for input
+     * @throws Model.InvalidInputException if there is a problem validating the file location input by the user
+     * @return the path to the file as a String or an error if there is a problem validating the location
+     * @author : Grant Fass
+     * @since : Thu, 1 Apr 2021
+     */
+    public static String getUserInputFileLocation(String nameOfFile, Scanner in) throws Model.InvalidInputException {
+        String location = "";
+        //query user and get file
+        System.out.format("Please enter the location to retrieve the %s file from: ", nameOfFile);
+        location = in.nextLine().trim();
+        //validate
+        if (!validateFileLocation(location, ".csv")) {
+            throw new Model.InvalidInputException("The specified location failed validation");
+        }
+        if (!location.isEmpty() && !location.isBlank()) {
+            return location;
+        }
+        throw new Model.InvalidInputException("the specified location is empty or blank");
     }
 
     /**
