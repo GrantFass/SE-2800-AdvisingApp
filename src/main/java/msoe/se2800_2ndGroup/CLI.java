@@ -98,7 +98,7 @@ public class CLI {
                     }
                     case "load pdf" -> {
                         ImportTranscript importTranscript = new ImportTranscript();
-                        importTranscript.readInFile();
+                        importTranscript.readInFile(in);
                     }
                 }
             }
