@@ -62,6 +62,7 @@ public class Elective implements CurriculumItem {
             case "MASCIEL" -> course -> mathSciencePrefixes.stream().anyMatch(prefix -> course.code().startsWith(prefix));
             case "HUSS" -> course -> humanitiesSocialSciencePrefixes.stream().anyMatch(prefix -> course.code().startsWith(prefix));
             case "TECHEL" -> course -> course.code().startsWith("TC");
+            case "BUSEL" -> course -> course.code().startsWith("BA");
             default -> throw new IllegalArgumentException("unknown elective code: " + code);
         };
     }
