@@ -1,13 +1,12 @@
 package msoe.se2800_2ndGroup;
 
 import javafx.scene.control.Alert;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import msoe.se2800_2ndGroup.models.Course;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
@@ -37,52 +36,88 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * @since : Saturday, 20 March 2021
  */
 public class ImportTranscript {
-    public void readInFile(){
-        System.out.println("Do you want to read in a file (\"Y/N\")?");
-        Scanner scanner = new Scanner(System.in);
-        String answer = scanner.nextLine();
-        while(!(answer.equalsIgnoreCase("Y") || answer.equalsIgnoreCase("N"))){
-            System.out.println("Please enter a \"Y\" or \"N\"");
-        }
-        if(answer.equalsIgnoreCase("Y")) {
-            try {
-                System.out.println("Please enter path name:");
-                String pathName = scanner.nextLine();
-                File file = new File(pathName);
+    private ArrayList<Course> courses = new ArrayList<Course>();
+
+    public void readInFile(Scanner scanner) {
+        try {
+            //TODO: Verify this is fixed after feature 16 is merged in
+            String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner);
+            File file = new File(pathName);
+            //For future use with a GUI
 //                FileChooser fileChooser = new FileChooser();
 //                fileChooser.setTitle("Open Unofficial Transcript PDF");
 //                fileChooser.getExtensionFilters().addAll(
 //                        new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
 //                file = fileChooser.showOpenDialog(new Stage());
-                if (file == null) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "No file was chosen.");
-                    alert.showAndWait();
-                } else {
-                    PDDocument doc = PDDocument.load(file);
-                    String text = new PDFTextStripper().getText(doc);
-                    String[] words = text.split("\n");
-                    String[] ignoreWords = new String[10];
-                    ignoreWords[0] = "DO NOT READ THIS";
-                    ArrayList<String> input = new ArrayList<>();
-                    for(int j=0; j<words.length; j++){
-                        for(int i=0; i<ignoreWords.length; i++) {
-                            if ((!words[j].contains(ignoreWords[0])) && (!input.contains(words[j]))) {
-                                input.add(words[j]);
-                            }
+            if (file == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "No file was chosen.");
+                alert.showAndWait();
+            } else {
+                PDDocument doc = PDDocument.load(file);
+                String text = new PDFTextStripper().getText(doc);
+                String[] words = text.split("\n");
+                String[] ignoreWords = new String[]{"Milwaukee School of Engineering", "Unofficial Transcript",
+                        "ID", "NAME", "SSN", "DATE PRINTED", "Undergraduate Division", "Course", "Number",
+                        "Transfer Work", "Organization", "Term Totals", "Cumulative Totals", "Total Credits Earned",
+                        "Quarter", "Page", "Major Totals", "* * *   End of Academic Record * * *", "DEGREE SOUGHT",
+                        "Qual", "Pts GPA", "Cred", "HrsGrade"};
+                ArrayList<String> input = new ArrayList<>();
+                ArrayList<String> findRemovableWords = new ArrayList<>();
+                //TODO: potentially replace with the enhanced for loop.
+                boolean accessed = false;
+                boolean accessable = false;
+                for (int j = 0; j < words.length; j++) {
+                    accessable = false;
+                    //TODO: Move interior for loop into method
+                    for (int i = 0; i < ignoreWords.length; i++) {
+                        if (words[j].contains(ignoreWords[i])) {
+                            accessable = true;
                         }
                     }
-                    for(int k = 0; k<input.size(); ++k){
-                        System.out.println(input.get(k));
+                    if (accessable) {
+                        words[j] = " ";
+                    } else {
+                        input.add(words[j]);
                     }
-
                 }
-            } catch (IllegalArgumentException notValid) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Not a valid file name.");
-                alert.showAndWait();
-            } catch (IOException event){
-                event.printStackTrace();
-            }
+                words = new String[0];
+                for (int x = 0; x < input.size(); x++) {
+                    String[] removableWords = input.get(x).split(" ");
+                    for (int y = 0; y < removableWords.length; y++) {
+                        if (!removableWords[y].contains(".") && !removableWords[y].contains("--")) {
+                            findRemovableWords.add(removableWords[y]);
+                        }
+                    }
+                }
+                //input cleared to avoid storing data
+                input.clear();
+                //HERE'S JUST COURSE CODES!!!
+                ArrayList<String> courseCodes = new ArrayList<>();
+                for (int x = 0; x < findRemovableWords.size(); x++) {
+                    if (findRemovableWords.get(x).matches(".*\\d.*")) {
+                        courseCodes.add(findRemovableWords.get(x));
+                    }
+                }
 
-    }
+                //Course objects created
+                for (int i = 0; i < courseCodes.size(); i++){
+                    Course course = new Course(courseCodes.get(i));
+                    courses.add(course);
+                }
+
+                for (int k = 0; k < findRemovableWords.size(); ++k) {
+                    System.out.println(findRemovableWords.get(k));
+                }
+                System.out.println("Successfully read in file!");
+            }
+        } catch (IllegalArgumentException notValid) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Not a valid file name.");
+            alert.showAndWait();
+        } catch (IOException event) {
+            event.printStackTrace();
+        } catch (Model.InvalidInputException e) {
+            System.out.println(e.getMessage());
+        }
+        //TODO: file errors reading in
     }
 }
