@@ -41,7 +41,7 @@ public class ImportTranscript {
     public void readInFile(Scanner scanner) {
         try {
             //TODO: Verify this is fixed after feature 16 is merged in
-            String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", scanner);
+            String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner);
             File file = new File(pathName);
             //For future use with a GUI
 //                FileChooser fileChooser = new FileChooser();

@@ -161,13 +161,13 @@ public class FileIO {
      * @author : Grant Fass
      * @since : Thu, 1 Apr 2021
      */
-    public static String getUserInputFileLocation(String nameOfFile, Scanner in) throws Model.InvalidInputException {
+    public static String getUserInputFileLocation(String nameOfFile, String fileExtension, Scanner in) throws Model.InvalidInputException {
         String location = "";
         //query user and get file
         System.out.format("Please enter the location to retrieve the %s file from: ", nameOfFile);
         location = in.nextLine().trim();
         //validate
-        if (!validateFileLocation(location, ".csv")) {
+        if (!validateFileLocation(location, fileExtension)) {
             throw new Model.InvalidInputException("The specified location failed validation");
         }
         if (!location.isEmpty() && !location.isBlank()) {
