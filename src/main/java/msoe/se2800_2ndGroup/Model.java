@@ -344,7 +344,6 @@ public class Model {
              manually insert completed courses for testing
              FassG completed courses not including WIP.
              */
-
         String targetTerm = "spring";
         Set<String> completedCourses = new HashSet<>(Arrays.asList("CS1011", "HU445", "HU446", "MA136", "MA262",
                 "GS1001", "GS1003", "CH200", "GS1002", "BA2220", "CS1021", "MA137", "PH2011", "BA3444", "CS2852",
@@ -552,9 +551,9 @@ public class Model {
         //if the user wants to use custom locations then query them to retrieve the locations and validate the files
         if (!useDefaultFiles) {
             //get new locations and validate
-            curriculumLocation = getUserInputFileLocation("curriculum.csv");
-            offeringsLocation = getUserInputFileLocation("offerings.csv");
-            prerequisitesLocation = getUserInputFileLocation("prerequisites.csv");
+            curriculumLocation = getUserInputFileLocation("curriculum.csv", ".csv", in);
+            offeringsLocation = getUserInputFileLocation("offerings.csv", ".csv", in);
+            prerequisitesLocation = getUserInputFileLocation("prerequisites.csv", ".csv", in);
         }
 
         return loadCoursesFromSpecifiedLocations(curriculumLocation, offeringsLocation, prerequisitesLocation);
