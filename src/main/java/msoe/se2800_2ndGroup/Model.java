@@ -575,9 +575,9 @@ public class Model {
         //if the user wants to use custom locations then query them to retrieve the locations and validate the files
         if (!useDefaultFiles) {
             //get new locations and validate
-            curriculumLocation = getUserInputFileLocation("curriculum.csv");
-            offeringsLocation = getUserInputFileLocation("offerings.csv");
-            prerequisitesLocation = getUserInputFileLocation("prerequisites.csv");
+            curriculumLocation = getUserInputFileLocation("curriculum.csv", ".csv", in);
+            offeringsLocation = getUserInputFileLocation("offerings.csv", ".csv", in);
+            prerequisitesLocation = getUserInputFileLocation("prerequisites.csv", ".csv", in);
         }
 
         return loadCoursesFromSpecifiedLocations(curriculumLocation, offeringsLocation, prerequisitesLocation);
