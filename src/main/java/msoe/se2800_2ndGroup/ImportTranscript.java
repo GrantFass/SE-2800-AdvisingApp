@@ -38,7 +38,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 public class ImportTranscript {
     private ArrayList<Course> courses = new ArrayList<Course>();
 
-    public void readInFile(Scanner scanner) {
+    public ArrayList<Course> readInFile(Scanner scanner) {
         try {
             //TODO: Verify this is fixed after feature 16 is merged in
             String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner);
@@ -119,5 +119,6 @@ public class ImportTranscript {
             System.out.println(e.getMessage());
         }
         //TODO: file errors reading in
+        return courses;
     }
 }
