@@ -2,8 +2,8 @@ package msoe.se2800_2ndGroup;
 
 import msoe.se2800_2ndGroup.models.Course;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -33,7 +33,7 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
      * @param course the course for this node
      */
     GraphNode(Course course) {
-        this(course, new HashSet<>());
+        this(course, new ArrayList<>());
     }
 
     /**
