@@ -58,6 +58,7 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
         builder.append(getStringNode());
 
         for (final var child : children) {
+            builder.append("\n");
             builder.append(child.getStringGraph(depth + 1));
         }
 
