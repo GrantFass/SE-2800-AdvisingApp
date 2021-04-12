@@ -113,7 +113,7 @@ public class CLI {
                     }
                     case "view prerequisites" -> {
                         System.out.println("Enter course: ");
-                        String course = in.next();
+                        String course = in.nextLine();
                         String prerequisites = model.viewPrerequisiteCourses(course);
                         System.out.println(prerequisites);
                         outputHyphenLine();

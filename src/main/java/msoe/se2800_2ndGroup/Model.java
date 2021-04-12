@@ -408,24 +408,37 @@ public class Model {
         //TODO: validate course- maybe create a new method
 
         // replace whitespaces, hyphens, underscores
-        course = course.toUpperCase().replaceAll("\\s+","").replaceAll("_", "").replaceAll("-", "").trim();
+        course = course.toUpperCase().replaceAll("[\\s+]","").replaceAll("_", "").replaceAll("-", "").trim();
 
         Course selected = null;
-        //TODO: search through prereq. list for course, return prereqs.
-        //Below code is just testing- does not work
         for (Course prerequisiteCourse: prerequisiteCourses){
             if (prerequisiteCourse.code().equals(course)){
                 selected = prerequisiteCourse;
+                break;
             } else {
                 selected = null;
             }
-//            System.out.println(prerequisiteCourse.getCode());
-//            System.out.println(prerequisiteCourse.getPrerequisite());
         }
+
+        //TODO: make this cleaner
         if (selected != null) {
-            return selected.prerequisite().toString();
+            String preq = selected.prerequisite().toString();
+            if (selected.prerequisite().getClass().toString().endsWith("AndPrerequisite")) {
+                String leftPrerequisite = preq.substring(preq.indexOf("code=")+5, preq.indexOf(']'));
+                String rightPrequisite = preq.substring(preq.indexOf("code=", preq.indexOf("code=")+1)+5, preq.indexOf(']', preq.indexOf(']')+1));
+                return ("Prerequisites: " + leftPrerequisite + " and " + rightPrequisite);
+            } else if (selected.prerequisite().getClass().toString().endsWith("OrPrerequisite")){
+                String leftPrerequisite = preq.substring(preq.indexOf("code=")+5, preq.indexOf(']'));
+                String rightPrequisite = preq.substring(preq.indexOf("code=", preq.indexOf("code=")+1)+5, preq.indexOf(']', preq.indexOf(']')+1));
+                return ("Prerequisites: " + leftPrerequisite + " or " + rightPrequisite);
+            } else if (selected.prerequisite().getClass().toString().endsWith("SinglePrerequisite")) {
+                String singlePrerequisite = preq.substring(preq.indexOf("code=") + 5, preq.indexOf(']'));
+                return ("Prerequisites: " + singlePrerequisite);
+            } else {
+                return ("Prerequisites: No prerequisite needed");
+            }
         } else {
-            return "No prereqs. found";
+            return "No course found.";
         }
     }
 
