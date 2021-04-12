@@ -404,6 +404,22 @@ public class Model {
         return new ArrayList<>();
     }
 
+    /**
+     * This method searches through the prerequisites list in order to
+     * return the prerequisites for an inputted course.
+     *
+     * This method filters the input String to clear whitespaces, hyphens, and underscores.
+     * This method searches through prerequisites to find a course with a matching code.
+     * This method returns prerequisites based on if a course was found or not.
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://www.w3schools.com/java/java_regex.asp"}</a>: Help determining regex expressions for filtering input String
+     *
+     * @param course the course String that is sought for
+     * @return The prerequisite codes for a given course as a String
+     * @author : Claudia Poptile
+     * @since : Mon, 12 Apr 2021
+     */
     public String viewPrerequisiteCourses(String course){
         //TODO: validate course- maybe create a new method
 
