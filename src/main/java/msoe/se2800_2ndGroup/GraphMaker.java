@@ -43,7 +43,7 @@ public class GraphMaker {
 
     private static Collection<GraphNode> getNodes(Prerequisite prerequisite, Collection<Course> courses) {
         if (prerequisite instanceof NullPrerequisite) {
-            return null;
+            return List.of();
         } else if (prerequisite instanceof SinglePrerequisite single) {
             final var course = getCourse(single.code(), courses);
             return List.of(new GraphNode(course));
