@@ -46,7 +46,8 @@ public class GraphMaker {
             return List.of();
         } else if (prerequisite instanceof SinglePrerequisite single) {
             final var course = getCourse(single.code(), courses);
-            return List.of(new GraphNode(course));
+            final var children = getNodes(course.prerequisite(), courses);
+            return List.of(new GraphNode(course, children));
         } else if (prerequisite instanceof AndPrerequisite and) {
             final var leftNodes = getNodes(and.left(), courses);
             final var rightNodes = getNodes(and.right(), courses);

@@ -14,6 +14,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @RunWith(Parameterized.class)
@@ -42,6 +43,45 @@ public class GraphMakerTest {
                 {
                         TEST_COURSES.get("F"),
                         new GraphNode(TEST_COURSES.get("F")),
+                },
+                // can make a graph with one child
+                {
+                        TEST_COURSES.get("C"),
+                        new GraphNode(
+                                TEST_COURSES.get("C"),
+                                List.of(new GraphNode(TEST_COURSES.get("F")))
+                        ),
+                },
+                // can make a graph with two children
+                {
+                        TEST_COURSES.get("B"),
+                        new GraphNode(
+                                TEST_COURSES.get("B"),
+                                List.of(
+                                        new GraphNode(TEST_COURSES.get("D")),
+                                        new GraphNode(TEST_COURSES.get("E"))
+                                )
+                        ),
+                },
+                // can make a graph with nested children
+                {
+                        TEST_COURSES.get("A"),
+                        new GraphNode(
+                                TEST_COURSES.get("A"),
+                                List.of(
+                                        new GraphNode(
+                                                TEST_COURSES.get("B"),
+                                                List.of(
+                                                        new GraphNode(TEST_COURSES.get("D")),
+                                                        new GraphNode(TEST_COURSES.get("E"))
+                                                )
+                                        ),
+                                        new GraphNode(
+                                                TEST_COURSES.get("C"),
+                                                List.of(new GraphNode(TEST_COURSES.get("F")))
+                                        )
+                                )
+                        ),
                 },
         });
     }
