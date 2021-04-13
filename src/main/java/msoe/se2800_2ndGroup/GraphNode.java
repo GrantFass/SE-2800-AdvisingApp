@@ -53,7 +53,7 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
 
     private String getStringGraph(int depth) {
         final var builder = new StringBuilder();
-        builder.append(" ".repeat(depth));
+        builder.append("  ".repeat(depth));
         builder.append("+ ");
         builder.append(getStringNode());
 

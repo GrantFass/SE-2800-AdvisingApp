@@ -53,7 +53,7 @@ public class GraphNodeTest {
                         List.of(new GraphNode(getCourse("1-1"))),
                         """
                         + ROOT (Root Course)
-                         + 1-1 (Course 1-1)"""
+                          + 1-1 (Course 1-1)"""
                 },
                 // can graph several children with no children
                 {
@@ -65,9 +65,9 @@ public class GraphNodeTest {
                         ),
                         """
                         + ROOT (Root Course)
-                         + 1-1 (Course 1-1)
-                         + 1-2 (Course 1-2)
-                         + 1-3 (Course 1-3)"""
+                          + 1-1 (Course 1-1)
+                          + 1-2 (Course 1-2)
+                          + 1-3 (Course 1-3)"""
                 },
                 // can graph nested children
                 {
@@ -87,9 +87,9 @@ public class GraphNodeTest {
                         ),
                         """
                         + ROOT (Root Course)
-                         + 1-1 (Course 1-1)
-                          + 2-1 (Course 2-1)
-                           + 3-1 (Course 3-1)"""
+                          + 1-1 (Course 1-1)
+                            + 2-1 (Course 2-1)
+                              + 3-1 (Course 3-1)"""
                 },
                 // combination of above tests
                 {
@@ -121,17 +121,17 @@ public class GraphNodeTest {
                         ),
                         """
                         + ROOT (Root Course)
-                         + 1-1 (Course 1-1)
-                          + 2-1 (Course 2-1)
-                          + 2-2 (Course 2-2)
-                           + 3-1 (Course 3-1)
-                           + 3-2 (Course 3-2)
-                           + 3-3 (Course 3-3)
-                          + 2-3 (Course 2-3)
-                         + 1-2 (Course 1-2)
-                         + 1-3 (Course 1-3)
-                          + 2-1 (Course 2-1)
-                          + 2-2 (Course 2-2)"""
+                          + 1-1 (Course 1-1)
+                            + 2-1 (Course 2-1)
+                            + 2-2 (Course 2-2)
+                              + 3-1 (Course 3-1)
+                              + 3-2 (Course 3-2)
+                              + 3-3 (Course 3-3)
+                            + 2-3 (Course 2-3)
+                          + 1-2 (Course 1-2)
+                          + 1-3 (Course 1-3)
+                            + 2-1 (Course 2-1)
+                            + 2-2 (Course 2-2)"""
                 }
         });
     }
