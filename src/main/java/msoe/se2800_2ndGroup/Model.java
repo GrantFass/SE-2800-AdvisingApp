@@ -4,10 +4,7 @@ import javafx.application.Platform;
 import msoe.se2800_2ndGroup.loaders.CurriculumLoader;
 import msoe.se2800_2ndGroup.loaders.OfferingsLoader;
 import msoe.se2800_2ndGroup.loaders.PrerequisitesLoader;
-import msoe.se2800_2ndGroup.models.Course;
-import msoe.se2800_2ndGroup.models.Curriculum;
-import msoe.se2800_2ndGroup.models.CurriculumItem;
-import msoe.se2800_2ndGroup.models.Offering;
+import msoe.se2800_2ndGroup.models.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -493,6 +490,7 @@ public class Model {
         Collection<Course> courses;
         PrerequisitesLoader prerequisitesLoader = new PrerequisitesLoader(new FileReader(prerequisitesLocation));
         prerequisiteCourses = courses = prerequisitesLoader.load();
+        prerequisiteCourses.addAll(getVirtualCourses());
 
         //With the courses known, read the other files
         CurriculumLoader curriculumLoader = new CurriculumLoader(new FileReader(curriculumLocation), courses);
@@ -579,6 +577,27 @@ public class Model {
         final var graph = GraphMaker.getGraph(Objects.requireNonNull(course), prerequisiteCourses);
 
         return graph.getStringGraph();
+    }
+
+    /**
+     * Create the set of virtual courses to represent prerequisites that don't
+     * map to actual courses.
+     *
+     * Sources:
+     *   * <a href="https://catalog.msoe.edu/">MSOE Course Catalog</a>: Code explanation
+     *   * Grant Fass: suggestion to use made-up Course objects
+     *
+     * @return the set of virtual courses
+     */
+    public static Collection<Course> getVirtualCourses() {
+        return Set.of(
+                new Course("SO", 0, new NullPrerequisite(), "Sophomore Standing"),
+                new Course("JR", 0, new NullPrerequisite(), "Junior Standing"),
+                new Course("SR", 0, new NullPrerequisite(), "Senior Standing"),
+                new Course("IC", 0, new NullPrerequisite(), "Instructor Consent"),
+                new Course("CE", 0, new NullPrerequisite(), "Computer Engineering Major"),
+                new Course("UX", 0, new NullPrerequisite(), "User Experience Program Enrollment")
+        );
     }
 
     /**
