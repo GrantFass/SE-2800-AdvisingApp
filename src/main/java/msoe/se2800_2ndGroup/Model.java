@@ -43,6 +43,8 @@ import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
  * * Create new method to load course data that is passed a scanner by Grant Fass on Tue, 30 Mar 2021
  * * Create method to load course data on startup by Grant Fass on Tue, 6 Apr 2021
  * * Implement methods to get and view course offerings by term by Grant Fass on Wed, 7 Apr 2021
+ * * Add method to load in the unofficial transcript using the ImportTranscript class by Grant Fass on Tue, 13 Apr 2021
+ * * Implement methods for getting course recommendations for a term or terms.
  * @since : Saturday, 20 March 2021
  * @author : Grant
  * Copyright (C): TBD
@@ -55,6 +57,7 @@ public class Model {
     private Collection<Curriculum> curricula;
     private Collection<Offering> offerings;
     private Collection<Course> prerequisiteCourses;
+    private ArrayList<Course> transcriptCourses;
 
     /**
      * This method returns the absolute path to the file in the method header as a String.
@@ -241,7 +244,36 @@ public class Model {
         if (offering == null) {
             throw new InvalidInputException("The input offering was null");
         }
-        return String.format("%7s %2s | %40s : %s\n", offering.getCourse().code(), offering.getCourse().credits(), offering.getCourse().description(), offering.getCourse().prerequisite());
+        return getCourseAsString(offering.getCourse());
+    }
+
+    /**
+     * this method extracts the important information from a given course and returns a string containing the values
+     *
+     * this method uses string formatting to display a passed course in a readable format.
+     * The format is CODE CREDITS | DESCRIPTION : PREREQUISITES.
+     * @param course the course to extract information from
+     * @return a courses information in string format
+     * @throws InvalidInputException if the course was null
+     * @author : Grant Fass
+     * @since : Tue, 13 Apr 2021
+     */
+    private String getCourseAsString(Course course) throws InvalidInputException {
+        if (course == null) {
+            throw new InvalidInputException("The input course was null");
+        }
+        return String.format("%7s %2s | %40s : %s\n", course.code(), course.credits(), course.description(), course.prerequisite());
+    }
+
+    /**
+     * Method used to load the unofficial transcript into the program by calling the readInFile method from ImportTranscript
+     * @param in the scanner to use for IO operations
+     * @author : Grant Fass
+     * @since : Tue, 13 Apr 2021
+     */
+    public void loadUnofficialTranscript(Scanner in) {
+        ImportTranscript importTranscript = new ImportTranscript();
+        transcriptCourses = importTranscript.readInFile(in);
     }
 
     /**
@@ -282,126 +314,100 @@ public class Model {
 
     /**
      * TODO: test me
-     * TODO: implement me
      * This method will verify that the user transcript has been loaded
      *
-     * //TODO:
+     * This method checks to see if the transcriptCourses collection is null or empty
      *
-     * @throws InvalidInputException //TODO
+     * @throws InvalidInputException when there is no data stored for the transcript courses
      * @author : Grant Fass
      * @since : Wed, 7 Apr 2021
      */
     private void verifyTranscript() throws InvalidInputException {
-        //TODO:
+        if (transcriptCourses == null || transcriptCourses.isEmpty()) {
+            throw new InvalidInputException("Transcript course data is not yet loaded");
+        }
     }
 
     /**
      * TODO: test me
      * This method process course recommendations and returns them as a String
      *
-     * This method does not update the GUI directly so it does not need to call ensureFXThread
+     * This method first verifies that the Major, Offerings, and Transcript have been loaded and are not empty.
+     * This method then computes the offerings available.
+     * This method then finds the list of courses not yet satisfied in the curriculum and compares it against the offerings.
+     * This method then takes the unsatisfied offerings that are available to be taken in the specified term and outputs them as a string.
      *
-     * @throws InvalidInputException when the major does not exist in the list of offerings
-     * @return //TODO
+     * @throws InvalidInputException for various reasons like not having a major stored, failing to validate major,
+     *              failing to validate offerings, failing to validate transcript, or not having a curriculum for the major.
+     * @return the list of course recommendations for the specified terms as a string
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
-    public String getCourseRecommendation() throws InvalidInputException {
-        /*
-        Going to need to read through each line in the offerings data structure
-        each offering has a course and a majorAvailability
-        each course has the following:
-            a code as a String: EX. "CS2400"
-            credits as an int: EX. 3
-            prerequisite as nested AndPrerequisites and OrPrerequisites which eventually lead to SinglePrerequisites which give the course code
-            description as a String: EX. "Introduction to Artificial Intelligence"
-        majorAvailability is a hash map.
-            the keys are strings for each of the majors: EX. "EE"
-            the values are Term objects.
-                each term has an id and a season. both formatted as Strings
-                if the term id is blank, or the season is never then the course is never available for the specified major
-                otherwise the id should match the season: EX. id="3", season="Spring"
-         */
-
-        /*
-        TODO Steps:
-        0. verify that a major is stored at the moment
-        1. go through entire list of offerings
-             a. store the offerings available to the stored major by the term they are available for.
-        2. remove courses that are already completed according to the transcript
-        3. remove any courses that prerequisites are not satisfied for (ADD TOGGLE POSSIBLY)
-        4. Build outputs
-            prioritize courses that are required for a lot of others
-         */
-        //TODO: FIXME && TEST_ME
+    public String getCourseRecommendation(boolean getFall, boolean getWinter, boolean getSpring) throws InvalidInputException {
         verifyMajor();
         verifyOfferings();
         verifyTranscript();
-
-            /*
-            TODO: REPLACE ME with code for transcripts
-             assume fall for testing
-             manually insert completed courses for testing
-             FassG completed courses not including WIP.
-             */
-        String targetTerm = "spring";
-        Set<String> completedCourses = new HashSet<>(Arrays.asList("CS1011", "HU445", "HU446", "MA136", "MA262",
-                "GS1001", "GS1003", "CH200", "GS1002", "BA2220", "CS1021", "MA137", "PH2011", "BA3444", "CS2852",
-                "MA2314", "PH2021", "CS2911", "HU4480", "MA2310", "MA2323", "SE2030", "SS415AM", "CS2300", "CS2711",
-                "SE2811"));
-
         //start computing recommendations
-        ArrayList<Offering> offeringsForTerm = getCourseOfferings(false, false, true);
-        ArrayList<Offering> uncompleted = getUncompletedOfferings(offeringsForTerm, completedCourses);
-        ArrayList<Course> temp = getCurriculaExcludingCompletedCourses(completedCourses);
-
-        System.out.print("");
-
-
-        return "";
+        ArrayList<Offering> offeringsForTerm = getCourseOfferings(getFall, getWinter, getSpring);
+        List<CurriculumItem> uncompletedCurriculumCourses = getCurriculaExcludingCompletedCourses(transcriptCourses);
+        List<Course> unsatisfiedOfferingsForTerm = getUnsatisfiedMatchingTerm(offeringsForTerm, uncompletedCurriculumCourses);
+        //return output
+        StringBuilder builder = new StringBuilder();
+        if (!unsatisfiedOfferingsForTerm.isEmpty()) {
+            builder.append(String.format("%7s %2s | %40s : %s\n", "CODE", "CR", "DESCRIPTION", "PREREQUISITES"));
+            for (Course course: unsatisfiedOfferingsForTerm) {
+                builder.append(getCourseAsString(course));
+            }
+        } else {
+            builder.append("No courses found\n");
+        }
+        return builder.toString();
     }
 
     /**
-     * TODO: test me
-     * this method takes the offerings for a given term and the completed courses up till now and returns the list of offerings not yet taken
+     * This method is used to get the unsatisfied courses that occur in the given term.
      *
-     * this method goes through all of the available offerings for a given term.
-     * for each of the offerings in the term it checks if the course code is in the set of completed courses
-     * if the offering is not in the set of completed courses then it is added to the output ArrayList.
+     * This method compares the list of all offerings in a term against the list of unsatisfied courses and looks for matches.
+     * If a match is found it is added to the list of possible output then returned.
      *
-     * @param offeringsForGivenTerm the ArrayList of offerings for a given term
-     * @param completedCourses the Set containing all of the courses that have been completed so far. (contains the course codes as strings)
-     * @return the list of offerings not yet taken for a given term
+     * @param offeringsInTerm the list of offerings for a given term
+     * @param unsatisfiedCourses the list of courses that have not yet been satisfied
+     * @return the list of the courses that have not yet been satisfied and occur in the specified term
      * @author : Grant Fass
-     * @since : Tue, 6 Apr 2021
+     * @since : Tue, 13 Apr 2021
      */
-    private ArrayList<Offering> getUncompletedOfferings(ArrayList<Offering> offeringsForGivenTerm, Set<String> completedCourses) {
-        ArrayList<Offering> offeringsNotYetTaken = new ArrayList<>();
-        for (Offering offering: offeringsForGivenTerm) {
-            if (!completedCourses.contains(offering.getCourse().code())) {
-                offeringsNotYetTaken.add(offering);
+    private List<Course> getUnsatisfiedMatchingTerm(List<Offering> offeringsInTerm, List<CurriculumItem> unsatisfiedCourses) {
+        ArrayList<Course> out = new ArrayList<>();
+        for (CurriculumItem curriculumItem: unsatisfiedCourses) {
+            for (Offering offering: offeringsInTerm) {
+                if (curriculumItem.satisfiedBy(offering.getCourse())) {
+                    out.add(offering.getCourse());
+                }
             }
         }
-        return offeringsNotYetTaken;
+        return out;
     }
 
-    //TODO: Add javadocs
-    /*
-     * TODO: test me
-    determine if this method is even necessary once the getUnsatisfiedItems method can be used.
+    /**
+     * Method used to compute what courses from the curriculum have not yet been completed
+     *
+     * This method goes through the list of curricula searching for the correct major.
+     * Once the correct major is found it uses the getUnsatisfiedItems method to retrieve a list of the courses
+     * that have not yet been completed.
+     *
+     * @param completedCourses the list of already completed courses, usually from the loaded unofficial transcript
+     * @return the list of CurriculumItems that have not yet been satisfied
+     * @throws InvalidInputException if the major was not found
+     * @author : Grant Fass
+     * @since : Tue, 13 Apr 2021
      */
-    private ArrayList<Course> getCurriculaExcludingCompletedCourses(Set<String> completedCourses) throws InvalidInputException {
-        boolean foundCurriculum = false;
+    private List<CurriculumItem> getCurriculaExcludingCompletedCourses(ArrayList<Course> completedCourses) throws InvalidInputException {
         for (Curriculum curriculum: curricula) {
             if (curriculum.major().equalsIgnoreCase(major)) {
-                foundCurriculum = true;
-                //curriculum.getUnsatisfiedItems() //TODO: FIX ME / Implement me once transcript is working.
+                return curriculum.getUnsatisfiedItems(completedCourses);
             }
         }
-        if (!foundCurriculum) {
-            throw new InvalidInputException("Curriculum for selected major not found");
-        }
-        return new ArrayList<>();
+        throw new InvalidInputException("Curriculum for selected major not found");
     }
 
 
