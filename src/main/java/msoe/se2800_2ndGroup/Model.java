@@ -353,8 +353,13 @@ public class Model {
         List<Course> unsatisfiedOfferingsForTerm = getUnsatisfiedMatchingTerm(offeringsForTerm, uncompletedCurriculumCourses);
         //return output
         StringBuilder builder = new StringBuilder();
-        for (Course course: unsatisfiedOfferingsForTerm) {
-            builder.append(getCourseAsString(course));
+        if (!unsatisfiedOfferingsForTerm.isEmpty()) {
+            builder.append(String.format("%7s %2s | %40s : %s\n", "CODE", "CR", "DESCRIPTION", "PREREQUISITES"));
+            for (Course course: unsatisfiedOfferingsForTerm) {
+                builder.append(getCourseAsString(course));
+            }
+        } else {
+            builder.append("No courses found\n");
         }
         return builder.toString();
     }
