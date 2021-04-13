@@ -4,7 +4,9 @@ import javafx.scene.control.Alert;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 import msoe.se2800_2ndGroup.models.Course;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -29,6 +31,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * * <...>
  * Modification Log:
  * * File Created by toohillt on Saturday, 20 March 2021
+ * * Modify the readInFile method to return the list of courses directly instead of using a private var and a getter by Grant Fass on Tue, 13 Apr 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -36,9 +39,9 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * @since : Saturday, 20 March 2021
  */
 public class ImportTranscript {
-    private ArrayList<Course> courses = new ArrayList<Course>();
 
-    public void readInFile(Scanner scanner) {
+    public ArrayList<Course> readInFile(Scanner scanner) {
+        ArrayList<Course> courses = new ArrayList<>();
         try {
             //TODO: Verify this is fixed after feature 16 is merged in
             String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner);
@@ -119,5 +122,6 @@ public class ImportTranscript {
             System.out.println(e.getMessage());
         }
         //TODO: file errors reading in
+        return courses;
     }
 }

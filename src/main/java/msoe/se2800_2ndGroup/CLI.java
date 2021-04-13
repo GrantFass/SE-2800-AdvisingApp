@@ -1,6 +1,8 @@
 package msoe.se2800_2ndGroup;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 
 /**
@@ -27,6 +29,8 @@ import java.util.Scanner;
  * * Load course data is now passed a scanner by Grant Fass on Tue, 30 Mar 2021
  * * Load course data on program start by Grant Fass on Tue, 6 Apr 2021
  * * Implement CLI entry to view course offerings by term by Grant Fass on Wed, 7 Apr 2021
+ * * Move the call to ImportTranscript.readInFile to Model.java by Grant Fass on Tue, 13 Apr 2021
+ * * Separate the query for terms to a separate method to enforce DRY by Grant Fass on Tue, 13 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  *
@@ -96,8 +100,8 @@ public class CLI {
                     }
                     case "get course recommendation" -> {
                         outputHyphenLine();
-                        String recommendations = model.getCourseRecommendation();
-                        System.out.println(recommendations);
+                        HashMap<String, Boolean> terms = getTerms(in);
+                        System.out.println(model.getCourseRecommendation(terms.get("fall"), terms.get("winter"), terms.get("spring")));
                         outputHyphenLine();
                     }
                     case "load course data" -> {
@@ -107,27 +111,13 @@ public class CLI {
                         outputHyphenLine();
                     }
                     case "load pdf" -> {
-                        ImportTranscript importTranscript = new ImportTranscript();
-                        importTranscript.readInFile(in);
+                        model.loadUnofficialTranscript(in);
                     }
                     case "view course offerings" -> {
                         outputHyphenLine();
-                        boolean fall = false;
-                        boolean winter = false;
-                        boolean spring = false;
-                        System.out.print("Would you like to display fall courses? (y/n): ");
-                        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
-                            fall = true;
-                        }
-                        System.out.print("Would you like to display winter courses? (y/n): ");
-                        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
-                            winter = true;
-                        }
-                        System.out.print("Would you like to display spring courses? (y/n): ");
-                        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
-                            spring = true;
-                        }
-                        System.out.println(model.getCourseOfferingsAsString(fall, winter, spring));
+                        HashMap<String, Boolean> terms = getTerms(in);
+                        System.out.println(model.getCourseOfferingsAsString(terms.get("fall"), terms.get("winter"), terms.get("spring")));
+                        outputHyphenLine();
                     }
                 }
             }
@@ -135,6 +125,29 @@ public class CLI {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private HashMap<String, Boolean> getTerms(Scanner in) {
+        boolean fall = false;
+        boolean winter = false;
+        boolean spring = false;
+        System.out.print("Would you like to display fall courses? (y/n): ");
+        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
+            fall = true;
+        }
+        System.out.print("Would you like to display winter courses? (y/n): ");
+        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
+            winter = true;
+        }
+        System.out.print("Would you like to display spring courses? (y/n): ");
+        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
+            spring = true;
+        }
+        HashMap<String, Boolean> hashMap = new HashMap<>();
+        hashMap.put("fall", fall);
+        hashMap.put("winter", winter);
+        hashMap.put("spring", spring);
+        return hashMap;
     }
 
     /**
