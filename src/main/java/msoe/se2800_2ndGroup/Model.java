@@ -560,6 +560,28 @@ public class Model {
     }
 
     /**
+     * Get a textual representation of a graph of a course's prerequisites.
+     *
+     * @param code the code of the course to analyze
+     * @return the course's prerequisite graph
+     * @throws NullPointerException no course matched the code
+     */
+    public String getCourseGraph(String code) {
+        Course course = null;
+
+        for (final var search : prerequisiteCourses) {
+            if (search.code().equals(code)) {
+                course = search;
+                break;
+            }
+        }
+
+        final var graph = GraphMaker.getGraph(Objects.requireNonNull(course), prerequisiteCourses);
+
+        return graph.getStringGraph();
+    }
+
+    /**
      * This class creates a custom checked exception for invalid input
      *
      * Sources:
