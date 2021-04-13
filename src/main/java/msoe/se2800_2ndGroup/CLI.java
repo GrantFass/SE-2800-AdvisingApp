@@ -119,6 +119,19 @@ public class CLI {
                         System.out.println(model.getCourseOfferingsAsString(terms.get("fall"), terms.get("winter"), terms.get("spring")));
                         outputHyphenLine();
                     }
+                    case "view prerequisite graph" -> {
+                        outputHyphenLine();
+
+                        System.out.print("Course code: ");
+                        final var code = in.next().trim();
+
+                        try {
+                            final var graph = model.getCourseGraph(code);
+                            System.out.println(graph);
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         } catch (Model.InvalidInputException | IOException e) {
