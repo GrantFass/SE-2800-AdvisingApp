@@ -424,8 +424,7 @@ public class Model {
         //TODO: validate course- maybe create a new method
 
         // replace whitespaces, hyphens, underscores
-        course = course.toUpperCase().replaceAll("[\\s+]","").replaceAll("_", "").replaceAll("-", "").trim();
-
+        course = standardizeCourse(course);
         Course selected = null;
         for (Course prerequisiteCourse: prerequisiteCourses){
             if (prerequisiteCourse.code().equals(course)){
@@ -456,6 +455,24 @@ public class Model {
         } else {
             return "No course found.";
         }
+    }
+
+    /**
+     * This method takes the passed in course string to remove any and all
+     * non-alphanumeric characters in the string.
+     *
+     * This method relies on the use of regex to remove unwanted characters
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://www.geeksforgeeks.org/how-to-remove-all-non-alphanumeric-characters-from-a-string-in-java/"}</a>: Reference for regex expression
+     *
+     * @author : Claudia Poptile
+     * @since : Tue, 13 Apr 2021
+     * @param course course string to be standardized
+     * @return course code with only capitalized letters and numbers
+     */
+    public String standardizeCourse(String course){
+        return course.toUpperCase().replaceAll("[^a-zA-Z0-9]", "").trim();
     }
 
     /**
