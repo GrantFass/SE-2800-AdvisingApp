@@ -38,6 +38,8 @@ import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
  * * Implement methods to get and view course offerings by term by Grant Fass on Wed, 7 Apr 2021
  * * Add method to load in the unofficial transcript using the ImportTranscript class by Grant Fass on Tue, 13 Apr 2021
  * * Implement methods for getting course recommendations for a term or terms.
+ * * Fix getCourseRecommendation to work with electives by Grant Fass on Thu, 15 Apr 2021
+ * * Add more custom exceptions to help with testing by Grant Fass on Thu, 15 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  * Copyright (C): TBD
@@ -284,10 +286,12 @@ public class Model {
      * TODO: test me
      * Method used to load the unofficial transcript into the program by calling the readInFile method from ImportTranscript
      * @param in the scanner to use for IO operations
+     * @throws IOException for issues creating the specified file or reading it
+     * @throws Model.InvalidInputException for issues verifying the specified file location
      * @author : Grant Fass
      * @since : Tue, 13 Apr 2021
      */
-    public void loadUnofficialTranscript(Scanner in) {
+    public void loadUnofficialTranscript(Scanner in) throws InvalidInputException, IOException {
         ImportTranscript importTranscript = new ImportTranscript();
         transcriptCourses = importTranscript.readInFile(in);
     }

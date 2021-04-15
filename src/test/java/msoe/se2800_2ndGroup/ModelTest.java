@@ -1,6 +1,5 @@
 package msoe.se2800_2ndGroup;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,20 +20,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * Description:
  * * This class contains tests for the Model.java class
  * The ModelTest class is responsible for:
-<<<<<<< HEAD
- * * <...>
- * * <...>
- * * <...>
- * * <...>
- * Modification Log:
- * * File Created by Grant on Saturday, 20 March 2021
- * * testing the methods defined in Model.java
- * Modification Log:
+ * * Testing the methods in Model.java
  * * File Created by Grant on Saturday, 20 March 2021
  * * Create test for the storeMajor method by Grant on Saturday, 20 March 2021
  * * Create tests for the default course data locations by Grant Fass on Fri, 26 Mar 2021
  * * Fix Store Major Test by Grant Fass on Thu, 15 Apr 2021
- * <p>
+ * * Implement test for getCourseOfferingsAsString() by Grant Fass on Thu, 15 Apr 2021
+ * * Implement tests that fail with relevant messages due to not being completable for getCourseGraph, getCourseRecommendation, & loadUnofficialTranscript by Grant Fass on Thu, 15 Apr 2021
  * Copyright (C): TBD
  *
  * @author : Grant
