@@ -88,45 +88,55 @@ public class ImportTranscript {
     /**
      * This method reads in the entire pdf then parses out the course codes and returns them as an ArrayList of courses.
      *
-     * This method first queries the user for a file location using the standard FileIO.getUserInputFileLocation
-     * method. Then the method will use the PDF loader to load the entire PDF into a single String object.
+     * The method will use the PDF loader to load the entire PDF into a single String object.
      * The method then splits the pdf String into individual lines.
      * For each line the method removes all ignored words then extracts course codes if they exist.
      * Then each course code is turned into a Course object and returned as part of an ArrayList.
-     * @param scanner the scanner object to use to query the user for a file location.
+     * @param file the file object to use to create the PDDocument object to parse the PDF.
      * @return an ArrayList of Course objects containing the courses from the transcript
+     * @throws IOException for issues creating the specified file or reading it
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
-    public ArrayList<Course> readInFile(Scanner scanner) {
+    public ArrayList<Course> readInFile(File file) throws IOException {
         ArrayList<Course> courses = new ArrayList<>();
-        try {
-            //load entire pdf into a single string
-            String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner);
-            File file = new File(pathName);
-            PDDocument doc = PDDocument.load(file);
-            String text = new PDFTextStripper().getText(doc);
-            //split pdf into individual lines
-            String[] inputLines = text.split("\n");
-            //remove ignored words from each line then attempt to parse into a course code
-            for(String inputLine: inputLines) {
-                String s = checkForIgnoredWord(inputLine);
-                if (s != null) {
-                    String courseCode = checkStringForCourseCode(s);
-                    if (courseCode != null) {
-                        Course course = new Course(courseCode);
-                        courses.add(course);
-                        System.out.format("Adding Course: %s\n", course.code());
-                    }
+        PDDocument doc = PDDocument.load(file);
+        String text = new PDFTextStripper().getText(doc);
+        //split pdf into individual lines
+        String[] inputLines = text.split("\n");
+        //remove ignored words from each line then attempt to parse into a course code
+        for(String inputLine: inputLines) {
+            String s = checkForIgnoredWord(inputLine);
+            if (s != null) {
+                String courseCode = checkStringForCourseCode(s);
+                if (courseCode != null) {
+                    Course course = new Course(courseCode);
+                    courses.add(course);
+                    System.out.format("Adding Course: %s\n", course.code());
                 }
             }
-            System.out.println("Successfully read in file!");
-        } catch (IOException event) {
-            event.printStackTrace();
-        } catch (Model.InvalidInputException e) {
-            System.out.println(e.getMessage());
         }
-        //TODO: file errors reading in
         return courses;
+    }
+
+    /**
+     * This method reads in the entire pdf then parses out the course codes and returns them as an ArrayList of courses.
+     *
+     * This method first queries the user for a file location using the standard FileIO.getUserInputFileLocation
+     * method. Then the method passes off to the other readInFile(File file) method to create the PDF reading object
+     * and parse the courses out.
+     * @param scanner the scanner object to use to query the user for a file location.
+     * @return an ArrayList of Course objects containing the courses from the transcript
+     * @throws IOException for issues creating the specified file or reading it
+     * @throws Model.InvalidInputException for issues verifying the specified file location
+     * @author : Grant Fass, Teresa T.
+     * @since : Thu, 15 Apr 2021
+     */
+    public ArrayList<Course> readInFile(Scanner scanner) throws IOException, Model.InvalidInputException {
+        //load entire pdf into a single string
+        String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner);
+        File file = new File(pathName);
+        return readInFile(file);
+        //TODO: file errors reading in
     }
 }

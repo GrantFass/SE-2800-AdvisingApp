@@ -286,10 +286,12 @@ public class Model {
      * TODO: test me
      * Method used to load the unofficial transcript into the program by calling the readInFile method from ImportTranscript
      * @param in the scanner to use for IO operations
+     * @throws IOException for issues creating the specified file or reading it
+     * @throws Model.InvalidInputException for issues verifying the specified file location
      * @author : Grant Fass
      * @since : Tue, 13 Apr 2021
      */
-    public void loadUnofficialTranscript(Scanner in) {
+    public void loadUnofficialTranscript(Scanner in) throws InvalidInputException, IOException {
         ImportTranscript importTranscript = new ImportTranscript();
         transcriptCourses = importTranscript.readInFile(in);
     }

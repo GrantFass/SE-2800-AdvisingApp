@@ -30,6 +30,8 @@ import java.util.Scanner;
  * * Implement CLI entry to view course offerings by term by Grant Fass on Wed, 7 Apr 2021
  * * Move the call to ImportTranscript.readInFile to Model.java by Grant Fass on Tue, 13 Apr 2021
  * * Separate the query for terms to a separate method to enforce DRY by Grant Fass on Tue, 13 Apr 2021
+ * * Clean up multiple calls to outputHyphenLine() by Grant Fass on Thu, 15 Apr 2021
+ * * Update so exceptions are no longer fatal by Grant Fass on Thu, 15 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  *
@@ -70,18 +72,23 @@ public class CLI {
      * @since : Sat, 20 Mar 2021
      */
     public void processCommandLine() {
-
         boolean debug = false;
-        try (Scanner in = new Scanner(System.in)) {
-            //Load default course data on startup
-            long startTime = System.nanoTime();
+        //Load default course data on startup
+        long startTime = System.nanoTime();
+        try {
             System.out.format("%s in %d milliseconds\n", model.loadDefaultCourseData(), (System.nanoTime() - startTime) / 1000000); //divide by 1000000 to get milliseconds
-            while (true) {
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        //Loop for CLI operations
+        Scanner in = new Scanner(System.in);
+        while (true) {
+            try {
+                outputHyphenLine();
                 String input = in.nextLine().trim().toLowerCase();
                 if (debug) {
                     System.out.format("Your input: %s\n", input);
                 }
-
                 switch (input) {
                     case "exit", "quit" -> model.exitProgram();
                     case "enable debug" -> {
@@ -90,37 +97,27 @@ public class CLI {
                     }
                     case "disable debug" -> debug = false;
                     case "store major" -> {
-                        outputHyphenLine();
                         System.out.print("Enter Major Abbreviation: ");
                         String major = in.next().trim().toLowerCase();
                         model.storeMajor(major);
                         System.out.println("Major Stored");
-                        outputHyphenLine();
                     }
                     case "get course recommendation" -> {
-                        outputHyphenLine();
                         HashMap<String, Boolean> terms = getTerms(in);
                         System.out.println(model.getCourseRecommendation(terms.get("fall"), terms.get("winter"), terms.get("spring")));
-                        outputHyphenLine();
                     }
                     case "load course data" -> {
                         startTime = System.nanoTime();
-                        outputHyphenLine();
                         System.out.format("%s in %d milliseconds\n", model.loadCourseData(in), (System.nanoTime() - startTime) / 1000000); //divide by 1000000 to get milliseconds
-                        outputHyphenLine();
                     }
                     case "load pdf" -> {
                         model.loadUnofficialTranscript(in);
                     }
                     case "view course offerings" -> {
-                        outputHyphenLine();
                         HashMap<String, Boolean> terms = getTerms(in);
                         System.out.println(model.getCourseOfferingsAsString(terms.get("fall"), terms.get("winter"), terms.get("spring")));
-                        outputHyphenLine();
                     }
                     case "view prerequisite graph" -> {
-                        outputHyphenLine();
-
                         System.out.print("Course code: ");
                         final var code = in.next().trim();
 
@@ -132,13 +129,20 @@ public class CLI {
                         }
                     }
                 }
+            } catch (Model.InvalidInputException | IOException e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
-        } catch (Model.InvalidInputException | IOException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
         }
     }
 
+    /**
+     * This method queries the user for which terms they would like to display data for
+     * @param in the scanner used to query the user
+     * @return a HashMap containing the keys 'fall', 'winter', 'spring' and boolean values associated with the key
+     * @author : Grant Fass
+     * @since : Thu, 13 Apr 2021
+     */
     private HashMap<String, Boolean> getTerms(Scanner in) {
         boolean fall = false;
         boolean winter = false;
