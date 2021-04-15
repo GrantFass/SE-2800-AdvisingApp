@@ -38,6 +38,8 @@ import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
  * * Implement methods to get and view course offerings by term by Grant Fass on Wed, 7 Apr 2021
  * * Add method to load in the unofficial transcript using the ImportTranscript class by Grant Fass on Tue, 13 Apr 2021
  * * Implement methods for getting course recommendations for a term or terms.
+ * * Fix getCourseRecommendation to work with electives by Grant Fass on Thu, 15 Apr 2021
+ * * Add more custom exceptions to help with testing by Grant Fass on Thu, 15 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  * Copyright (C): TBD
