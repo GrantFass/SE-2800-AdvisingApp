@@ -3,7 +3,9 @@ package msoe.se2800_2ndGroup;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 
+import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -21,10 +23,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * Description:
  * * <class description here>
  * The ImportTranscript class is responsible for:
- * * <...>
- * * <...>
- * * <...>
- * * <...>
+ * * Loading and parsing unofficial transcript PDF files into ArrayList of Course objects
  * Modification Log:
  * * File Created by toohillt on Saturday, 20 March 2021
  * * Modify the readInFile method to return the list of courses directly instead of using a private var and a getter by Grant Fass on Tue, 13 Apr 2021
@@ -32,6 +31,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * * Clean up main readInFile method by removing extra data structures, adding comments, and adding methods by Grant Fass on Thu, 15 Apr 2021
  * * Update parsing to skip courses that were withdrawn from or failed by Grant Fass on Thu, 15 Apr 2021
  * * Fix error preventing courses with the word 'organization' in the description from being read by Grant Fass on Thu, 15 Apr 2021
+ * * Add logger by Grant Fass on Thu, 15 Apr 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -58,11 +58,17 @@ public class ImportTranscript {
      * @since : Thu, 15 Apr 2021
      */
     private String checkLineForIgnoredWordsAndFailedClassesAndWithdrawnClasses(String line) {
+        if (line.endsWith("W") || line.endsWith("F")) {
+            AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input line (%s) ends in W or F which signifies the class was failed or withdrawn from and should be skipped", line));
+            return null;
+        }
         for (String ignore: IGNORE_WORDS) {
-            if (line.contains(ignore) || line.endsWith("W") || line.endsWith("F")) {
+            if (line.contains(ignore)) {
+                AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input line (%s) contains an ignored word (%s)", line, ignore));
                 return null;
             }
         }
+        AdvisingLogger.getLogger().log(Level.FINE, "line (" + line + ") is valid");
         return line;
     }
 
@@ -81,9 +87,11 @@ public class ImportTranscript {
     private String checkStringForCourseCode(String inputLine) {
         for (String word : inputLine.split(" ")) {
             if (!word.contains(".") && !word.contains("--") && word.matches(".*\\d.*")) {
+                AdvisingLogger.getLogger().log(Level.FINE, String.format("Input Line (%s) contains course code (%s)", inputLine, word));
                 return word.equals("SS415AMAmerican") ? "SS415AM" : word;
             }
         }
+        AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input Line (%s) does not contain a course code", inputLine));
         return null;
     }
 
@@ -106,6 +114,7 @@ public class ImportTranscript {
      * @since : Thu, 15 Apr 2021
      */
     public ArrayList<Course> readInFile(File file) throws IOException {
+        AdvisingLogger.getLogger().log(Level.FINE, String.format("Reading in PDF file from location: %s", file));
         ArrayList<Course> courses = new ArrayList<>();
         PDDocument doc = PDDocument.load(file);
         String text = new PDFTextStripper().getText(doc);
@@ -123,7 +132,9 @@ public class ImportTranscript {
                 }
             }
         }
-        return new ArrayList<>(new HashSet<>(courses));
+        ArrayList<Course> output = new ArrayList<>(new HashSet<>(courses));
+        AdvisingLogger.getLogger().log(Level.FINE, String.format("Read %d courses from transcript", output.size()));
+        return output;
     }
 
     /**
@@ -144,6 +155,5 @@ public class ImportTranscript {
         String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner);
         File file = new File(pathName);
         return readInFile(file);
-        //TODO: file errors reading in
     }
 }

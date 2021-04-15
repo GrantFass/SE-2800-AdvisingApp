@@ -1,9 +1,12 @@
 package msoe.se2800_2ndGroup;
 
+import msoe.se2800_2ndGroup.logger.AdvisingLogger;
+
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
+import java.util.logging.Level;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -26,6 +29,7 @@ import java.util.Scanner;
  * * File Created by Grant on Tuesday, 30 March 2021
  * * Transferred methods from Model.java to FileIO.java by Grant Fass on Tue, 30 Mar 2021
  * * Create new method to query user to use default file location that is passed a scanner
+ * * Add logger by Grant Fass on Thu, 15 Apr 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -46,11 +50,15 @@ public class FileIO {
      * @since : Fri, 26 Mar 2021
      */
     public static boolean validateFileLocation(String location) {
+        AdvisingLogger.getLogger().log(Level.FINER, "Validating the file from the input location: " + location);
         if (location == null || location.isBlank() || location.isEmpty()) {
+            AdvisingLogger.getLogger().log(Level.FINE, "The specified file location is null, blank, or missing and failed validation");
             return false;
         }
         File file = new File(location);
-        return file.exists();
+        boolean isValid = file.exists();
+        AdvisingLogger.getLogger().log(Level.FINE, "The specified file location was validated and " + (isValid ? "passed validation" : "failed validation"));
+        return isValid;
     }
 
     /**
@@ -67,10 +75,14 @@ public class FileIO {
      * @since : Fri, 26 Mar 2021
      */
     public static boolean validateFileLocation(String location, String expectedFileExtension) {
+        AdvisingLogger.getLogger().log(Level.FINER, "Validating the file from the input location: " + location + " with the specified file extension: " + expectedFileExtension);
         if (location == null || location.isBlank() || location.isEmpty() || expectedFileExtension == null) {
+            AdvisingLogger.getLogger().log(Level.FINE, "The specified file location or extension was null, blank, or missing and failed validation");
             return false;
         }
-        return location.toLowerCase().endsWith(expectedFileExtension.toLowerCase()) && validateFileLocation(location);
+        boolean isValid = location.toLowerCase().endsWith(expectedFileExtension.toLowerCase()) && validateFileLocation(location);
+        AdvisingLogger.getLogger().log(Level.FINE, "The specified file location was validated with the expected file extension and " + (isValid ? "passed validation" : "failed validation"));
+        return isValid;
     }
 
     /**
@@ -91,6 +103,7 @@ public class FileIO {
         if (response.equals("n") || response.equals("no")) {
             useDefault = false;
         }
+        AdvisingLogger.getLogger().log(Level.FINE, useDefault ? "Using default file location" : "Not using default file location");
         return useDefault;
     }
 
@@ -123,6 +136,7 @@ public class FileIO {
                 useDefault = false;
             }
         }
+        AdvisingLogger.getLogger().log(Level.FINE, useDefault ? "Using default file location" : "Not using default file location");
         return useDefault;
     }
 
@@ -162,17 +176,20 @@ public class FileIO {
      * @since : Thu, 1 Apr 2021
      */
     public static String getUserInputFileLocation(String nameOfFile, String fileExtension, Scanner in) throws Model.InvalidInputException {
+        AdvisingLogger.getLogger().log(Level.FINE, "Getting user input file location");
         String location = "";
         //query user and get file
         System.out.format("Please enter the location to retrieve the %s file from: ", nameOfFile);
         location = in.nextLine().trim();
         //validate
         if (!validateFileLocation(location, fileExtension)) {
+            AdvisingLogger.getLogger().log(Level.WARNING, "The specified location has failed validation");
             throw new Model.InvalidInputException("The specified location failed validation");
         }
         if (!location.isEmpty() && !location.isBlank()) {
             return location;
         }
+        AdvisingLogger.getLogger().log(Level.WARNING, "The specified location was empty or blank");
         throw new Model.InvalidInputException("the specified location is empty or blank");
     }
 
@@ -201,6 +218,7 @@ public class FileIO {
      * @since : Fri, 26 Mar 2021
      */
     public static String getUserInputFileLocation(String nameOfFile, String fileExtension, InputStream inputStream, PrintStream outputStream) throws Model.InvalidInputException {
+        AdvisingLogger.getLogger().log(Level.FINE, "Getting user input file location");
         if (inputStream == null) {
             inputStream = System.in;
         }
@@ -211,12 +229,14 @@ public class FileIO {
             location = in.nextLine().trim();
             //validate
             if (!validateFileLocation(location, fileExtension)) {
+                AdvisingLogger.getLogger().log(Level.WARNING, "The specified location has failed validation");
                 throw new Model.InvalidInputException("The specified location failed validation");
             }
         }
         if (!location.isEmpty() && !location.isBlank()) {
             return location;
         }
+        AdvisingLogger.getLogger().log(Level.WARNING, "The specified location was empty or blank");
         throw new Model.InvalidInputException("the specified location is empty or blank");
     }
 

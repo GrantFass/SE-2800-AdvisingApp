@@ -1,8 +1,11 @@
 package msoe.se2800_2ndGroup;
 
+import msoe.se2800_2ndGroup.logger.AdvisingLogger;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.logging.Level;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -32,6 +35,7 @@ import java.util.Scanner;
  * * Separate the query for terms to a separate method to enforce DRY by Grant Fass on Tue, 13 Apr 2021
  * * Clean up multiple calls to outputHyphenLine() by Grant Fass on Thu, 15 Apr 2021
  * * Update so exceptions are no longer fatal by Grant Fass on Thu, 15 Apr 2021
+ * * Implement logger by Grant Fass on Thu, 15 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  *
@@ -72,11 +76,12 @@ public class CLI {
      * @since : Sat, 20 Mar 2021
      */
     public void processCommandLine() {
-        boolean debug = false;
+        AdvisingLogger.getLogger().info("Starting CLI");
         //Load default course data on startup
         long startTime = System.nanoTime();
         try {
-            System.out.format("%s in %d milliseconds\n", model.loadDefaultCourseData(), (System.nanoTime() - startTime) / 1000000); //divide by 1000000 to get milliseconds
+            final int nanosecondsToMilliseconds = 1000000;
+            AdvisingLogger.getLogger().info(String.format("%s in %d milliseconds\n", model.loadDefaultCourseData(), (System.nanoTime() - startTime) / nanosecondsToMilliseconds).replace("\n", "\\n"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -86,52 +91,61 @@ public class CLI {
             try {
                 outputHyphenLine();
                 String input = in.nextLine().trim().toLowerCase();
-                if (debug) {
-                    System.out.format("Your input: %s\n", input);
-                }
+                AdvisingLogger.getLogger().log(Level.FINER, String.format("Your input: %s\n", input).replace("\n", "\\n"));
                 switch (input) {
-                    case "exit", "quit" -> model.exitProgram();
-                    case "enable debug" -> {
-                        System.out.println("Debug Enabled");
-                        debug = true;
+                    case "exit", "quit" -> {
+                        AdvisingLogger.getLogger().info("Shutting down program");
+                        model.exitProgram();
                     }
-                    case "disable debug" -> debug = false;
                     case "store major" -> {
                         System.out.print("Enter Major Abbreviation: ");
                         String major = in.next().trim().toLowerCase();
+                        AdvisingLogger.getLogger().log(Level.FINER, "Attempting to store major: " + major);
                         model.storeMajor(major);
                         System.out.println("Major Stored");
+                        AdvisingLogger.getLogger().log(Level.FINER, "Major Stored");
                     }
                     case "get course recommendation" -> {
                         HashMap<String, Boolean> terms = getTerms(in);
-                        System.out.println(model.getCourseRecommendation(terms.get("fall"), terms.get("winter"), terms.get("spring")));
+                        AdvisingLogger.getLogger().log(Level.FINER, "Getting Course Recommendations");
+                        String output = model.getCourseRecommendation(terms.get("fall"), terms.get("winter"), terms.get("spring"));
+                        System.out.println(output);
+                        AdvisingLogger.getLogger().log(Level.FINER, "Output Course Recommendations: \n" + output, output);
                     }
                     case "load course data" -> {
-                        startTime = System.nanoTime();
-                        System.out.format("%s in %d milliseconds\n", model.loadCourseData(in), (System.nanoTime() - startTime) / 1000000); //divide by 1000000 to get milliseconds
+                        final int nanosecondsToMilliseconds = 1000000;
+                        String output = String.format("%s in %d milliseconds\n", model.loadCourseData(in), (System.nanoTime() - startTime) / nanosecondsToMilliseconds);
+                        AdvisingLogger.getLogger().log(Level.FINER, "Course data loaded utilizing standard scanner: \n" + output.replace("\n", "\\n"), output);
                     }
                     case "load pdf" -> {
+                        AdvisingLogger.getLogger().log(Level.FINER, "Loading unofficial transcript using standard scanner");
                         model.loadUnofficialTranscript(in);
                     }
                     case "view course offerings" -> {
                         HashMap<String, Boolean> terms = getTerms(in);
-                        System.out.println(model.getCourseOfferingsAsString(terms.get("fall"), terms.get("winter"), terms.get("spring")));
+                        AdvisingLogger.getLogger().log(Level.FINER, "Getting Course Offerings");
+                        String output = model.getCourseOfferingsAsString(terms.get("fall"), terms.get("winter"), terms.get("spring"));
+                        System.out.println(output);
+                        AdvisingLogger.getLogger().log(Level.FINER, "Output Course Offerings", output);
                     }
                     case "view prerequisite graph" -> {
                         System.out.print("Course code: ");
                         final var code = in.next().trim();
-
+                        AdvisingLogger.getLogger().log(Level.FINER, "Generating Prerequisite Graph For Course Code: " + code);
                         try {
                             final var graph = model.getCourseGraph(code);
                             System.out.println(graph);
+                            AdvisingLogger.getLogger().log(Level.FINER, "Prerequisite Graph Generated: \n" + graph, graph);
                         } catch (NullPointerException e) {
                             e.printStackTrace();
+                            AdvisingLogger.getLogger().log(Level.WARNING, "Error Generating Prerequisite Graph: \n" + e.getMessage(), e);
                         }
                     }
                 }
             } catch (Model.InvalidInputException | IOException e) {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
+                AdvisingLogger.getLogger().log(Level.WARNING, "Exception thrown by method in CLI", e);
             }
         }
     }
@@ -144,25 +158,27 @@ public class CLI {
      * @since : Thu, 13 Apr 2021
      */
     private HashMap<String, Boolean> getTerms(Scanner in) {
+        AdvisingLogger.getLogger().log(Level.FINER, "Getting Terms");
         boolean fall = false;
         boolean winter = false;
         boolean spring = false;
         System.out.print("Would you like to display fall courses? (y/n): ");
-        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
+        if (in.next().trim().equalsIgnoreCase("y")) {
             fall = true;
         }
         System.out.print("Would you like to display winter courses? (y/n): ");
-        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
+        if (in.next().trim().equalsIgnoreCase("y")) {
             winter = true;
         }
         System.out.print("Would you like to display spring courses? (y/n): ");
-        if (in.next().trim().toLowerCase().equalsIgnoreCase("y")) {
+        if (in.next().trim().equalsIgnoreCase("y")) {
             spring = true;
         }
         HashMap<String, Boolean> hashMap = new HashMap<>();
         hashMap.put("fall", fall);
         hashMap.put("winter", winter);
         hashMap.put("spring", spring);
+        AdvisingLogger.getLogger().log(Level.FINER, String.format("Terms Stored: Fall(%s), Winter(%s), Spring(%s)", fall, winter, spring), hashMap);
         return hashMap;
     }
 
@@ -176,6 +192,7 @@ public class CLI {
      */
     public void outputHyphenLine() {
         System.out.println("------------------------------");
+        AdvisingLogger.getLogger().log(Level.FINER, "\n------------------------------");
     }
 
 }
