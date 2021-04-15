@@ -238,23 +238,17 @@ class ModelTest {
      * should match those thrown by verifyMajor() and verifyOfferings().
      * Test that no errors are thrown for all possible combinations of boolean values as method parameters
      * Test that the expected output matches the actual output for each term for the default data.
+     * @author : Grant Fass
+     * @since : Thu, 15 Apr 2021
      */
     @Test
     void getCourseOfferingsAsString() {
-        //Test that error is thrown when no offerings and no major have been loaded
         try {
-            model.getCourseOfferingsAsString(false, true, false);
-        } catch (Model.InvalidInputException e) {
-            assertEquals("The specified major is missing or blank", e.getMessage());
-        }
-        //Test that error is still thrown when no offerings have been loaded but major has
-        try {
+            //Test that error is thrown when no offerings and no major have been loaded
+            assertThrows(Model.InvalidMajorException.class, () -> model.getCourseOfferingsAsString(false, true, false));
+            //Test that error is still thrown when no offerings have been loaded but major has
             model.storeMajor("CS");
-            model.getCourseOfferingsAsString(false, true, false);
-        } catch (Model.InvalidInputException e) {
-            assertEquals("There are no offerings loaded right now", e.getMessage());
-        }
-        try {
+            assertThrows(Model.InvalidOfferingsException.class, () -> model.getCourseOfferingsAsString(false, true, false));
             //load course data so that verification of offerings does not throw errors
             model.loadDefaultCourseData();
             //test that does not throw error for various variable combinations
@@ -323,31 +317,46 @@ class ModelTest {
 
     @Test
     void loadUnofficialTranscript() {
-
+        //TODO: Stuck for now since Feature #11 is needed first
+        fail("TODO: Need Test Transcript to continue");
     }
 
+    /**
+     * Tests that errors are thrown when required data is missing
+     * @author : Grant Fass
+     * @since : Thu, 15 Apr 2021
+     */
     @Test
     void getCourseRecommendation() {
+        try {
+            //Test that error is thrown when no offerings, major, or transcript have been loaded.
+            assertThrows(Model.InvalidMajorException.class, () -> model.getCourseRecommendation(false, true, false));
+            //Test that error is still thrown when offerings and transcript have not been loaded.
+            model.storeMajor("CS");
+            assertThrows(Model.InvalidOfferingsException.class, () -> model.getCourseRecommendation(false, true, false));
+            //Test that error is still thrown when transcript has not been loaded.
+            model.loadDefaultCourseData();
+            assertThrows(Model.InvalidTranscriptException.class, () -> model.getCourseRecommendation(false, true, false));
 
+            //TODO: Stuck for now since Feature #11 is needed first
+            fail("TODO: Need Test Transcript to continue");
+        } catch (Model.InvalidInputException | IOException e) {
+            fail(e.getMessage());
+        }
     }
 
     @Test
     void loadDefaultCourseData() {
-
-    }
-
-    @Test
-    void loadCourseData() {
-
+        try {
+            String actual = model.loadDefaultCourseData();
+            assertTrue(actual.contains("Loaded 193 prerequisites, 2 curricula, and 85 offerings"));
+        } catch (IOException e) {
+            fail();
+        }
     }
 
     @Test
     void getCourseGraph() {
-
-    }
-
-    @Test
-    void getVirtualCourses() {
-
+        fail("TODO: test not implemented yet");
     }
 }
