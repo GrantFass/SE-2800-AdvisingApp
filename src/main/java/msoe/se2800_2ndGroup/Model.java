@@ -312,18 +312,15 @@ public class Model {
     }
 
     /**
-     * TODO: implement me
      * TODO: test me
-     * Method to store an Unofficial Transcript
-     * @param in the scanner to use for IO operations
+     * Method to store an the current List of transcript courses to a new unofficial transcript pdf in the .out folder
      * @throws IOException for issues creating the specified file or reading it
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021
      */
-    public void storeUnofficialTranscript(Scanner in) throws IOException {
+    public void storeUnofficialTranscript() throws IOException {
         UnofficialTranscript unofficialTranscript = new UnofficialTranscript();
-        AdvisingLogger.getLogger().log(Level.FINER, "Saving unofficial transcript using default scanner and a new unofficialTranscript object");
-        //TODO: test by re-outputting the stored in transcript
+        AdvisingLogger.getLogger().log(Level.FINER, "Saving current transcript courses to unofficial transcript using a new unofficialTranscript object");
         unofficialTranscript.writeFile(getTranscriptCourses());
     }
 

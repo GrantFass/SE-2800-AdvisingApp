@@ -120,8 +120,8 @@ public class CLI {
                         model.loadUnofficialTranscript(in);
                     }
                     case "store pdf" -> {
-                        AdvisingLogger.getLogger().log(Level.FINER, "Storing unofficial transcript using standard scanner");
-                        model.storeUnofficialTranscript(in);
+                        AdvisingLogger.getLogger().log(Level.FINER, "Storing unofficial transcript");
+                        model.storeUnofficialTranscript();
                     }
                     case "view course offerings" -> {
                         HashMap<String, Boolean> terms = getTerms(in);
