@@ -19,10 +19,7 @@ import java.util.logging.Level;
  * Description:
  * * This class runs all of the CLI input commands for the program
  * The CLI class is responsible for:
- * * <...>
- * * <...>
- * * <...>
- * * <...>
+ * * Processing opperations for the program through the command line
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
  * * Added method to run and a method to exit the program as an example by Grant on Saturday, 20 March 2021
@@ -36,6 +33,7 @@ import java.util.logging.Level;
  * * Clean up multiple calls to outputHyphenLine() by Grant Fass on Thu, 15 Apr 2021
  * * Update so exceptions are no longer fatal by Grant Fass on Thu, 15 Apr 2021
  * * Implement logger by Grant Fass on Thu, 15 Apr 2021
+ * * Add CLI option to store unofficial transcripts
  * @since : Saturday, 20 March 2021
  * @author : Grant
  *
@@ -130,6 +128,10 @@ public class CLI {
                         String prerequisites = model.viewPrerequisiteCourses(course);
                         System.out.println(prerequisites);
                         AdvisingLogger.getLogger().log(Level.FINE, String.format("The prerequisites for the course of code: %s are: %s", course, prerequisites));
+                    }
+                    case "store pdf" -> {
+                        AdvisingLogger.getLogger().log(Level.FINER, "Storing unofficial transcript");
+                        model.storeUnofficialTranscript();
                     }
                     case "view course offerings" -> {
                         HashMap<String, Boolean> terms = getTerms(in);
