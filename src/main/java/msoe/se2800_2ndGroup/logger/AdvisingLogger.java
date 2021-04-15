@@ -53,7 +53,7 @@ public class AdvisingLogger {
             LOGGER.addHandler(consoleHandler);
             LOGGER.addHandler(fileHandler);
             //Setting levels to handlers and LOGGER
-            fileHandler.setLevel(Level.ALL);
+            fileHandler.setLevel(Level.FINER);
             consoleHandler.setLevel(Level.INFO);
             LOGGER.setLevel(Level.ALL);
             //set format

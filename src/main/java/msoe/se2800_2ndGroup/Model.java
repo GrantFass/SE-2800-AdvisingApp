@@ -42,6 +42,7 @@ import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
  * * Implement methods for getting course recommendations for a term or terms.
  * * Fix getCourseRecommendation to work with electives by Grant Fass on Thu, 15 Apr 2021
  * * Add more custom exceptions to help with testing by Grant Fass on Thu, 15 Apr 2021
+ * * Add logger by Grant Fass on Thu, 15 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  * Copyright (C): TBD
@@ -428,14 +429,14 @@ public class Model {
         for (CurriculumItem curriculumItem: unsatisfiedCourses) {
             for (Offering offering: offeringsInTerm) {
                 if (curriculumItem.satisfiedBy(offering.getCourse())) {
-                    AdvisingLogger.getLogger().log(Level.FINEST, "Adding Course: " + curriculumItem);
+                    AdvisingLogger.getLogger().log(Level.FINER, "Adding Course: " + curriculumItem);
                     out.add(offering.getCourse());
                 } else if (curriculumItem instanceof Course) {
                     AdvisingLogger.getLogger().log(Level.FINEST, String.format("Course %s does not match Offering %s", ((Course) curriculumItem).code(), offering.getCourse().code()));
                 }
             }
             if (curriculumItem instanceof Elective) {
-                AdvisingLogger.getLogger().log(Level.FINEST, "Adding Elective: " + curriculumItem);
+                AdvisingLogger.getLogger().log(Level.FINER, "Adding Elective: " + curriculumItem);
                 out.add(curriculumItem);
             }
         }
