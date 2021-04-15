@@ -4,11 +4,13 @@ import javafx.application.Platform;
 import msoe.se2800_2ndGroup.loaders.CurriculumLoader;
 import msoe.se2800_2ndGroup.loaders.OfferingsLoader;
 import msoe.se2800_2ndGroup.loaders.PrerequisitesLoader;
+import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.*;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 
 import static msoe.se2800_2ndGroup.FileIO.getUserInputFileLocation;
 import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
@@ -184,6 +186,7 @@ public class Model {
         //collect the offerings by term available for the major
         try {
             verifyOfferings();
+            AdvisingLogger.getLogger().log(Level.FINER, "Collecting course offerings by term for major: " + major);
             for (Offering offering : getOfferings()) {
                 if (offering.getAvailability(getMajor()).getSeason().equalsIgnoreCase("fall") && displayFall) {
                     offeringsBySeason.add(offering);
@@ -194,6 +197,7 @@ public class Model {
                 }
             }
         } catch (NullPointerException e) {
+            AdvisingLogger.getLogger().log(Level.WARNING, String.format("The specified major %s was not found which means it was not input correctly", getMajor()), e);
             throw new InvalidMajorException(String.format("The specified major %s was not found which means it was not input correctly", getMajor()));
         }
         return offeringsBySeason;
@@ -219,6 +223,7 @@ public class Model {
             return "No Terms Selected\n";
         }
         ArrayList<Offering> courseOfferings = getCourseOfferings(displayFall, displayWinter, displaySpring);
+        AdvisingLogger.getLogger().log(Level.FINER, "Building string output for course offerings as string");
         StringBuilder builder = new StringBuilder();
         builder.append(String.format("%7s %2s | %40s : %s\n", "CODE", "CR", "DESCRIPTION", "PREREQUISITES"));
         for (Offering o: courseOfferings) {
@@ -241,6 +246,7 @@ public class Model {
      */
     private String getOfferingAsString(Offering offering) throws InvalidInputException {
         if (offering == null) {
+            AdvisingLogger.getLogger().log(Level.WARNING, "The input offering to convert to string was null");
             throw new InvalidInputException("The input offering was null");
         }
         return getCourseAsString(offering.getCourse());
@@ -259,9 +265,12 @@ public class Model {
      */
     private String getCourseAsString(Course course) throws InvalidInputException {
         if (course == null) {
+            AdvisingLogger.getLogger().log(Level.WARNING, "The input course to convert to string was null");
             throw new InvalidInputException("The input course was null");
         }
-        return String.format("%7s %2s | %40s : %s\n", course.code(), course.credits(), course.description(), course.prerequisite());
+        String output = String.format("%7s %2s | %40s : %s", course.code(), course.credits(), course.description(), course.prerequisite());
+        AdvisingLogger.getLogger().log(Level.FINEST, "Converting Course: " + output);
+        return output + "\n";
     }
 
     /**
@@ -277,9 +286,12 @@ public class Model {
      */
     private String getElectiveAsString(Elective elective) throws InvalidInputException {
         if (elective == null) {
+            AdvisingLogger.getLogger().log(Level.WARNING, "The input elective to convert to string was null");
             throw new InvalidInputException("The input elective was null");
         }
-        return String.format("%7s %2s | %40s : %s\n", elective.getCode(), "?", "Elective Course Choice", "See Academic Catalog");
+        String output = String.format("%7s %2s | %40s : %s", elective.getCode(), "?", "Elective Course Choice", "See Academic Catalog");
+        AdvisingLogger.getLogger().log(Level.FINEST, "Converting Elective: " + output);
+        return output + "\n";
     }
 
     /**
@@ -293,6 +305,7 @@ public class Model {
      */
     public void loadUnofficialTranscript(Scanner in) throws InvalidInputException, IOException {
         ImportTranscript importTranscript = new ImportTranscript();
+        AdvisingLogger.getLogger().log(Level.FINEST, "Loading unofficial transcript using default scanner and a new importTranscript object");
         transcriptCourses = importTranscript.readInFile(in);
     }
 
@@ -307,10 +320,13 @@ public class Model {
      * @since : Wed, 7 Apr 2021
      */
     private void verifyMajor() throws InvalidInputException {
+        AdvisingLogger.getLogger().log(Level.FINER, "Verifying Major has been stored and matches an expected major code");
         Set<String> potentialMajors = new HashSet<>(Arrays.asList("EE", "BSE PT", "CE", "UX", "AE", "NU", "CS", "AS", "SE", "MIS", "ME", "BME", "IE", "ME A"));
         if (getMajor() == null || getMajor().isBlank() || getMajor().isEmpty()) {
+            AdvisingLogger.getLogger().log(Level.WARNING, "The specified major is missing or blank");
             throw new InvalidMajorException("The specified major is missing or blank");
         } else if (!potentialMajors.contains(getMajor())) {
+            AdvisingLogger.getLogger().log(Level.WARNING, String.format("The specified major %s was not found within the listing of acceptable majors which means it was not input correctly", major));
             throw new InvalidMajorException(String.format("The specified major %s was not found within the listing of acceptable majors which means it was not input correctly", major));
         }
     }
@@ -325,7 +341,9 @@ public class Model {
      * @since : Wed, 7 Apr 2021
      */
     private void verifyOfferings() throws InvalidInputException {
+        AdvisingLogger.getLogger().log(Level.FINER, "Verifying Offerings have been loaded");
         if (getOfferings().isEmpty()) {
+            AdvisingLogger.getLogger().log(Level.WARNING, "There are no offerings loaded right now");
             throw new InvalidOfferingsException("There are no offerings loaded right now");
         }
     }
@@ -340,7 +358,9 @@ public class Model {
      * @since : Wed, 7 Apr 2021
      */
     private void verifyTranscript() throws InvalidInputException {
+        AdvisingLogger.getLogger().log(Level.FINER, "Verifying Transcript has been loaded");
         if (getTranscriptCourses() == null || getTranscriptCourses().isEmpty()) {
+            AdvisingLogger.getLogger().log(Level.WARNING, "Transcript course data is not yet loaded");
             throw new InvalidTranscriptException("Transcript course data is not yet loaded");
         }
     }
@@ -372,6 +392,7 @@ public class Model {
         List<CurriculumItem> uncompletedCurriculumCourses = getCurriculaExcludingCompletedCourses(getTranscriptCourses());
         List<CurriculumItem> unsatisfiedOfferingsForTerm = getUnsatisfiedMatchingTerm(offeringsForTerm, uncompletedCurriculumCourses);
         //return output
+        AdvisingLogger.getLogger().log(Level.FINER, "Building Course Recommendation Output");
         StringBuilder builder = new StringBuilder();
         if (!unsatisfiedOfferingsForTerm.isEmpty()) {
             builder.append(String.format("%7s %2s | %40s : %s\n", "CODE", "CR", "DESCRIPTION", "PREREQUISITES"));
@@ -402,14 +423,19 @@ public class Model {
      * @since : Tue, 13 Apr 2021
      */
     private List<CurriculumItem> getUnsatisfiedMatchingTerm(List<Offering> offeringsInTerm, List<CurriculumItem> unsatisfiedCourses) {
+        AdvisingLogger.getLogger().log(Level.FINER, "Getting unsatisfied terms that match between offeringsInTerm and unsatisfiedCourses");
         ArrayList<CurriculumItem> out = new ArrayList<>();
         for (CurriculumItem curriculumItem: unsatisfiedCourses) {
             for (Offering offering: offeringsInTerm) {
                 if (curriculumItem.satisfiedBy(offering.getCourse())) {
+                    AdvisingLogger.getLogger().log(Level.FINEST, "Adding Course: " + curriculumItem);
                     out.add(offering.getCourse());
+                } else if (curriculumItem instanceof Course) {
+                    AdvisingLogger.getLogger().log(Level.FINEST, String.format("Course %s does not match Offering %s", ((Course) curriculumItem).code(), offering.getCourse().code()));
                 }
             }
             if (curriculumItem instanceof Elective) {
+                AdvisingLogger.getLogger().log(Level.FINEST, "Adding Elective: " + curriculumItem);
                 out.add(curriculumItem);
             }
         }
@@ -432,14 +458,17 @@ public class Model {
      */
     private List<CurriculumItem> getCurriculaExcludingCompletedCourses(ArrayList<Course> completedCourses) throws InvalidInputException {
         verifyMajor();
+        AdvisingLogger.getLogger().log(Level.FINE, "Searching For Curricula");
         for (Curriculum curriculum: getCurricula()) {
+            AdvisingLogger.getLogger().log(Level.FINEST, "Searching if specified curricula matches: " + curriculum.major());
             if (curriculum.major().equalsIgnoreCase(getMajor())) {
+                AdvisingLogger.getLogger().log(Level.FINEST, "Found matching curricula: " + curriculum.major());
                 return curriculum.getUnsatisfiedItems(completedCourses);
             }
         }
+        AdvisingLogger.getLogger().log(Level.WARNING, "Curriculum for stored major was not found");
         throw new InvalidCurriculaException("Curriculum for selected major not found");
     }
-
 
     /**
      * This method runs the specified action or method on the FX thread to avoid errors.
@@ -494,18 +523,23 @@ public class Model {
      */
     public void storeMajor(String major) throws InvalidInputException {
         if (major == null) {
+            AdvisingLogger.getLogger().log(Level.WARNING, "The specified input for major was null");
             throw new InvalidInputException("The specified input for major was null");
         } else if (major.isEmpty() || major.isBlank()) {
+            AdvisingLogger.getLogger().log(Level.WARNING, "The specified input for major was empty or blank");
             throw new InvalidInputException("The specified input for major was empty or blank");
         } else {
             //change hyphens and underscores to spaces, change double spaces to single spaces, trim spaces off start and end.
+            AdvisingLogger.getLogger().log(Level.FINER, "Removing invalid characters from input major");
             String input = major.replaceAll("_", " ").replaceAll("-", " ").trim();
             while (input.contains("  ")) {
                 input = input.replaceAll("[\\s]{2}", " ");
             }
             if (!input.matches("[a-zA-Z\\s]{1,99}")) {
+                AdvisingLogger.getLogger().log(Level.WARNING, "The specified input for major {" + major + "} did not match the expected pattern: /^[a-zA-Z\\s]{1,99}$");
                 throw new InvalidInputException("The specified input for major {" + major + "} did not match the expected pattern: /^[a-zA-Z\\s]{1,99}$");
             } else {
+                AdvisingLogger.getLogger().log(Level.FINER, "Storing specified major");
                 this.major = input.toUpperCase();
             }
         }
@@ -525,6 +559,8 @@ public class Model {
      * @since : Tue, 6 Apr 2021
      */
     private String loadCoursesFromSpecifiedLocations(String curriculumLocation, String offeringsLocation, String prerequisitesLocation) throws IOException {
+
+        AdvisingLogger.getLogger().log(Level.FINER, String.format("Attempting to load courses from specified locations:\n\t%s\n\t%s\n\t%s", curriculumLocation, offeringsLocation, prerequisitesLocation));
         //Load the required courses first
         Collection<Course> courses;
         PrerequisitesLoader prerequisitesLoader = new PrerequisitesLoader(new FileReader(prerequisitesLocation));
@@ -551,6 +587,7 @@ public class Model {
      * @since : Tue, 6 Apr 2021
      */
     public String loadDefaultCourseData() throws IOException {
+        AdvisingLogger.getLogger().log(Level.FINER, "Loading course data from default locations");
         String curriculumLocation = getDefaultCurriculumLocation();
         String offeringsLocation = getDefaultOfferingsLocation();
         String prerequisitesLocation = getDefaultPrerequisitesLocation();
@@ -578,6 +615,7 @@ public class Model {
      * @since : Thu, 1 Apr 2021
      */
     public String loadCourseData(Scanner in) throws InvalidInputException, IOException {
+        AdvisingLogger.getLogger().log(Level.FINER, "Querying user using passed scanner to retrieve locations and load course data");
         //Ask the user if default file locations should be used or if a custom location should be used
         boolean useDefaultFiles = useDefaultFilesQuery(in);
         //set the locations to the default
@@ -604,6 +642,7 @@ public class Model {
      * @throws NullPointerException no course matched the code
      */
     public String getCourseGraph(String code) {
+        AdvisingLogger.getLogger().log(Level.FINER, "Generating Course Prerequisite Graph");
         Course course = null;
 
         for (final var search : getPrerequisiteCourses()) {
