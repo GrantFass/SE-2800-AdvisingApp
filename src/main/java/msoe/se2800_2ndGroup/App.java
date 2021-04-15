@@ -5,8 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -30,7 +32,7 @@ import java.io.IOException;
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
  * * Added CLI setup by Grant on Saturday, 20 March 2021
- *
+ * * Implement Logger by Grant Fass on Thu, 15 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  *
@@ -68,16 +70,20 @@ public class App extends Application {
         //Link models to controllers
         PrimaryController primaryController = new PrimaryController();
         primaryController.setModel(model);
+        AdvisingLogger.getLogger().log(Level.FINER, "Linking model to primaryController");
         SecondaryController secondaryController = new SecondaryController();
         secondaryController.setModel(model);
+        AdvisingLogger.getLogger().log(Level.FINER, "Linking model to secondaryController");
 
         //Link FXML to scene
         scene = new Scene(loadFXML("primary"), 640, 480);
         stage.setScene(scene);
         stage.show();
+        AdvisingLogger.getLogger().log(Level.FINER, "Showing Stage");
 
         //Add CLI
         CLI cli = new CLI(model);
+        AdvisingLogger.getLogger().log(Level.FINER, "Linking model to CLI");
         Thread cliThread = new Thread(cli::processCommandLine);
         cliThread.setDaemon(true);
         cliThread.start();
@@ -98,6 +104,7 @@ public class App extends Application {
      * @since : Sat, 20 Mar 2021
      */
     static void setRoot(String fxml) throws IOException {
+        AdvisingLogger.getLogger().finer("setting scene root");
         scene.setRoot(loadFXML(fxml));
     }
 
@@ -117,6 +124,7 @@ public class App extends Application {
      */
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        AdvisingLogger.getLogger().log(Level.FINE, "Loading FXML", fxmlLoader);
         return fxmlLoader.load();
     }
 
@@ -130,6 +138,8 @@ public class App extends Application {
      * @since : Sat, 20 Mar 2021
      */
     public static void main(String[] args) {
+        AdvisingLogger.setupLogger();
+        AdvisingLogger.getLogger().info("Launching Program");
         launch();
     }
 

@@ -1,7 +1,11 @@
 package msoe.se2800_2ndGroup;
 
+import msoe.se2800_2ndGroup.logger.AdvisingLogger;
+
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.logging.Level;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -27,6 +31,13 @@ import java.util.Scanner;
  * * Load course data is now passed a scanner by Grant Fass on Tue, 30 Mar 2021
  * * Load course data on program start by Grant Fass on Tue, 6 Apr 2021
  * * Implement CLI entry to view course offerings by term by Grant Fass on Wed, 7 Apr 2021
+ * * Move the call to ImportTranscript.readInFile to Model.java by Grant Fass on Tue, 13 Apr 2021
+ * * Separate the query for terms to a separate method to enforce DRY by Grant Fass on Tue, 13 Apr 2021
+ * * Clean up multiple calls to outputHyphenLine() by Grant Fass on Thu, 15 Apr 2021
+ * * Update so exceptions are no longer fatal by Grant Fass on Thu, 15 Apr 2021
+ * * Implement logger by Grant Fass on Thu, 15 Apr 2021
+ * @since : Saturday, 20 March 2021
+ * @author : Grant
  *
  * @author : Grant
  * <p>
@@ -68,48 +79,50 @@ public class CLI {
      * @since : Sat, 20 Mar 2021
      */
     public void processCommandLine() {
-
-        boolean debug = false;
-        try (Scanner in = new Scanner(System.in)) {
-            //Load default course data on startup
-            long startTime = System.nanoTime();
-            System.out.format("%s in %d milliseconds\n", model.loadDefaultCourseData(), (System.nanoTime() - startTime) / 1000000); //divide by 1000000 to get milliseconds
-            while (true) {
+        AdvisingLogger.getLogger().info("Starting CLI");
+        //Load default course data on startup
+        long startTime = System.nanoTime();
+        try {
+            final int nanosecondsToMilliseconds = 1000000;
+            AdvisingLogger.getLogger().info(String.format("%s in %d milliseconds\n", model.loadDefaultCourseData(), (System.nanoTime() - startTime) / nanosecondsToMilliseconds).replace("\n", "\\n"));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        //Loop for CLI operations
+        Scanner in = new Scanner(System.in);
+        while (true) {
+            try {
+                outputHyphenLine();
                 String input = in.nextLine().trim().toLowerCase();
-                if (debug) {
-                    System.out.format("Your input: %s\n", input);
-                }
-
+                AdvisingLogger.getLogger().log(Level.FINER, String.format("Your input: %s\n", input).replace("\n", "\\n"));
                 switch (input) {
-                    case "exit", "quit" -> model.exitProgram();
-                    case "enable debug" -> {
-                        System.out.println("Debug Enabled");
-                        debug = true;
+                    case "exit", "quit" -> {
+                        AdvisingLogger.getLogger().info("Shutting down program");
+                        model.exitProgram();
                     }
-                    case "disable debug" -> debug = false;
                     case "store major" -> {
-                        outputHyphenLine();
                         System.out.print("Enter Major Abbreviation: ");
                         String major = in.next().trim().toLowerCase();
+                        AdvisingLogger.getLogger().log(Level.FINER, "Attempting to store major: " + major);
                         model.storeMajor(major);
                         System.out.println("Major Stored");
-                        outputHyphenLine();
+                        AdvisingLogger.getLogger().log(Level.FINER, "Major Stored");
                     }
                     case "get course recommendation" -> {
-                        outputHyphenLine();
-                        String recommendations = model.getCourseRecommendation();
-                        System.out.println(recommendations);
-                        outputHyphenLine();
+                        HashMap<String, Boolean> terms = getTerms(in);
+                        AdvisingLogger.getLogger().log(Level.FINER, "Getting Course Recommendations");
+                        String output = model.getCourseRecommendation(terms.get("fall"), terms.get("winter"), terms.get("spring"));
+                        System.out.println(output);
+                        AdvisingLogger.getLogger().log(Level.FINER, "Output Course Recommendations: \n" + output, output);
                     }
                     case "load course data" -> {
-                        startTime = System.nanoTime();
-                        outputHyphenLine();
-                        System.out.format("%s in %d milliseconds\n", model.loadCourseData(in), (System.nanoTime() - startTime) / 1000000); //divide by 1000000 to get milliseconds
-                        outputHyphenLine();
+                        final int nanosecondsToMilliseconds = 1000000;
+                        String output = String.format("%s in %d milliseconds\n", model.loadCourseData(in), (System.nanoTime() - startTime) / nanosecondsToMilliseconds);
+                        AdvisingLogger.getLogger().log(Level.FINER, "Course data loaded utilizing standard scanner: \n" + output.replace("\n", "\\n"), output);
                     }
                     case "load pdf" -> {
-                        ImportTranscript importTranscript = new ImportTranscript();
-                        importTranscript.readInFile(in);
+                        AdvisingLogger.getLogger().log(Level.FINER, "Loading unofficial transcript using standard scanner");
+                        model.loadUnofficialTranscript(in);
                     }
                     case "view prerequisites" -> {
                         System.out.println("Enter course: ");
@@ -119,32 +132,66 @@ public class CLI {
                         outputHyphenLine();
                     }
                     case "view course offerings" -> {
-                        outputHyphenLine();
-                        boolean fall = false;
-                        boolean winter = false;
-                        boolean spring = false;
-                        System.out.print("Would you like to display fall courses? (y/n): ");
-                        if (in.next().trim().equalsIgnoreCase("y")) {
-                            fall = true;
+                        HashMap<String, Boolean> terms = getTerms(in);
+                        AdvisingLogger.getLogger().log(Level.FINER, "Getting Course Offerings");
+                        String output = model.getCourseOfferingsAsString(terms.get("fall"), terms.get("winter"), terms.get("spring"));
+                        System.out.println(output);
+                        AdvisingLogger.getLogger().log(Level.FINER, "Output Course Offerings", output);
+                    }
+                    case "view prerequisite graph" -> {
+                        System.out.print("Course code: ");
+                        final var code = in.next().trim();
+                        AdvisingLogger.getLogger().log(Level.FINER, "Generating Prerequisite Graph For Course Code: " + code);
+                        try {
+                            final var graph = model.getCourseGraph(code);
+                            System.out.println(graph);
+                            AdvisingLogger.getLogger().log(Level.FINER, "Prerequisite Graph Generated: \n" + graph, graph);
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            AdvisingLogger.getLogger().log(Level.WARNING, "Error Generating Prerequisite Graph: \n" + e.getMessage(), e);
                         }
-                        System.out.print("Would you like to display winter courses? (y/n): ");
-                        if (in.next().trim().equalsIgnoreCase("y")) {
-                            winter = true;
-                        }
-                        System.out.print("Would you like to display spring courses? (y/n): ");
-                        if (in.next().trim().equalsIgnoreCase("y")) {
-                            spring = true;
-                        }
-                        System.out.println(model.getCourseOfferingsAsString(fall, winter, spring));
                     }
                 }
+            } catch (Model.InvalidInputException | IOException e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                AdvisingLogger.getLogger().log(Level.WARNING, "Exception thrown by method in CLI", e);
             }
-        } catch (Model.InvalidInputException | IOException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
         }
     }
 
+
+    /**
+     * This method queries the user for which terms they would like to display data for
+     * @param in the scanner used to query the user
+     * @return a HashMap containing the keys 'fall', 'winter', 'spring' and boolean values associated with the key
+     * @author : Grant Fass
+     * @since : Thu, 13 Apr 2021
+     */
+    private HashMap<String, Boolean> getTerms(Scanner in) {
+        AdvisingLogger.getLogger().log(Level.FINER, "Getting Terms");
+        boolean fall = false;
+        boolean winter = false;
+        boolean spring = false;
+        System.out.print("Would you like to display fall courses? (y/n): ");
+        if (in.next().trim().equalsIgnoreCase("y")) {
+            fall = true;
+        }
+        System.out.print("Would you like to display winter courses? (y/n): ");
+        if (in.next().trim().equalsIgnoreCase("y")) {
+            winter = true;
+        }
+        System.out.print("Would you like to display spring courses? (y/n): ");
+        if (in.next().trim().equalsIgnoreCase("y")) {
+            spring = true;
+        }
+        HashMap<String, Boolean> hashMap = new HashMap<>();
+        hashMap.put("fall", fall);
+        hashMap.put("winter", winter);
+        hashMap.put("spring", spring);
+        AdvisingLogger.getLogger().log(Level.FINER, String.format("Terms Stored: Fall(%s), Winter(%s), Spring(%s)", fall, winter, spring), hashMap);
+        return hashMap;
+    }
 
     /**
      * outputs a line of hyphens
@@ -156,5 +203,6 @@ public class CLI {
      */
     public void outputHyphenLine() {
         System.out.println("------------------------------");
+        AdvisingLogger.getLogger().log(Level.FINER, "\n------------------------------");
     }
 }
