@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.IOException;
 
@@ -130,6 +131,7 @@ public class App extends Application {
      * @since : Sat, 20 Mar 2021
      */
     public static void main(String[] args) {
+        AdvisingLogger.setupLogger();
         launch();
     }
 

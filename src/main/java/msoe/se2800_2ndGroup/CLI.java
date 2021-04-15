@@ -1,5 +1,7 @@
 package msoe.se2800_2ndGroup;
 
+import msoe.se2800_2ndGroup.logger.AdvisingLogger;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -72,6 +74,7 @@ public class CLI {
      * @since : Sat, 20 Mar 2021
      */
     public void processCommandLine() {
+        AdvisingLogger.getLogger().info("Starting CLI");
         boolean debug = false;
         //Load default course data on startup
         long startTime = System.nanoTime();
