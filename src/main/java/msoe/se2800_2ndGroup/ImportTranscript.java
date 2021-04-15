@@ -2,8 +2,7 @@ package msoe.se2800_2ndGroup;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 import msoe.se2800_2ndGroup.models.Course;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -31,6 +30,8 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * * Modify the readInFile method to return the list of courses directly instead of using a private var and a getter by Grant Fass on Tue, 13 Apr 2021
  * * Add methods to remove ignored words and extract course codes from each input line by Grant Fass on Thu, 15 Apr 2021
  * * Clean up main readInFile method by removing extra data structures, adding comments, and adding methods by Grant Fass on Thu, 15 Apr 2021
+ * * Update parsing to skip courses that were withdrawn from or failed by Grant Fass on Thu, 15 Apr 2021
+ * * Fix error preventing courses with the word 'organization' in the description from being read by Grant Fass on Thu, 15 Apr 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -40,28 +41,29 @@ import org.apache.pdfbox.text.PDFTextStripper;
 public class ImportTranscript {
     private final static String[] IGNORE_WORDS = new String[]{"Milwaukee School of Engineering", "Unofficial Transcript",
             "ID", "NAME", "SSN", "DATE PRINTED", "Undergraduate Division", "Course", "Number",
-            "Transfer Work", "Organization", "Term Totals", "Cumulative Totals", "Total Credits Earned",
+            "Transfer Work", "Term Totals", "Cumulative Totals", "Total Credits Earned",
             "Quarter", "Page", "Major Totals", "* * *   End of Academic Record * * *", "DEGREE SOUGHT",
             "Qual", "Pts GPA", "Cred", "HrsGrade"};
 
     /**
-     * This method will check if the current target word contains any of the values in the array of Ignored Words
+     * This method will check if the current target line contains any of the values in the array of Ignored Words
      *
-     * This method iterates through the list of ignored words and compares them against the target word that is passed
-     * into the method as a parameter using the .contains method for strings. If an ignored word is found the method
-     * will return null, otherwise the method will return the word itself.
-     * @param word the String to check for ignored words
-     * @return null if an ignored word is found, otherwise return the parameter string
+     * This method iterates through the list of ignored words and compares them against the target line that is passed
+     * into the method as a parameter using the .contains method for strings. If an ignored line is found the method
+     * will return null, otherwise the method will return the line itself.
+     * This method will also return null if the line ends in a W or an F which indicates the course was not passed or withdrawn from.
+     * @param line the String to check for ignored words
+     * @return null if an ignored line is found, otherwise return the parameter string
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
-    private String checkForIgnoredWord(String word) {
+    private String checkLineForIgnoredWordsAndFailedClassesAndWithdrawnClasses(String line) {
         for (String ignore: IGNORE_WORDS) {
-            if (word.contains(ignore)) {
+            if (line.contains(ignore) || line.endsWith("W") || line.endsWith("F")) {
                 return null;
             }
         }
-        return word;
+        return line;
     }
 
     /**
@@ -79,7 +81,7 @@ public class ImportTranscript {
     private String checkStringForCourseCode(String inputLine) {
         for (String word : inputLine.split(" ")) {
             if (!word.contains(".") && !word.contains("--") && word.matches(".*\\d.*")) {
-                return word;
+                return word.equals("SS415AMAmerican") ? "SS415AM" : word;
             }
         }
         return null;
@@ -92,6 +94,11 @@ public class ImportTranscript {
      * The method then splits the pdf String into individual lines.
      * For each line the method removes all ignored words then extracts course codes if they exist.
      * Then each course code is turned into a Course object and returned as part of an ArrayList.
+     * This method converts both the input text array and output course array list to hash sets to remove duplicates
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://www.programiz.com/java-programming/examples/convert-array-set"}</a>: Help converting arrays to hash sets
+     *
      * @param file the file object to use to create the PDDocument object to parse the PDF.
      * @return an ArrayList of Course objects containing the courses from the transcript
      * @throws IOException for issues creating the specified file or reading it
@@ -103,10 +110,10 @@ public class ImportTranscript {
         PDDocument doc = PDDocument.load(file);
         String text = new PDFTextStripper().getText(doc);
         //split pdf into individual lines
-        String[] inputLines = text.split("\n");
+        Set<String> inputLines = new HashSet<>(Arrays.asList(text.replace("\r", "").split("\n")));
         //remove ignored words from each line then attempt to parse into a course code
         for(String inputLine: inputLines) {
-            String s = checkForIgnoredWord(inputLine);
+            String s = checkLineForIgnoredWordsAndFailedClassesAndWithdrawnClasses(inputLine);
             if (s != null) {
                 String courseCode = checkStringForCourseCode(s);
                 if (courseCode != null) {
@@ -116,7 +123,7 @@ public class ImportTranscript {
                 }
             }
         }
-        return courses;
+        return new ArrayList<>(new HashSet<>(courses));
     }
 
     /**
