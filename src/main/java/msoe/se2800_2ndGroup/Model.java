@@ -486,6 +486,76 @@ public class Model {
     }
 
     /**
+     * This method searches through the prerequisites list in order to
+     * return the prerequisites for an inputted course.
+     *
+     * This method filters the input String to clear whitespaces, hyphens, and underscores.
+     * This method searches through prerequisites to find a course with a matching code.
+     * This method returns prerequisites based on if a course was found or not.
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://www.w3schools.com/java/java_regex.asp"}</a>: Help determining regex expressions for filtering input String
+     *
+     * @param course the course String that is sought for
+     * @return The prerequisite codes for a given course as a String
+     * @author : Claudia Poptile
+     * @since : Mon, 12 Apr 2021
+     */
+    public String viewPrerequisiteCourses(String course){
+        //TODO: validate course- maybe create a new method
+
+        // replace whitespaces, hyphens, underscores
+        course = standardizeCourse(course);
+        Course selected = null;
+        for (Course prerequisiteCourse: prerequisiteCourses){
+            if (prerequisiteCourse.code().equals(course)){
+                selected = prerequisiteCourse;
+                break;
+            }
+        }
+        AdvisingLogger.getLogger().log(Level.FINER, String.format("Searching for prerequisites for the course with code: %s", selected == null ? "null" : selected.code()));
+
+        //TODO: make this cleaner
+        if (selected != null) {
+            String preq = selected.prerequisite().toString();
+            if (selected.prerequisite().getClass().toString().endsWith("AndPrerequisite")) {
+                String leftPrerequisite = preq.substring(preq.indexOf("code=")+5, preq.indexOf(']'));
+                String rightPrequisite = preq.substring(preq.indexOf("code=", preq.indexOf("code=")+1)+5, preq.indexOf(']', preq.indexOf(']')+1));
+                return ("Prerequisites: " + leftPrerequisite + " and " + rightPrequisite);
+            } else if (selected.prerequisite().getClass().toString().endsWith("OrPrerequisite")){
+                String leftPrerequisite = preq.substring(preq.indexOf("code=")+5, preq.indexOf(']'));
+                String rightPrequisite = preq.substring(preq.indexOf("code=", preq.indexOf("code=")+1)+5, preq.indexOf(']', preq.indexOf(']')+1));
+                return ("Prerequisites: " + leftPrerequisite + " or " + rightPrequisite);
+            } else if (selected.prerequisite().getClass().toString().endsWith("SinglePrerequisite")) {
+                String singlePrerequisite = preq.substring(preq.indexOf("code=") + 5, preq.indexOf(']'));
+                return ("Prerequisites: " + singlePrerequisite);
+            } else {
+                return ("Prerequisites: No prerequisite needed");
+            }
+        } else {
+            return "No course found.";
+        }
+    }
+
+    /**
+     * This method takes the passed in course string to remove any and all
+     * non-alphanumeric characters in the string.
+     *
+     * This method relies on the use of regex to remove unwanted characters
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://www.geeksforgeeks.org/how-to-remove-all-non-alphanumeric-characters-from-a-string-in-java/"}</a>: Reference for regex expression
+     *
+     * @author : Claudia Poptile
+     * @since : Tue, 13 Apr 2021
+     * @param course course string to be standardized
+     * @return course code with only capitalized letters and numbers
+     */
+    public String standardizeCourse(String course){
+        return course.toUpperCase().replaceAll("[^a-zA-Z0-9]", "").trim();
+    }
+
+    /**
      * This method runs the specified action or method on the FX thread to avoid errors.
      * Run methods by calling with the following format: ensureFXThread(() -> method());
      *

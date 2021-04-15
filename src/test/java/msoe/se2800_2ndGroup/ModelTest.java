@@ -351,4 +351,109 @@ class ModelTest {
     void getCourseGraph() {
         fail("TODO: test not implemented yet");
     }
+
+    /**
+     * Test that the prerequisites are being returned correctly
+     *
+     * @author : Claudia Poptile
+     * @since : Wed, 14 Apr 2021
+     */
+    @Test
+    void viewPrerequisiteCourses() {
+        try {
+            model.loadDefaultCourseData();
+
+            //region Invalid courses
+            Assertions.assertEquals("No course found.", model.viewPrerequisiteCourses("B1020"));
+            Assertions.assertEquals("No course found.", model.viewPrerequisiteCourses("B2020"));
+            Assertions.assertEquals("No course found.", model.viewPrerequisiteCourses("C3200"));
+            //endregion
+
+            //region Valid courses
+            // Ideal inputs - single/and/or prerequisites
+            Assertions.assertEquals("Prerequisites: BI1010", model.viewPrerequisiteCourses("BI1020"));
+            Assertions.assertEquals("Prerequisites: BI102 and CH223", model.viewPrerequisiteCourses("BI2020"));
+            Assertions.assertEquals("Prerequisites: CE2812 or EE2930", model.viewPrerequisiteCourses("CE3200"));
+
+            // Capitalization
+            Assertions.assertEquals("Prerequisites: BI1010", model.viewPrerequisiteCourses("Bi1020"));
+            Assertions.assertEquals("Prerequisites: BI102 and CH223", model.viewPrerequisiteCourses("bi2020"));
+            Assertions.assertEquals("Prerequisites: CE2812 or EE2930", model.viewPrerequisiteCourses("cE3200"));
+
+            // Single Whitespaces
+            Assertions.assertEquals("Prerequisites: BI1010", model.viewPrerequisiteCourses("BI 1020"));
+            Assertions.assertEquals("Prerequisites: BI102 and CH223", model.viewPrerequisiteCourses("BI20 20"));
+            Assertions.assertEquals("Prerequisites: CE2812 or EE2930", model.viewPrerequisiteCourses("C E 3 2 0 0"));
+            Assertions.assertEquals("Prerequisites: BI1010", model.viewPrerequisiteCourses(" BI1030 "));
+
+            // Multiple Whitespaces
+            Assertions.assertEquals("Prerequisites: BI1010", model.viewPrerequisiteCourses("BI   1020"));
+            Assertions.assertEquals("Prerequisites: BI102 and CH223", model.viewPrerequisiteCourses("BI20   20"));
+            Assertions.assertEquals("Prerequisites: CE2812 or EE2930", model.viewPrerequisiteCourses("C   E   3   2   0   0"));
+            Assertions.assertEquals("Prerequisites: BI1010", model.viewPrerequisiteCourses("   BI1030   "));
+
+            // Hyphens
+            Assertions.assertEquals("Prerequisites: BI1010", model.viewPrerequisiteCourses("BI-1020"));
+            Assertions.assertEquals("Prerequisites: BI102 and CH223", model.viewPrerequisiteCourses("BI20-20"));
+            Assertions.assertEquals("Prerequisites: CE2812 or EE2930", model.viewPrerequisiteCourses("C-E-3-2-0-0"));
+            Assertions.assertEquals("Prerequisites: BI1010", model.viewPrerequisiteCourses("-BI1030-"));
+            Assertions.assertEquals("Prerequisites: CE1901", model.viewPrerequisiteCourses(" -C -E -1 -9 -1 -1 - "));
+
+            // Underscores
+            Assertions.assertEquals("Prerequisites: BI1010", model.viewPrerequisiteCourses("BI_1020"));
+            Assertions.assertEquals("Prerequisites: BI102 and CH223", model.viewPrerequisiteCourses("BI20_20"));
+            Assertions.assertEquals("Prerequisites: CE2812 or EE2930", model.viewPrerequisiteCourses("C_E_3_2_0_0"));
+            Assertions.assertEquals("Prerequisites: BI1010", model.viewPrerequisiteCourses("_BI1030_"));
+            Assertions.assertEquals("Prerequisites: CE1901", model.viewPrerequisiteCourses(" _C _E _1 _9 _1 _1 _ "));
+
+
+
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        //endregion
+    }
+
+    /**
+     * Test that the course string is being standardized correctly
+     *
+     * @author : Claudia Poptile
+     * @since : Wed, 14 Apr 2021
+     */
+    @Test
+    void standardizeCourse() {
+
+        // Capitalization
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2800"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("Se2800"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("se2800"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("sE2800"));
+
+        // Whitespaces
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE 2800"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("  SE2800"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2800  "));
+        Assertions.assertEquals("SE2800", model.standardizeCourse(" S E  2 8   0     0       "));
+
+        // Punctuation
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2??800?"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE!2!8!0!!!0"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("-S-E2--800"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE_2__800_"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE.2..80..0"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2,8,,,0,0,"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE(2)8((00"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2{8}00{"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("//S/E280/0"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE|2||80|0"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE'2''''''8'0'0"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("S$$E2$$8$00"));
+
+        // Mix
+        Assertions.assertEquals("SE2800", model.standardizeCourse("SE  -2#.... 800"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("     S-e2+++8{}{}{}{00"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("se28  0????0!"));
+        Assertions.assertEquals("SE2800", model.standardizeCourse("s E 2 ----8 0@0~~~~~~~"));
+
+    }
 }
