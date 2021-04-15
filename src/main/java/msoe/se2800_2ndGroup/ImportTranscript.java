@@ -64,11 +64,11 @@ public class ImportTranscript {
         }
         for (String ignore: IGNORE_WORDS) {
             if (line.contains(ignore)) {
-                AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input line (%s) contains an ignored word (%s)", line, ignore));
+                AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input line (length = %d) contains an ignored word (%s)", line.length(), ignore));
                 return null;
             }
         }
-        AdvisingLogger.getLogger().log(Level.FINE, "line (" + line + ") is valid");
+        AdvisingLogger.getLogger().log(Level.FINER, "line (" + line + ") is valid");
         return line;
     }
 
@@ -87,7 +87,7 @@ public class ImportTranscript {
     private String checkStringForCourseCode(String inputLine) {
         for (String word : inputLine.split(" ")) {
             if (!word.contains(".") && !word.contains("--") && word.matches(".*\\d.*")) {
-                AdvisingLogger.getLogger().log(Level.FINE, String.format("Input Line (%s) contains course code (%s)", inputLine, word));
+                AdvisingLogger.getLogger().log(Level.FINER, String.format("Input Line (%s) contains course code (%s)", inputLine, word));
                 return word.equals("SS415AMAmerican") ? "SS415AM" : word;
             }
         }
