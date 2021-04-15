@@ -43,6 +43,7 @@ import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
  * * Fix getCourseRecommendation to work with electives by Grant Fass on Thu, 15 Apr 2021
  * * Add more custom exceptions to help with testing by Grant Fass on Thu, 15 Apr 2021
  * * Add logger by Grant Fass on Thu, 15 Apr 2021
+ * * Add method to store unofficial transcripts by Grant Fass on Thu, 15 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  * Copyright (C): TBD
@@ -306,8 +307,24 @@ public class Model {
      */
     public void loadUnofficialTranscript(Scanner in) throws InvalidInputException, IOException {
         ImportTranscript importTranscript = new ImportTranscript();
-        AdvisingLogger.getLogger().log(Level.FINEST, "Loading unofficial transcript using default scanner and a new importTranscript object");
+        AdvisingLogger.getLogger().log(Level.FINER, "Loading unofficial transcript using default scanner and a new importTranscript object");
         transcriptCourses = importTranscript.readInFile(in);
+    }
+
+    /**
+     * TODO: implement me
+     * TODO: test me
+     * Method to store an Unofficial Transcript
+     * @param in the scanner to use for IO operations
+     * @throws IOException for issues creating the specified file or reading it
+     * @author : Grant Fass
+     * @since : Thu, 15 Apr 2021
+     */
+    public void storeUnofficialTranscript(Scanner in) throws IOException {
+        UnofficialTranscript unofficialTranscript = new UnofficialTranscript();
+        AdvisingLogger.getLogger().log(Level.FINER, "Saving unofficial transcript using default scanner and a new unofficialTranscript object");
+        //TODO: test by re-outputting the stored in transcript
+        unofficialTranscript.writeFile(getTranscriptCourses());
     }
 
     /**
