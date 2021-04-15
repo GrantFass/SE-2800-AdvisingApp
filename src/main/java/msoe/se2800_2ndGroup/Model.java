@@ -127,9 +127,8 @@ public class Model {
      * @return the curricula stored in the program
      * @author : Grant Fass
      * @since : Tue, 30 Mar 2021
-     * TODO: FIX METHOD SIGNATURE
      */
-    public Collection<Curriculum> getCurricula() {
+    private Collection<Curriculum> getCurricula() {
         return Objects.requireNonNullElseGet(curricula, ArrayList::new);
     }
 
@@ -140,9 +139,8 @@ public class Model {
      * @return the course offerings stored in the program
      * @author : Grant Fass
      * @since : Tue, 30 Mar 2021
-     * TODO: FIX METHOD SIGNATURE
      */
-    public Collection<Offering> getOfferings() {
+    private Collection<Offering> getOfferings() {
         return Objects.requireNonNullElseGet(offerings, ArrayList::new);
     }
 
@@ -153,10 +151,21 @@ public class Model {
      * @return the prerequisite courses stored in the program
      * @author : Grant Fass
      * @since : Tue, 30 Mar 2021
-     * TODO: FIX METHOD SIGNATURE
      */
-    public Collection<Course> getPrerequisiteCourses() {
+    private Collection<Course> getPrerequisiteCourses() {
         return Objects.requireNonNullElseGet(prerequisiteCourses, ArrayList::new);
+    }
+
+    /**
+     * TODO: test me
+     * This method returns the list of transcript courses when called
+     * This method will return an empty ArrayList whenever the transcript courses have not been loaded.
+     * @return the transcript courses stored in the program
+     * @author : Grant Fass
+     * @since : Thu, 15 Apr 2021
+     */
+    private ArrayList<Course> getTranscriptCourses() {
+        return Objects.requireNonNullElseGet(transcriptCourses, ArrayList::new);
     }
 
     /**
@@ -175,24 +184,24 @@ public class Model {
      * @author : Grant Fass
      * @since : Wed, 7 Apr 2021
      */
-    public ArrayList<Offering> getCourseOfferings(boolean displayFall, boolean displayWinter, boolean displaySpring) throws InvalidInputException {
+    private ArrayList<Offering> getCourseOfferings(boolean displayFall, boolean displayWinter, boolean displaySpring) throws InvalidInputException {
         verifyMajor();
-        ArrayList<Offering> offerings = new ArrayList<>();
+        ArrayList<Offering> offeringsBySeason = new ArrayList<>();
         //collect the offerings by term available for the major
         try {
-            for (Offering offering : this.offerings) {
-                if (offering.getAvailability(major).getSeason().equalsIgnoreCase("fall") && displayFall) {
-                    offerings.add(offering);
-                } else if (offering.getAvailability(major).getSeason().equalsIgnoreCase("winter") && displayWinter) {
-                    offerings.add(offering);
-                } else if (offering.getAvailability(major).getSeason().equalsIgnoreCase("spring") && displaySpring) {
-                    offerings.add(offering);
+            for (Offering offering : getOfferings()) {
+                if (offering.getAvailability(getMajor()).getSeason().equalsIgnoreCase("fall") && displayFall) {
+                    offeringsBySeason.add(offering);
+                } else if (offering.getAvailability(getMajor()).getSeason().equalsIgnoreCase("winter") && displayWinter) {
+                    offeringsBySeason.add(offering);
+                } else if (offering.getAvailability(getMajor()).getSeason().equalsIgnoreCase("spring") && displaySpring) {
+                    offeringsBySeason.add(offering);
                 }
             }
         } catch (NullPointerException e) {
-            throw new InvalidInputException(String.format("The specified major %s was not found which means it was not input correctly", major));
+            throw new InvalidInputException(String.format("The specified major %s was not found which means it was not input correctly", getMajor()));
         }
-        return offerings;
+        return offeringsBySeason;
     }
 
     /**
@@ -245,6 +254,7 @@ public class Model {
     }
 
     /**
+     * TODO: test me
      * this method extracts the important information from a given course and returns a string containing the values
      *
      * this method uses string formatting to display a passed course in a readable format.
@@ -263,6 +273,7 @@ public class Model {
     }
 
     /**
+     * TODO: test me
      * Method used to load the unofficial transcript into the program by calling the readInFile method from ImportTranscript
      * @param in the scanner to use for IO operations
      * @author : Grant Fass
@@ -286,9 +297,9 @@ public class Model {
      */
     private void verifyMajor() throws InvalidInputException {
         Set<String> potentialMajors = new HashSet<>(Arrays.asList("EE", "BSE PT", "CE", "UX", "AE", "NU", "CS", "AS", "SE", "MIS", "ME", "BME", "IE", "ME A"));
-        if (major == null || major.isBlank() || major.isEmpty()) {
+        if (getMajor() == null || getMajor().isBlank() || getMajor().isEmpty()) {
             throw new InvalidInputException("The specified major is missing or blank");
-        } else if (!potentialMajors.contains(major)) { // TODO: check if this can be simplified or more dynamic
+        } else if (!potentialMajors.contains(getMajor())) {
             throw new InvalidInputException(String.format("The specified major %s was not found within the listing of acceptable majors which means it was not input correctly", major));
         }
     }
@@ -304,7 +315,7 @@ public class Model {
      * @since : Wed, 7 Apr 2021
      */
     private void verifyOfferings() throws InvalidInputException {
-        if (offerings.isEmpty()) {
+        if (getOfferings().isEmpty()) {
             throw new InvalidInputException("There are no offerings loaded right now");
         }
     }
@@ -320,7 +331,7 @@ public class Model {
      * @since : Wed, 7 Apr 2021
      */
     private void verifyTranscript() throws InvalidInputException {
-        if (transcriptCourses == null || transcriptCourses.isEmpty()) {
+        if (getTranscriptCourses() == null || getTranscriptCourses().isEmpty()) {
             throw new InvalidInputException("Transcript course data is not yet loaded");
         }
     }
@@ -346,7 +357,7 @@ public class Model {
         verifyTranscript();
         //start computing recommendations
         ArrayList<Offering> offeringsForTerm = getCourseOfferings(getFall, getWinter, getSpring);
-        List<CurriculumItem> uncompletedCurriculumCourses = getCurriculaExcludingCompletedCourses(transcriptCourses);
+        List<CurriculumItem> uncompletedCurriculumCourses = getCurriculaExcludingCompletedCourses(getTranscriptCourses());
         List<Course> unsatisfiedOfferingsForTerm = getUnsatisfiedMatchingTerm(offeringsForTerm, uncompletedCurriculumCourses);
         //return output
         StringBuilder builder = new StringBuilder();
@@ -399,8 +410,8 @@ public class Model {
      * @since : Tue, 13 Apr 2021
      */
     private List<CurriculumItem> getCurriculaExcludingCompletedCourses(ArrayList<Course> completedCourses) throws InvalidInputException {
-        for (Curriculum curriculum: curricula) {
-            if (curriculum.major().equalsIgnoreCase(major)) {
+        for (Curriculum curriculum: getCurricula()) {
+            if (curriculum.major().equalsIgnoreCase(getMajor())) {
                 return curriculum.getUnsatisfiedItems(completedCourses);
             }
         }
@@ -573,14 +584,14 @@ public class Model {
     public String getCourseGraph(String code) {
         Course course = null;
 
-        for (final var search : prerequisiteCourses) {
+        for (final var search : getPrerequisiteCourses()) {
             if (search.code().equals(code)) {
                 course = search;
                 break;
             }
         }
 
-        final var graph = GraphMaker.getGraph(Objects.requireNonNull(course), prerequisiteCourses);
+        final var graph = GraphMaker.getGraph(Objects.requireNonNull(course), getPrerequisiteCourses());
 
         return graph.getStringGraph();
     }

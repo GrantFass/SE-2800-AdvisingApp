@@ -230,31 +230,4 @@ class ModelTest {
         assertNotNull(Model.getDefaultPrerequisitesLocation());
         assertTrue(Model.getDefaultPrerequisitesLocation().contains("/msoe/se2800_2ndGroup/prerequisites_updated.csv"));
     }
-
-    @Test
-    void getCourseRecommendation() {
-    }
-
-    @Test
-    void testGetCourseRecommendation() {
-        //TODO
-    }
-
-    @Test
-    void getCurricula() {
-
-        //TODO
-    }
-
-    @Test
-    void getOfferings() {
-
-        //TODO
-    }
-
-    @Test
-    void getPrerequisiteCourses() {
-
-        //TODO
-    }
 }
