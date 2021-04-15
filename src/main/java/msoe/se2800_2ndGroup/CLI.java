@@ -129,7 +129,7 @@ public class CLI {
                         String course = in.nextLine();
                         String prerequisites = model.viewPrerequisiteCourses(course);
                         System.out.println(prerequisites);
-                        outputHyphenLine();
+                        AdvisingLogger.getLogger().log(Level.FINE, String.format("The prerequisites for the course of code: %s are: %s", course, prerequisites));
                     }
                     case "view course offerings" -> {
                         HashMap<String, Boolean> terms = getTerms(in);

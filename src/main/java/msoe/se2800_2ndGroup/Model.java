@@ -497,10 +497,9 @@ public class Model {
             if (prerequisiteCourse.code().equals(course)){
                 selected = prerequisiteCourse;
                 break;
-            } else {
-                selected = null;
             }
         }
+        AdvisingLogger.getLogger().log(Level.FINER, String.format("Searching for prerequisites for the course with code: %s", selected == null ? "null" : selected.code()));
 
         //TODO: make this cleaner
         if (selected != null) {
