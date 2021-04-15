@@ -121,7 +121,6 @@ public class Model {
     }
 
     /**
-     * TODO: test me
      * This method returns the curriculum when called.
      * This method will return an empty ArrayList whenever curricula has not been loaded
      * @return the curricula stored in the program
@@ -133,7 +132,6 @@ public class Model {
     }
 
     /**
-     * TODO: test me
      * This method returns the course offerings when called.
      * This method will return an empty ArrayList whenever the offerings have not been loaded
      * @return the course offerings stored in the program
@@ -145,7 +143,6 @@ public class Model {
     }
 
     /**
-     * TODO: test me
      * This method returns the prerequisite courses when called.
      * This method will return an empty ArrayList whenever the prerequisite courses have not been loaded
      * @return the prerequisite courses stored in the program
@@ -157,7 +154,6 @@ public class Model {
     }
 
     /**
-     * TODO: test me
      * This method returns the list of transcript courses when called
      * This method will return an empty ArrayList whenever the transcript courses have not been loaded.
      * @return the transcript courses stored in the program
@@ -169,7 +165,6 @@ public class Model {
     }
 
     /**
-     * TODO: test me
      * This method collects all of the offerings available in for the terms that are given
      *
      * This method goes through all of the offerings that were stored during course data loading.
@@ -189,6 +184,7 @@ public class Model {
         ArrayList<Offering> offeringsBySeason = new ArrayList<>();
         //collect the offerings by term available for the major
         try {
+            verifyOfferings();
             for (Offering offering : getOfferings()) {
                 if (offering.getAvailability(getMajor()).getSeason().equalsIgnoreCase("fall") && displayFall) {
                     offeringsBySeason.add(offering);
@@ -205,7 +201,6 @@ public class Model {
     }
 
     /**
-     * TODO: test me
      * This method returns the list of offerings for the input terms as a readable string.
      *
      * This method gets the ArrayList of offerings for the input terms.
@@ -235,7 +230,6 @@ public class Model {
     }
 
     /**
-     * TODO: test me
      * This method extracts the important information from a given offering and returns a string containing the values
      *
      * This method uses String formatting to display a passed offering in a readable format.
@@ -254,7 +248,6 @@ public class Model {
     }
 
     /**
-     * TODO: test me
      * this method extracts the important information from a given course and returns a string containing the values
      *
      * this method uses string formatting to display a passed course in a readable format.
@@ -285,7 +278,6 @@ public class Model {
     }
 
     /**
-     * TODO: test me
      * this method will check to see if the stored major is valid
      *
      * This method will first check that the stored major is not null, blank, or empty; throwing an error if it is.
@@ -305,7 +297,6 @@ public class Model {
     }
 
     /**
-     * TODO: test me
      * This method will verify that the course data offerings is loaded and is not empty
      *
      * This method checks to see that the collection of offerings is not empty.
@@ -321,7 +312,6 @@ public class Model {
     }
 
     /**
-     * TODO: test me
      * This method will verify that the user transcript has been loaded
      *
      * This method checks to see if the transcriptCourses collection is null or empty
@@ -518,6 +508,7 @@ public class Model {
     }
 
     /**
+     * TODO: test me
      * This method loads in all of the course data from the default locations
      *
      * This method is usually meant to be called on program startup so that the user can start working right away with
@@ -575,6 +566,7 @@ public class Model {
     }
 
     /**
+     * TODO: test me
      * Get a textual representation of a graph of a course's prerequisites.
      *
      * @param code the code of the course to analyze
@@ -597,6 +589,7 @@ public class Model {
     }
 
     /**
+     * TODO: test me
      * Create the set of virtual courses to represent prerequisites that don't
      * map to actual courses.
      *
