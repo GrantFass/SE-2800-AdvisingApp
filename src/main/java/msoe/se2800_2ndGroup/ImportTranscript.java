@@ -1,11 +1,11 @@
 package msoe.se2800_2ndGroup;
 
-import javafx.scene.control.Alert;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
+import java.util.logging.Level;
 
+import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -23,12 +23,15 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * Description:
  * * <class description here>
  * The ImportTranscript class is responsible for:
- * * <...>
- * * <...>
- * * <...>
- * * <...>
+ * * Loading and parsing unofficial transcript PDF files into ArrayList of Course objects
  * Modification Log:
  * * File Created by toohillt on Saturday, 20 March 2021
+ * * Modify the readInFile method to return the list of courses directly instead of using a private var and a getter by Grant Fass on Tue, 13 Apr 2021
+ * * Add methods to remove ignored words and extract course codes from each input line by Grant Fass on Thu, 15 Apr 2021
+ * * Clean up main readInFile method by removing extra data structures, adding comments, and adding methods by Grant Fass on Thu, 15 Apr 2021
+ * * Update parsing to skip courses that were withdrawn from or failed by Grant Fass on Thu, 15 Apr 2021
+ * * Fix error preventing courses with the word 'organization' in the description from being read by Grant Fass on Thu, 15 Apr 2021
+ * * Add logger by Grant Fass on Thu, 15 Apr 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -36,89 +39,122 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * @since : Saturday, 20 March 2021
  */
 public class ImportTranscript {
-    private ArrayList<Course> courses = new ArrayList<Course>();
+    private final static String[] IGNORE_WORDS = new String[]{"Milwaukee School of Engineering", "Unofficial Transcript",
+            "ID", "NAME", "SSN", "DATE PRINTED", "Undergraduate Division", "Course", "Number",
+            "Transfer Work", "Term Totals", "Cumulative Totals", "Total Credits Earned",
+            "Quarter", "Page", "Major Totals", "* * *   End of Academic Record * * *", "DEGREE SOUGHT",
+            "Qual", "Pts GPA", "Cred", "HrsGrade"};
 
-    public ArrayList<Course> readInFile(Scanner scanner) {
-        try {
-            //TODO: Verify this is fixed after feature 16 is merged in
-            String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner);
-            File file = new File(pathName);
-            //For future use with a GUI
-//                FileChooser fileChooser = new FileChooser();
-//                fileChooser.setTitle("Open Unofficial Transcript PDF");
-//                fileChooser.getExtensionFilters().addAll(
-//                        new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-//                file = fileChooser.showOpenDialog(new Stage());
-            if (file == null) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "No file was chosen.");
-                alert.showAndWait();
-            } else {
-                PDDocument doc = PDDocument.load(file);
-                String text = new PDFTextStripper().getText(doc);
-                String[] words = text.split("\n");
-                String[] ignoreWords = new String[]{"Milwaukee School of Engineering", "Unofficial Transcript",
-                        "ID", "NAME", "SSN", "DATE PRINTED", "Undergraduate Division", "Course", "Number",
-                        "Transfer Work", "Organization", "Term Totals", "Cumulative Totals", "Total Credits Earned",
-                        "Quarter", "Page", "Major Totals", "* * *   End of Academic Record * * *", "DEGREE SOUGHT",
-                        "Qual", "Pts GPA", "Cred", "HrsGrade"};
-                ArrayList<String> input = new ArrayList<>();
-                ArrayList<String> findRemovableWords = new ArrayList<>();
-                //TODO: potentially replace with the enhanced for loop.
-                boolean accessed = false;
-                boolean accessable = false;
-                for (int j = 0; j < words.length; j++) {
-                    accessable = false;
-                    //TODO: Move interior for loop into method
-                    for (int i = 0; i < ignoreWords.length; i++) {
-                        if (words[j].contains(ignoreWords[i])) {
-                            accessable = true;
-                        }
-                    }
-                    if (accessable) {
-                        words[j] = " ";
-                    } else {
-                        input.add(words[j]);
-                    }
-                }
-                words = new String[0];
-                for (int x = 0; x < input.size(); x++) {
-                    String[] removableWords = input.get(x).split(" ");
-                    for (int y = 0; y < removableWords.length; y++) {
-                        if (!removableWords[y].contains(".") && !removableWords[y].contains("--")) {
-                            findRemovableWords.add(removableWords[y]);
-                        }
-                    }
-                }
-                //input cleared to avoid storing data
-                input.clear();
-                //HERE'S JUST COURSE CODES!!!
-                ArrayList<String> courseCodes = new ArrayList<>();
-                for (int x = 0; x < findRemovableWords.size(); x++) {
-                    if (findRemovableWords.get(x).matches(".*\\d.*")) {
-                        courseCodes.add(findRemovableWords.get(x));
-                    }
-                }
 
-                //Course objects created
-                for (int i = 0; i < courseCodes.size(); i++){
-                    Course course = new Course(courseCodes.get(i));
-                    courses.add(course);
-                }
-
-                for (int k = 0; k < findRemovableWords.size(); ++k) {
-                    System.out.println(findRemovableWords.get(k));
-                }
-                System.out.println("Successfully read in file!");
-            }
-        } catch (IllegalArgumentException notValid) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Not a valid file name.");
-            alert.showAndWait();
-        } catch (IOException event) {
-            event.printStackTrace();
-        } catch (Model.InvalidInputException e) {
-            System.out.println(e.getMessage());
+    /**
+     * This method will check if the current target line contains any of the values in the array of Ignored Words
+     *
+     * This method iterates through the list of ignored words and compares them against the target line that is passed
+     * into the method as a parameter using the .contains method for strings. If an ignored line is found the method
+     * will return null, otherwise the method will return the line itself.
+     * This method will also return null if the line ends in a W or an F which indicates the course was not passed or withdrawn from.
+     * @param line the String to check for ignored words
+     * @return null if an ignored line is found, otherwise return the parameter string
+     * @author : Grant Fass, Teresa T.
+     * @since : Thu, 15 Apr 2021
+     */
+    private String checkLineForIgnoredWordsAndFailedClassesAndWithdrawnClasses(String line) {
+        if (line.endsWith("W") || line.endsWith("F")) {
+            AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input line (%s) ends in W or F which signifies the class was failed or withdrawn from and should be skipped", line));
+            return null;
         }
-        //TODO: file errors reading in
-        return courses;
+        for (String ignore: IGNORE_WORDS) {
+            if (line.contains(ignore)) {
+                AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input line (%s) contains an ignored word (%s)", line, ignore));
+                return null;
+            }
+        }
+        AdvisingLogger.getLogger().log(Level.FINE, "line (" + line + ") is valid");
+        return line;
+    }
+
+    /**
+     * This method checks for the course code in the string and returns it
+     *
+     * This method first splits the passed in inputLine on each space (' ').
+     * This method then checks to see if the each of the words that were separated contain ('.') or ('--') and that they contain a digit
+     * If the split words do not contain either of the strings, and they contain a digit then they are added to the output arrayList and returned.
+     * The returned list contains only the course codes then since all words containing descriptions or credits are removed
+     * @param inputLine the String to split and scan for the course code
+     * @return a String containing the course code or null if one was not found.
+     * @author : Grant Fass, Teresa T.
+     * @since : Thu, 15 Apr 2021
+     */
+    private String checkStringForCourseCode(String inputLine) {
+        for (String word : inputLine.split(" ")) {
+            if (!word.contains(".") && !word.contains("--") && word.matches(".*\\d.*")) {
+                AdvisingLogger.getLogger().log(Level.FINE, String.format("Input Line (%s) contains course code (%s)", inputLine, word));
+                return word.equals("SS415AMAmerican") ? "SS415AM" : word;
+            }
+        }
+        AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input Line (%s) does not contain a course code", inputLine));
+        return null;
+    }
+
+    /**
+     * This method reads in the entire pdf then parses out the course codes and returns them as an ArrayList of courses.
+     *
+     * The method will use the PDF loader to load the entire PDF into a single String object.
+     * The method then splits the pdf String into individual lines.
+     * For each line the method removes all ignored words then extracts course codes if they exist.
+     * Then each course code is turned into a Course object and returned as part of an ArrayList.
+     * This method converts both the input text array and output course array list to hash sets to remove duplicates
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://www.programiz.com/java-programming/examples/convert-array-set"}</a>: Help converting arrays to hash sets
+     *
+     * @param file the file object to use to create the PDDocument object to parse the PDF.
+     * @return an ArrayList of Course objects containing the courses from the transcript
+     * @throws IOException for issues creating the specified file or reading it
+     * @author : Grant Fass, Teresa T.
+     * @since : Thu, 15 Apr 2021
+     */
+    public ArrayList<Course> readInFile(File file) throws IOException {
+        AdvisingLogger.getLogger().log(Level.FINE, String.format("Reading in PDF file from location: %s", file));
+        ArrayList<Course> courses = new ArrayList<>();
+        PDDocument doc = PDDocument.load(file);
+        String text = new PDFTextStripper().getText(doc);
+        //split pdf into individual lines
+        Set<String> inputLines = new HashSet<>(Arrays.asList(text.replace("\r", "").split("\n")));
+        //remove ignored words from each line then attempt to parse into a course code
+        for(String inputLine: inputLines) {
+            String s = checkLineForIgnoredWordsAndFailedClassesAndWithdrawnClasses(inputLine);
+            if (s != null) {
+                String courseCode = checkStringForCourseCode(s);
+                if (courseCode != null) {
+                    Course course = new Course(courseCode);
+                    courses.add(course);
+                    System.out.format("Adding Course: %s\n", course.code());
+                }
+            }
+        }
+        ArrayList<Course> output = new ArrayList<>(new HashSet<>(courses));
+        AdvisingLogger.getLogger().log(Level.FINE, String.format("Read %d courses from transcript", output.size()));
+        return output;
+    }
+
+    /**
+     * This method reads in the entire pdf then parses out the course codes and returns them as an ArrayList of courses.
+     *
+     * This method first queries the user for a file location using the standard FileIO.getUserInputFileLocation
+     * method. Then the method passes off to the other readInFile(File file) method to create the PDF reading object
+     * and parse the courses out.
+     * @param scanner the scanner object to use to query the user for a file location.
+     * @return an ArrayList of Course objects containing the courses from the transcript
+     * @throws IOException for issues creating the specified file or reading it
+     * @throws Model.InvalidInputException for issues verifying the specified file location
+     * @author : Grant Fass, Teresa T.
+     * @since : Thu, 15 Apr 2021
+     */
+    public ArrayList<Course> readInFile(Scanner scanner) throws IOException, Model.InvalidInputException {
+        //load entire pdf into a single string
+        String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner);
+        File file = new File(pathName);
+        return readInFile(file);
     }
 }

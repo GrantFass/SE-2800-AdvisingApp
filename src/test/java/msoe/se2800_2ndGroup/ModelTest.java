@@ -1,9 +1,10 @@
 package msoe.se2800_2ndGroup;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,21 +20,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * Description:
  * * This class contains tests for the Model.java class
  * The ModelTest class is responsible for:
-<<<<<<< HEAD
- * * <...>
- * * <...>
- * * <...>
- * * <...>
- * Modification Log:
- * * File Created by Grant on Saturday, 20 March 2021
-=======
- * * testing the methods defined in Model.java
- * Modification Log:
+ * * Testing the methods in Model.java
  * * File Created by Grant on Saturday, 20 March 2021
  * * Create test for the storeMajor method by Grant on Saturday, 20 March 2021
  * * Create tests for the default course data locations by Grant Fass on Fri, 26 Mar 2021
->>>>>>> 8461cec82d2990a806833a435d9e4fc049415e9e
- * <p>
+ * * Fix Store Major Test by Grant Fass on Thu, 15 Apr 2021
+ * * Implement test for getCourseOfferingsAsString() by Grant Fass on Thu, 15 Apr 2021
+ * * Implement tests that fail with relevant messages due to not being completable for getCourseGraph, getCourseRecommendation, & loadUnofficialTranscript by Grant Fass on Thu, 15 Apr 2021
  * Copyright (C): TBD
  *
  * @author : Grant
@@ -51,15 +44,6 @@ class ModelTest {
     @BeforeEach
     void setUp() {
         model = new Model();
-    }
-
-    //TODO: Either use this in a future test or remove it.
-    @AfterEach
-    void tearDown() {
-    }
-
-    @Test
-    void getCourseRecommendation() {
     }
 
     /**
@@ -105,92 +89,92 @@ class ModelTest {
         try {
             //Capitalization
             model.storeMajor("valid input");
-            Assertions.assertEquals("valid input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("vaLid Input");
-            Assertions.assertEquals("vaLid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
 
             //allow max length of 99 and min length of 1
 
             model.storeMajor("V");
             Assertions.assertEquals("V", model.getMajor());
             model.storeMajor("vaLid Input that is ninety nine characters long exactly how much longer do I need to type for thiss");
-            Assertions.assertEquals("vaLid Input that is ninety nine characters long exactly how much longer do I need to type for thiss", model.getMajor());
+            Assertions.assertEquals("VALID INPUT THAT IS NINETY NINE CHARACTERS LONG EXACTLY HOW MUCH LONGER DO I NEED TO TYPE FOR THISS", model.getMajor());
 
             //no spaces
             model.storeMajor("ValidInput");
-            Assertions.assertEquals("ValidInput", model.getMajor());
+            Assertions.assertEquals("VALIDINPUT", model.getMajor());
 
             //Single leading and or trailing space
             model.storeMajor(" Valid Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid Input ");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor(" Valid Input ");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
 
             //Triple leading and or trailing space
             model.storeMajor("   Valid Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid Input   ");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("   Valid Input   ");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
 
             //Double or Triple Space in Middle
             model.storeMajor("Valid  Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid   Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
 
             //Underscores
             model.storeMajor("Valid_Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("_Valid _Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid_ Input_");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("_Valid_Input_");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("_Valid_ _Input_");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid___Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("___Valid___Input___");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid Input___");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid___ Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("___Valid ___Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid___ Input___");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
 
             //Hyphens
             model.storeMajor("Valid-Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("-Valid -Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid- Input-");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("-Valid-Input-");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("-Valid- -Input-");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid---Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("---Valid---Input---");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid Input---");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid--- Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("---Valid ---Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid--- Input---");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
         } catch (Exception e) {
             //These should already be handled with the previous invalid inputs thus should fail.
             System.out.println(e.getMessage());
@@ -210,7 +194,7 @@ class ModelTest {
     @Test
     void getDefaultCurriculumLocation() {
         assertNotNull(Model.getDefaultCurriculumLocation());
-        assertTrue(Model.getDefaultCurriculumLocation().contains("curriculum.csv"));
+        assertTrue(Model.getDefaultCurriculumLocation().contains("/msoe/se2800_2ndGroup/curriculum.csv"));
     }
 
     /**
@@ -224,7 +208,7 @@ class ModelTest {
     @Test
     void getDefaultOfferingsLocation() {
         assertNotNull(Model.getDefaultOfferingsLocation());
-        assertTrue(Model.getDefaultOfferingsLocation().contains("offerings.csv"));
+        assertTrue(Model.getDefaultOfferingsLocation().contains("/msoe/se2800_2ndGroup/offerings.csv"));
     }
 
     /**
@@ -238,30 +222,133 @@ class ModelTest {
     @Test
     void getDefaultPrerequisitesLocation() {
         assertNotNull(Model.getDefaultPrerequisitesLocation());
-        assertTrue(Model.getDefaultPrerequisitesLocation().contains("prerequisites_updated.csv"));
+        assertTrue(Model.getDefaultPrerequisitesLocation().contains("/msoe/se2800_2ndGroup/prerequisites_updated.csv"));
     }
 
-
+    /**
+     * Test that proper error message is thrown when the major is missing or the offerings list is empty. These errors
+     * should match those thrown by verifyMajor() and verifyOfferings().
+     * Test that no errors are thrown for all possible combinations of boolean values as method parameters
+     * Test that the expected output matches the actual output for each term for the default data.
+     * @author : Grant Fass
+     * @since : Thu, 15 Apr 2021
+     */
     @Test
-    void testGetCourseRecommendation() {
-        //TODO
+    void getCourseOfferingsAsString() {
+        try {
+            //Test that error is thrown when no offerings and no major have been loaded
+            assertThrows(Model.InvalidMajorException.class, () -> model.getCourseOfferingsAsString(false, true, false));
+            //Test that error is still thrown when no offerings have been loaded but major has
+            model.storeMajor("CS");
+            assertThrows(Model.InvalidOfferingsException.class, () -> model.getCourseOfferingsAsString(false, true, false));
+            //load course data so that verification of offerings does not throw errors
+            model.loadDefaultCourseData();
+            //test that does not throw error for various variable combinations
+            model.getCourseOfferingsAsString(false, false, false);
+            model.getCourseOfferingsAsString(false, false, true);
+            model.getCourseOfferingsAsString(false, true, false);
+            model.getCourseOfferingsAsString(false, true, true);
+            model.getCourseOfferingsAsString(true, false, false);
+            model.getCourseOfferingsAsString(true, false, true);
+            model.getCourseOfferingsAsString(true, true, false);
+            model.getCourseOfferingsAsString(true, true, true);
+            //test that method outputs that there are no terms selected if all input is false
+            assertEquals("No Terms Selected\n", model.getCourseOfferingsAsString(false, false, false));
+            //test that method output matches the expected output for each term
+            String expectedFallOutput = "   CODE CR |                              DESCRIPTION : PREREQUISITES\n" +
+                    " BA2220  3 |        Foundations of Business Economics : NullPrerequisite()\n" +
+                    " CS1011  4 |                   Software Development I : NullPrerequisite()\n" +
+                    " CS2911  4 |                        Network Protocols : OrPrerequisite[left=SinglePrerequisite[code=CS1011], right=SinglePrerequisite[code=SE1011]]\n" +
+                    " CS3040  4 |                    Programming Languages : SinglePrerequisite[code=CS2040]\n" +
+                    " CS3400  4 |                         Machine Learning : AndPrerequisite[left=SinglePrerequisite[code=CS2852], right=SinglePrerequisite[code=MA383]]\n" +
+                    " CS3860  4 |                         Database Systems : AndPrerequisite[left=SinglePrerequisite[code=CS2852], right=SinglePrerequisite[code=MA2310]]\n" +
+                    " CS4000  3 |                          Senior Design I : SinglePrerequisite[code=SR]\n" +
+                    " GS1001  4 |                       Freshman Studies I : NullPrerequisite()\n" +
+                    "  MA136  4 |                               Calculus I : NullPrerequisite()\n" +
+                    " MA2323  4 |                              Calculus IV : SinglePrerequisite[code=MA2314]\n" +
+                    " MA2310  3 |                   Discrete Mathematics I : SinglePrerequisite[code=SO]\n" +
+                    "  MA262  3 |               Probability and Statistics : SinglePrerequisite[code=MA137]\n" +
+                    " SE2030  3 | Software Engineering Tools and Practices : SinglePrerequisite[code=CS2852]\n";
+            String expectedWinterOutput = "   CODE CR |                              DESCRIPTION : PREREQUISITES\n" +
+                    " CS1021  4 |                  Software Development II : OrPrerequisite[left=SinglePrerequisite[code=CS1011], right=SinglePrerequisite[code=SE1011]]\n" +
+                    " CS2300  4 |                    Computational Science : OrPrerequisite[left=SinglePrerequisite[code=CS1021], right=SinglePrerequisite[code=SE1021]]\n" +
+                    " CS2711  4 |                    Computer Organization : OrPrerequisite[left=SinglePrerequisite[code=CS1011], right=SinglePrerequisite[code=SE1011]]\n" +
+                    " CS3300  4 |                             Data Science : AndPrerequisite[left=SinglePrerequisite[code=CS3400], right=SinglePrerequisite[code=MA262]]\n" +
+                    " CS3840  4 |                        Operating Systems : AndPrerequisite[left=SinglePrerequisite[code=CS2711], right=OrPrerequisite[left=SinglePrerequisite[code=CS2040], right=SinglePrerequisite[code=SE2040]]]\n" +
+                    " CS4010  3 |                         Senior Design II : SinglePrerequisite[code=SR]\n" +
+                    " GS1002  4 |                      Freshman Studies II : NullPrerequisite()\n" +
+                    "  HU432  3 | Ethics for Professional Managers and Engineers : SinglePrerequisite[code=JR]\n" +
+                    "  MA137  4 |                              Calculus II : SinglePrerequisite[code=MA136]\n" +
+                    " MA3320  3 |                  Discrete Mathematics II : SinglePrerequisite[code=MA2310]\n" +
+                    "  OR402  1 |                    Professional Guidance : SinglePrerequisite[code=JR]\n" +
+                    " PH2011  4 |                    Physics I - Mechanics : SinglePrerequisite[code=MA136]\n" +
+                    " SE2811  4 |                Software Component Design : AndPrerequisite[left=SinglePrerequisite[code=CS2852], right=SinglePrerequisite[code=SE2030]]\n" +
+                    " SE2840  4 |              Web Application Development : AndPrerequisite[left=SinglePrerequisite[code=CS2852], right=SinglePrerequisite[code=CS2911]]\n";
+            String expectedSpringOutput = "   CODE CR |                              DESCRIPTION : PREREQUISITES\n" +
+                    " BA3444  3 |   Organizational Behavior and Leadership : SinglePrerequisite[code=SO]\n" +
+                    " CS2040  4 |                 Programming in C and C++ : SinglePrerequisite[code=CS2852]\n" +
+                    " CS2400  3 |  Introduction to Artificial Intelligence : AndPrerequisite[left=AndPrerequisite[left=SinglePrerequisite[code=CS2852], right=SinglePrerequisite[code=CS2300]], right=SinglePrerequisite[code=MA2310]]\n" +
+                    " CS2852  4 |                          Data Structures : OrPrerequisite[left=SinglePrerequisite[code=CS1021], right=SinglePrerequisite[code=SE1021]]\n" +
+                    " CS3310  4 |                   Data Science Practicum : SinglePrerequisite[code=CS3300]\n" +
+                    " CS3851  4 |                               Algorithms : AndPrerequisite[left=SinglePrerequisite[code=CS2852], right=SinglePrerequisite[code=MA3320]]\n" +
+                    " CS3450  4 |                            Deep Learning : SinglePrerequisite[code=CS3400]\n" +
+                    " CS4020  3 |                        Senior Design III : SinglePrerequisite[code=SR]\n" +
+                    " GS1003  4 |                     Freshman Studies III : NullPrerequisite()\n" +
+                    " MA2314  4 |                             Calculus III : SinglePrerequisite[code=MA137]\n" +
+                    "  MA383  3 |                           Linear Algebra : OrPrerequisite[left=OrPrerequisite[left=SinglePrerequisite[code=MA231], right=SinglePrerequisite[code=MA225]], right=SinglePrerequisite[code=MA3501]]\n" +
+                    " PH2021  4 |            Physics II - ElectroMagnetism : AndPrerequisite[left=SinglePrerequisite[code=PH2011], right=SinglePrerequisite[code=MA137]]\n" +
+                    " SE2800  3 |           Software Engineering Process I : AndPrerequisite[left=SinglePrerequisite[code=CS2852], right=SinglePrerequisite[code=SE2030]]\n";
+
+            assertEquals(expectedSpringOutput, model.getCourseOfferingsAsString(false, false, true));
+            assertEquals(expectedWinterOutput, model.getCourseOfferingsAsString(false, true, false));
+            assertEquals(expectedFallOutput, model.getCourseOfferingsAsString(true, false, false));
+        } catch (Model.InvalidInputException | IOException e) {
+            fail(e.getMessage());
+        }
     }
 
     @Test
-    void getCurricula() {
+    void loadUnofficialTranscript() {
+        //TODO: Stuck for now since Feature #11 is needed first
+        fail("TODO: Need Test Transcript to continue");
+    }
 
-        //TODO
+    /**
+     * Tests that errors are thrown when required data is missing
+     * @author : Grant Fass
+     * @since : Thu, 15 Apr 2021
+     */
+    @Test
+    void getCourseRecommendation() {
+        try {
+            //Test that error is thrown when no offerings, major, or transcript have been loaded.
+            assertThrows(Model.InvalidMajorException.class, () -> model.getCourseRecommendation(false, true, false));
+            //Test that error is still thrown when offerings and transcript have not been loaded.
+            model.storeMajor("CS");
+            assertThrows(Model.InvalidOfferingsException.class, () -> model.getCourseRecommendation(false, true, false));
+            //Test that error is still thrown when transcript has not been loaded.
+            model.loadDefaultCourseData();
+            assertThrows(Model.InvalidTranscriptException.class, () -> model.getCourseRecommendation(false, true, false));
+
+            //TODO: Stuck for now since Feature #11 is needed first
+            fail("TODO: Need Test Transcript to continue");
+        } catch (Model.InvalidInputException | IOException e) {
+            fail(e.getMessage());
+        }
     }
 
     @Test
-    void getOfferings() {
-
-        //TODO
+    void loadDefaultCourseData() {
+        try {
+            String actual = model.loadDefaultCourseData();
+            assertTrue(actual.contains("Loaded 193 prerequisites, 2 curricula, and 85 offerings"));
+        } catch (IOException e) {
+            fail();
+        }
     }
 
     @Test
-    void getPrerequisiteCourses() {
-
-        //TODO
+    void getCourseGraph() {
+        fail("TODO: test not implemented yet");
     }
 }
