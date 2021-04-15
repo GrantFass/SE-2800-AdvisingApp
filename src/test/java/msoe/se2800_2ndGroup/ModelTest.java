@@ -26,13 +26,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * * <...>
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
-=======
  * * testing the methods defined in Model.java
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
  * * Create test for the storeMajor method by Grant on Saturday, 20 March 2021
  * * Create tests for the default course data locations by Grant Fass on Fri, 26 Mar 2021
->>>>>>> 8461cec82d2990a806833a435d9e4fc049415e9e
+ * * Fix Store Major Test by Grant Fass on Thu, 15 Apr 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -51,15 +50,6 @@ class ModelTest {
     @BeforeEach
     void setUp() {
         model = new Model();
-    }
-
-    //TODO: Either use this in a future test or remove it.
-    @AfterEach
-    void tearDown() {
-    }
-
-    @Test
-    void getCourseRecommendation() {
     }
 
     /**
@@ -105,92 +95,92 @@ class ModelTest {
         try {
             //Capitalization
             model.storeMajor("valid input");
-            Assertions.assertEquals("valid input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("vaLid Input");
-            Assertions.assertEquals("vaLid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
 
             //allow max length of 99 and min length of 1
 
             model.storeMajor("V");
             Assertions.assertEquals("V", model.getMajor());
             model.storeMajor("vaLid Input that is ninety nine characters long exactly how much longer do I need to type for thiss");
-            Assertions.assertEquals("vaLid Input that is ninety nine characters long exactly how much longer do I need to type for thiss", model.getMajor());
+            Assertions.assertEquals("VALID INPUT THAT IS NINETY NINE CHARACTERS LONG EXACTLY HOW MUCH LONGER DO I NEED TO TYPE FOR THISS", model.getMajor());
 
             //no spaces
             model.storeMajor("ValidInput");
-            Assertions.assertEquals("ValidInput", model.getMajor());
+            Assertions.assertEquals("VALIDINPUT", model.getMajor());
 
             //Single leading and or trailing space
             model.storeMajor(" Valid Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid Input ");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor(" Valid Input ");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
 
             //Triple leading and or trailing space
             model.storeMajor("   Valid Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid Input   ");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("   Valid Input   ");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
 
             //Double or Triple Space in Middle
             model.storeMajor("Valid  Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid   Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
 
             //Underscores
             model.storeMajor("Valid_Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("_Valid _Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid_ Input_");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("_Valid_Input_");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("_Valid_ _Input_");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid___Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("___Valid___Input___");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid Input___");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid___ Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("___Valid ___Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid___ Input___");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
 
             //Hyphens
             model.storeMajor("Valid-Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("-Valid -Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid- Input-");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("-Valid-Input-");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("-Valid- -Input-");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid---Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("---Valid---Input---");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid Input---");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid--- Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("---Valid ---Input");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
             model.storeMajor("Valid--- Input---");
-            Assertions.assertEquals("Valid Input", model.getMajor());
+            Assertions.assertEquals("VALID INPUT", model.getMajor());
         } catch (Exception e) {
             //These should already be handled with the previous invalid inputs thus should fail.
             System.out.println(e.getMessage());
@@ -210,7 +200,7 @@ class ModelTest {
     @Test
     void getDefaultCurriculumLocation() {
         assertNotNull(Model.getDefaultCurriculumLocation());
-        assertTrue(Model.getDefaultCurriculumLocation().contains("curriculum.csv"));
+        assertTrue(Model.getDefaultCurriculumLocation().contains("/msoe/se2800_2ndGroup/curriculum.csv"));
     }
 
     /**
@@ -224,7 +214,7 @@ class ModelTest {
     @Test
     void getDefaultOfferingsLocation() {
         assertNotNull(Model.getDefaultOfferingsLocation());
-        assertTrue(Model.getDefaultOfferingsLocation().contains("offerings.csv"));
+        assertTrue(Model.getDefaultOfferingsLocation().contains("/msoe/se2800_2ndGroup/offerings.csv"));
     }
 
     /**
@@ -238,9 +228,12 @@ class ModelTest {
     @Test
     void getDefaultPrerequisitesLocation() {
         assertNotNull(Model.getDefaultPrerequisitesLocation());
-        assertTrue(Model.getDefaultPrerequisitesLocation().contains("prerequisites_updated.csv"));
+        assertTrue(Model.getDefaultPrerequisitesLocation().contains("/msoe/se2800_2ndGroup/prerequisites_updated.csv"));
     }
 
+    @Test
+    void getCourseRecommendation() {
+    }
 
     @Test
     void testGetCourseRecommendation() {
