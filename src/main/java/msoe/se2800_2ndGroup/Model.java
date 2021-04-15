@@ -361,6 +361,9 @@ public class Model {
      * @since : Sat, 20 Mar 2021
      */
     public String getCourseRecommendation(boolean getFall, boolean getWinter, boolean getSpring) throws InvalidInputException {
+        if (!getFall && !getWinter && !getSpring) {
+            return "No Terms Selected";
+        }
         verifyMajor();
         verifyOfferings();
         verifyTranscript();
