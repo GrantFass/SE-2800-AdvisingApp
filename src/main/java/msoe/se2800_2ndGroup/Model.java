@@ -321,7 +321,7 @@ public class Model {
     public void storeUnofficialTranscript() throws IOException {
         UnofficialTranscript unofficialTranscript = new UnofficialTranscript();
         AdvisingLogger.getLogger().log(Level.FINER, "Saving current transcript courses to unofficial transcript using a new unofficialTranscript object");
-        unofficialTranscript.writeFile(getTranscriptCourses());
+        unofficialTranscript.writeFile(getTranscriptCourses(), "./out/Unofficial Transcript.pdf");
     }
 
     /**

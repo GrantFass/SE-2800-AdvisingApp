@@ -48,11 +48,15 @@ public class UnofficialTranscript {
      *  <a href="#{@link}">{@link "https://stackoverflow.com/a/47731904"}</a>: Newlines in output PDF
      *
      * @param courses the list of courses to output to the PDF
+     * @param outputLocation the location to store the output location to, will default to "./out/Unofficial Transcript.pdf"
      * @throws IOException for errors in writing to the PDF file
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
-    public void writeFile(ArrayList<Course> courses) throws IOException {
+    public void writeFile(ArrayList<Course> courses, String outputLocation) throws IOException {
+        if(outputLocation == null || outputLocation.isBlank() || outputLocation.isEmpty()) {
+            outputLocation = "./out/Unofficial Transcript.pdf";
+        }
         PDDocument doc = new PDDocument();
         PDPage page = new PDPage();
         doc.addPage(page);
@@ -63,7 +67,7 @@ public class UnofficialTranscript {
         buildPDFBody(contentStream, courses);
         closePDF(contentStream);
         // Save the results and ensure that the document is properly closed:
-        doc.save("./out/Unofficial Transcript.pdf");
+        doc.save(outputLocation);
         doc.close();
     }
 
