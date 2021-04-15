@@ -40,10 +40,11 @@ import org.apache.pdfbox.text.PDFTextStripper;
  */
 public class ImportTranscript {
     private final static String[] IGNORE_WORDS = new String[]{"Milwaukee School of Engineering", "Unofficial Transcript",
-            "ID", "NAME", "SSN", "DATE PRINTED", "Undergraduate Division", "Course", "Number",
+            "ID", "NAME", "SSN", "DATE PRINTED", "Undergraduate Division", "Number",
             "Transfer Work", "Term Totals", "Cumulative Totals", "Total Credits Earned",
             "Quarter", "Page", "Major Totals", "* * *   End of Academic Record * * *", "DEGREE SOUGHT",
-            "Qual", "Pts GPA", "Cred", "HrsGrade"};
+            "Qual", "Pts GPA", "Cred", "HrsGrade", "Generated On Date"};
+
 
     /**
      * This method will check if the current target line contains any of the values in the array of Ignored Words
@@ -58,6 +59,7 @@ public class ImportTranscript {
      * @since : Thu, 15 Apr 2021
      */
     private String checkLineForIgnoredWordsAndFailedClassesAndWithdrawnClasses(String line) {
+        //can add ' || line.endsWith("WIP")' if Work in progress courses need to be excluded
         if (line.endsWith("W") || line.endsWith("F")) {
             AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input line (%s) ends in W or F which signifies the class was failed or withdrawn from and should be skipped", line));
             return null;
