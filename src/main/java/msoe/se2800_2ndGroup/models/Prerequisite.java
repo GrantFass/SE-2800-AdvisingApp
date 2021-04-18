@@ -1,3 +1,7 @@
+package msoe.se2800_2ndGroup.models;
+
+import java.util.Collection;
+
 /*
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
  * Class: SE 2800 041
@@ -20,10 +24,6 @@
  * @author : Hunter Turcin
  * @since : Tue, 16 Mar 2021
  */
-package msoe.se2800_2ndGroup.models;
-
-import java.util.Collection;
-
 public interface Prerequisite {
     /**
      * Check if the collection of courses satisfies this prerequisite.
