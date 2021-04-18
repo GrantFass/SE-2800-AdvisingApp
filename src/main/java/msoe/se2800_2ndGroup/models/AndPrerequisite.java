@@ -1,3 +1,7 @@
+package msoe.se2800_2ndGroup.models;
+
+import java.util.Collection;
+
 /*
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
  * Class: SE 2800 041
@@ -17,27 +21,21 @@
  *     - equals added by Hunter Turcin on 2021-03-31
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
+ *     - code cleanup from group feedback by Hunter Turcin on 2021-04-18
  * Copyright (C): 2021
- */
-package msoe.se2800_2ndGroup.models;
-
-import java.util.Collection;
-
-/**
- * Project Name: Advising App
- * Class Name: AndPrerequisite
- * Creation Date: Tuesday, 16 March 2021
- * Original Author: Hunter Turcin
- * Description: A prerequisite that requires both of two prerequisites to be satisfied.
- * The AndPrerequisite class is responsible for:
- * - verifying if all of a set of prerequisites have been satisfied
- * Modification Log:
- * - File Created by Hunter Turcin on 2021-03-16
- * - equals added by Hunter Turcin on 2021-03-31
- * - additional overridden Object methods added by Hunter Turcin on 2021-04-04
- * - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
+ * 
+ * @author : Hunter Turcin
+ * @since : Tue, 16 Mar 2021
  */
 public record AndPrerequisite(Prerequisite left, Prerequisite right) implements Prerequisite {
+    /**
+     * Check if both dependant prerequisites are satisfied.
+     *
+     * @param codes course codes to use for checking
+     * @return true if satisfied
+     * @author : Hunter Turcin
+     * @since : Tue, 16 Mar 2021
+     */
     @Override
     public boolean satisfiedBy(Collection<String> codes) {
         return left.satisfiedBy(codes) && right.satisfiedBy(codes);
