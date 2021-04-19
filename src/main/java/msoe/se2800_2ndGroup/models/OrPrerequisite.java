@@ -27,7 +27,7 @@ import java.util.Collection;
  * @author : Hunter Turcin
  * @since : Tue, 16 Mar 2021
  */
-public record OrPrerequisite(Prerequisite left, Prerequisite right) implements Prerequisite {
+public record OrPrerequisite(Prerequisite left, Prerequisite right) implements CompositePrerequisite {
     /**
      * Check if at lease one dependant prerequisite is satisfied.
      *

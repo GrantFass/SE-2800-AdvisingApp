@@ -27,7 +27,7 @@ import java.util.Collection;
  * @author : Hunter Turcin
  * @since : Tue, 16 Mar 2021
  */
-public record AndPrerequisite(Prerequisite left, Prerequisite right) implements Prerequisite {
+public record AndPrerequisite(Prerequisite left, Prerequisite right) implements CompositePrerequisite {
     /**
      * Check if both dependant prerequisites are satisfied.
      *

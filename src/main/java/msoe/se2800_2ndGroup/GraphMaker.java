@@ -21,6 +21,7 @@ import java.util.List;
  * * modeling a graph of courses for display
  * Modification Log:
  * * File Created by turcinh on Sunday, 10 April 2021
+ * * code cleanup from group feedback by turcinh on Monday, 19 April 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -41,6 +42,17 @@ public class GraphMaker {
         return new GraphNode(root, getNodes(root.prerequisite(), courses));
     }
 
+    /**
+     * Map the prerequisites of a course for a graph of courses.
+     *
+     * This is called recursively for OrPrerequisites and AndPrerequisites.
+     *
+     * @param prerequisite prerequisite to get the graph of
+     * @param courses courses to turn into from codes
+     * @return the child nodes for this graph
+     * @author : Hunter Turcin
+     * @since : Sat, 10 Apr 2021
+     */
     private static Collection<GraphNode> getNodes(Prerequisite prerequisite, Collection<Course> courses) {
         if (prerequisite instanceof NullPrerequisite) {
             return List.of();
@@ -48,15 +60,9 @@ public class GraphMaker {
             final var course = getCourse(single.code(), courses);
             final var children = getNodes(course.prerequisite(), courses);
             return List.of(new GraphNode(course, children));
-        } else if (prerequisite instanceof AndPrerequisite and) {
-            final var leftNodes = getNodes(and.left(), courses);
-            final var rightNodes = getNodes(and.right(), courses);
-            final var nodes = new ArrayList<>(leftNodes);
-            nodes.addAll(rightNodes);
-            return nodes;
-        } else if (prerequisite instanceof OrPrerequisite or) {
-            final var leftNodes = getNodes(or.left(), courses);
-            final var rightNodes = getNodes(or.right(), courses);
+        } else if (prerequisite instanceof CompositePrerequisite tree) {
+            final var leftNodes = getNodes(tree.left(), courses);
+            final var rightNodes = getNodes(tree.right(), courses);
             final var nodes = new ArrayList<>(leftNodes);
             nodes.addAll(rightNodes);
             return nodes;
@@ -65,6 +71,15 @@ public class GraphMaker {
         }
     }
 
+    /**
+     * Get a course from its course code.
+     *
+     * @param code code for searching
+     * @param courses courses to search
+     * @return course or null if not found
+     * @author : Hunter Turcin
+     * @since : Sat, 10 Apr 2021
+     */
     private static Course getCourse(String code, Collection<Course> courses) {
         Course result = null;
 
