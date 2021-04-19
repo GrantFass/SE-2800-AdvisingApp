@@ -81,7 +81,7 @@ public class OfferingsLoader {
                 final var termId = record.get(major);
                 final var term = Term.fromId(termId);
 
-                offering.putAvailability(major, term);
+                offering.availability().put(major, term);
             }
 
             offerings.add(offering);

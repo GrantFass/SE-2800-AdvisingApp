@@ -1,3 +1,7 @@
+package msoe.se2800_2ndGroup.models;
+
+import java.util.*;
+
 /*
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
  * Class: SE 2800 041
@@ -16,31 +20,19 @@
  *     - File Created by Hunter Turcin on 2021-03-16
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
+ *     - code cleanup from group feedback by Hunter Turcin on 2021-04-19
  * Copyright (C): 2021
- */
-package msoe.se2800_2ndGroup.models;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-
-/**
- * Project Name: Advising App
- * Class Name: Curriculum
- * Creation Date: Tuesday, 16 March 2021
- * Original Author: Hunter Turcin
- * Description: A plan for graduation.
- * The Course class is responsible for:
- * - verifying all courses have been taken to graduate
- * Modification Log:
- * - File Created by Hunter Turcin on 2021-03-16
- * - additional overridden Object methods added by Hunter Turcin on 2021-04-04
- * - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
+ *
+ * @author : Hunter Turcin
+ * @since : Tue, 16 Mar 2021
  */
 public record Curriculum(String major, List<CurriculumItem> items) {
     /**
      * Determine which curriculum items are not yet satisfied.
+     *
+     * For every course that has been taken, check each curriculum item
+     * for if the course satisfies it. This is done in a way such that a
+     * single course cannot satisfy multiple curriculum items.
      *
      * @param courses courses that have been taken already
      * @return unsatisfied items in curriculum order
@@ -56,23 +48,30 @@ public record Curriculum(String major, List<CurriculumItem> items) {
         }
 
         for (var course : courses) {
-            for (var item : items) {
-                if (!completed.get(item) && item.satisfiedBy(course)) {
-                    completed.put(item, true);
-                    break; // don't double-count courses
-                }
-            }
+            updateCompletionStatus(completed, course);
         }
 
         // return the unsatisfied items in curriculum order
-        var unsatisfied = new ArrayList<CurriculumItem>();
+        return items.stream()
+                    .filter(item -> !completed.get(item))
+                    .toList();
+    }
 
+    /**
+     * Update the next curriculum item's completion status for this course,
+     * if there is a remaining item that can be satisfied.
+     * 
+     * @param completed map of curriculum item to completion status
+     * @param course current course
+     * @author : Hunter Turcin
+     * @since : Mon, 19 Apr 2021
+     */
+    private void updateCompletionStatus(Map<CurriculumItem, Boolean> completed, Course course) {
         for (var item : items) {
-            if (!completed.get(item)) {
-                unsatisfied.add(item);
+            if (!completed.get(item) && item.satisfiedBy(course)) {
+                completed.put(item, true);
+                break; // don't double-count courses
             }
         }
-
-        return unsatisfied;
     }
 }

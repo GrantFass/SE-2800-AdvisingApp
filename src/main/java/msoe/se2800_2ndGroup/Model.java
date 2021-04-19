@@ -44,6 +44,7 @@ import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
  * * Add more custom exceptions to help with testing by Grant Fass on Thu, 15 Apr 2021
  * * Add logger by Grant Fass on Thu, 15 Apr 2021
  * * Add method to store unofficial transcripts by Grant Fass on Thu, 15 Apr 2021
+ * * Perform code cleanup from group feedback by Hunter Turcin on Mon, 19 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  * Copyright (C): TBD
@@ -190,11 +191,11 @@ public class Model {
             verifyOfferings();
             AdvisingLogger.getLogger().log(Level.FINER, "Collecting course offerings by term for major: " + major);
             for (Offering offering : getOfferings()) {
-                if (offering.getAvailability(getMajor()).getSeason().equalsIgnoreCase("fall") && displayFall) {
+                if (offering.availability().get(getMajor()).season().equalsIgnoreCase("fall") && displayFall) {
                     offeringsBySeason.add(offering);
-                } else if (offering.getAvailability(getMajor()).getSeason().equalsIgnoreCase("winter") && displayWinter) {
+                } else if (offering.availability().get(getMajor()).season().equalsIgnoreCase("winter") && displayWinter) {
                     offeringsBySeason.add(offering);
-                } else if (offering.getAvailability(getMajor()).getSeason().equalsIgnoreCase("spring") && displaySpring) {
+                } else if (offering.availability().get(getMajor()).season().equalsIgnoreCase("spring") && displaySpring) {
                     offeringsBySeason.add(offering);
                 }
             }
@@ -251,7 +252,7 @@ public class Model {
             AdvisingLogger.getLogger().log(Level.WARNING, "The input offering to convert to string was null");
             throw new InvalidInputException("The input offering was null");
         }
-        return getCourseAsString(offering.getCourse());
+        return getCourseAsString(offering.course());
     }
 
     /**
@@ -442,11 +443,11 @@ public class Model {
         ArrayList<CurriculumItem> out = new ArrayList<>();
         for (CurriculumItem curriculumItem: unsatisfiedCourses) {
             for (Offering offering: offeringsInTerm) {
-                if (curriculumItem.satisfiedBy(offering.getCourse())) {
+                if (curriculumItem.satisfiedBy(offering.course())) {
                     AdvisingLogger.getLogger().log(Level.FINER, "Adding Course: " + curriculumItem);
-                    out.add(offering.getCourse());
+                    out.add(offering.course());
                 } else if (curriculumItem instanceof Course) {
-                    AdvisingLogger.getLogger().log(Level.FINEST, String.format("Course %s does not match Offering %s", ((Course) curriculumItem).code(), offering.getCourse().code()));
+                    AdvisingLogger.getLogger().log(Level.FINEST, String.format("Course %s does not match Offering %s", ((Course) curriculumItem).code(), offering.course().code()));
                 }
             }
             if (curriculumItem instanceof Elective) {
