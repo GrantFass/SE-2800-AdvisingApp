@@ -228,7 +228,7 @@ public class Model {
         ArrayList<Offering> courseOfferings = getCourseOfferings(displayFall, displayWinter, displaySpring);
         AdvisingLogger.getLogger().log(Level.FINER, "Building string output for course offerings as string");
         StringBuilder builder = new StringBuilder();
-        builder.append(String.format("%7s %2s | %40s : %s\n", "CODE", "CR", "DESCRIPTION", "PREREQUISITES"));
+        builder.append(String.format("%10s %3s | %50s : %s\n", "CODE", "CR", "DESCRIPTION", "PREREQUISITES"));
         for (Offering o: courseOfferings) {
             //format is CODE CREDITS | DESCRIPTION : PRERECS
             builder.append(getOfferingAsString(o));
@@ -271,7 +271,7 @@ public class Model {
             AdvisingLogger.getLogger().log(Level.WARNING, "The input course to convert to string was null");
             throw new InvalidInputException("The input course was null");
         }
-        String output = String.format("%7s %2s | %40s : %s", course.code(), course.credits(), course.description(), course.prerequisite());
+        String output = String.format("%10s %3s | %50s : %s", course.code(), course.credits(), course.description(), course.prerequisite());
         AdvisingLogger.getLogger().log(Level.FINEST, "Converting Course: " + output);
         return output + "\n";
     }
@@ -292,7 +292,7 @@ public class Model {
             AdvisingLogger.getLogger().log(Level.WARNING, "The input elective to convert to string was null");
             throw new InvalidInputException("The input elective was null");
         }
-        String output = String.format("%7s %2s | %40s : %s", elective.getCode(), "?", "Elective Course Choice", "See Academic Catalog");
+        String output = String.format("%10s %3s | %50s : %s", elective.getCode(), "?", "Elective Course Choice", "See Academic Catalog");
         AdvisingLogger.getLogger().log(Level.FINEST, "Converting Elective: " + output);
         return output + "\n";
     }

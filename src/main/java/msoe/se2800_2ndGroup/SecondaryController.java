@@ -33,6 +33,12 @@ public class SecondaryController extends Controller {
         super();
     }
 
+
+//    @FXML
+//    public void viewPrerequisiteGraph() {
+//        //TODO: should display in secondary window
+//    }
+
     /**
      * Method used to switch what controller and FXML resource is displayed in the GUI
      *

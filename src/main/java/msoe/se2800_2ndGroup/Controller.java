@@ -1,10 +1,7 @@
 package msoe.se2800_2ndGroup;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioMenuItem;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -42,6 +39,12 @@ public abstract class Controller {
     //region FXML vars
     @FXML
     private ToggleGroup majorToggleGroup;
+    @FXML
+    public CheckMenuItem fallTermSelection;
+    @FXML
+    public CheckMenuItem winterTermSelection;
+    @FXML
+    public CheckMenuItem springTermSelection;
     //endregion
 
     //region private vars
@@ -189,7 +192,7 @@ public abstract class Controller {
     }
 
     /**
-     * method used to load transcripts
+     * method used to store transcripts
      *
      * This method is always run on the FX thread and uses commands from Model.java
      * This method will query the user for a file location using a DirectoryChooser
@@ -264,21 +267,6 @@ public abstract class Controller {
     }
     //endregion
 
-    //region FXML methods for Data Manipulation menu
-    @FXML
-    public void viewCourseOfferings() {
-
-    }
-    @FXML
-    public void getCourseRecommendations() {
-
-    }
-    @FXML
-    public void viewPrerequisiteGraph() {
-        
-    }
-    //endregion
-
     //region FXML methods for Major Selection menu
 
     /**
@@ -295,7 +283,7 @@ public abstract class Controller {
                 try {
                     App.getModel().storeMajor("CS");
                 } catch (Model.InvalidInputException e) {
-                    String message = String.format(" Invalid Input Exception occured while " +
+                    String message = String.format(" Invalid Input Exception occurred while " +
                                     "storing major: %s\n%s", majorText, e.getMessage());
                     displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception", message);
                     AdvisingLogger.getLogger().warning(message + Arrays.toString(e.getStackTrace()));
@@ -306,7 +294,7 @@ public abstract class Controller {
                 try {
                     App.getModel().storeMajor("SE");
                 } catch (Model.InvalidInputException e) {
-                    String message = String.format(" Invalid Input Exception occured while " +
+                    String message = String.format(" Invalid Input Exception occurred while " +
                             "storing major: %s\n%s", majorText, e.getMessage());
                     displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception", message);
                     AdvisingLogger.getLogger().warning(message + Arrays.toString(e.getStackTrace()));
