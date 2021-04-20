@@ -22,7 +22,7 @@ import java.util.logging.Level;
  * Project Name: magana041group2
  * Class Name: UnofficialTranscript
  * Description:
- * * <class description here>
+ * * Represent an unofficial transcript in the form of a PDF.
  * The UnofficialTranscript class is responsible for:
  * * Outputting PDF files
  * Modification Log:
@@ -30,6 +30,7 @@ import java.util.logging.Level;
  * * Add method to get a standard string representation of a course for output to PDF by Grant Fass on Thu, 15 Apr 2021
  * * Implement new lines when outputting to PDF by Grant Fass on Thu, 15 Apr 2021
  * * Break the PDF output method into smaller methods by Grant Fass on Thu, 15 Apr 2021
+ * * code cleanup from group feedback by turcinh on Tuesday, 20 April 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -39,9 +40,11 @@ import java.util.logging.Level;
 public class UnofficialTranscript {
 
     /**
-     * <Method Purpose written in 3rd person declarative>
+     * Write the unofficial transcript to a PDF.
      *
-     * <Internal Operation Notes written in 3rd person declarative>
+     * Sensitive information is not stored by the program and will thus not be
+     * present on the generated PDF. The PDF is generated in such a way that it
+     * can be used as input to this program.
      *
      * Sources:
      *  <a href="#{@link}">{@link "https://www.tutorialspoint.com/pdfbox/pdfbox_adding_pages.htm"}</a>: Creating PDF
@@ -54,7 +57,7 @@ public class UnofficialTranscript {
      * @since : Thu, 15 Apr 2021
      */
     public void writeFile(ArrayList<Course> courses, String outputLocation) throws IOException {
-        if(outputLocation == null || outputLocation.isBlank() || outputLocation.isEmpty()) {
+        if(outputLocation == null || outputLocation.isBlank()) {
             outputLocation = "./out/Unofficial Transcript.pdf";
         }
         PDDocument doc = new PDDocument();
