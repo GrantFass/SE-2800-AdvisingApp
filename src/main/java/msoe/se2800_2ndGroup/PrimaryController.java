@@ -2,8 +2,6 @@ package msoe.se2800_2ndGroup;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -31,6 +29,10 @@ import javafx.scene.Parent;
  * Copyright (C): TBD
  */
 public class PrimaryController extends Controller {
+
+    public PrimaryController() {
+        super();
+    }
 
     /**
      * TODO: Clean this up later when FXML is updated. Want to better use superclass

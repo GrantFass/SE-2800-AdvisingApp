@@ -69,11 +69,9 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         //Link models to controllers
         PrimaryController primaryController = new PrimaryController();
-        primaryController.setModel(model);
         primaryController.setStage(stage);
         AdvisingLogger.getLogger().log(Level.FINER, "Linking model to primaryController");
         SecondaryController secondaryController = new SecondaryController();
-        secondaryController.setModel(model);
         secondaryController.setStage(stage);
         AdvisingLogger.getLogger().log(Level.FINER, "Linking model to secondaryController");
 
@@ -89,6 +87,19 @@ public class App extends Application {
         Thread cliThread = new Thread(cli::processCommandLine);
         cliThread.setDaemon(true);
         cliThread.start();
+    }
+
+    /**
+     * method to return the model to anywhere else in the program
+     *
+     * Used to sync up the same model to the CLI and all controllers.
+     * Have to do it this way since FXML controllers can not have constructors and since passing values set them to null.
+     * @return the model for the program
+     * @author : Grant Fass
+     * @since : Mon, 19 Apr 2021
+     */
+    public static Model getModel() {
+        return model;
     }
 
     /**

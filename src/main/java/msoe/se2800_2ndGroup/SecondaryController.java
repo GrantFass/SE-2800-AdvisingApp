@@ -2,8 +2,6 @@ package msoe.se2800_2ndGroup;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -30,6 +28,10 @@ import javafx.scene.Parent;
  * Copyright (C): TBD
  */
 public class SecondaryController extends Controller {
+
+    public SecondaryController() {
+        super();
+    }
 
     /**
      * Method used to switch what controller and FXML resource is displayed in the GUI
