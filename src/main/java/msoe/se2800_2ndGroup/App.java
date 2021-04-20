@@ -70,9 +70,11 @@ public class App extends Application {
         //Link models to controllers
         PrimaryController primaryController = new PrimaryController();
         primaryController.setModel(model);
+        primaryController.setStage(stage);
         AdvisingLogger.getLogger().log(Level.FINER, "Linking model to primaryController");
         SecondaryController secondaryController = new SecondaryController();
         secondaryController.setModel(model);
+        secondaryController.setStage(stage);
         AdvisingLogger.getLogger().log(Level.FINER, "Linking model to secondaryController");
 
         //Link FXML to scene
