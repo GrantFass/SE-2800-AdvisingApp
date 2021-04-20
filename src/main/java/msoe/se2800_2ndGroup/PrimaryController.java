@@ -2,9 +2,9 @@ package msoe.se2800_2ndGroup;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
-import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -77,6 +77,7 @@ public class PrimaryController extends Controller {
                         fallTermSelection.isSelected() ? "Fall, " : "",
                         winterTermSelection.isSelected() ? "Winter, " : "",
                         springTermSelection.isSelected() ? "Spring, " : ""));
+                mainListView.getSelectionModel().selectedItemProperty().addListener(getStringListener());
             } catch (Model.InvalidInputException e) {
                 String message = String.format(" Invalid Input Exception occurred while " +
                         "generating course offerings\n%s", e.getMessage());
@@ -108,6 +109,7 @@ public class PrimaryController extends Controller {
                         fallTermSelection.isSelected() ? "Fall, " : "",
                         winterTermSelection.isSelected() ? "Winter, " : "",
                         springTermSelection.isSelected() ? "Spring, " : ""));
+                mainListView.getSelectionModel().selectedItemProperty().addListener(getStringListener());
             } catch (Model.InvalidInputException e) {
                 String message = String.format(" Invalid Input Exception occurred while " +
                         "generating course recommendations\n%s", e.getMessage());
@@ -115,6 +117,27 @@ public class PrimaryController extends Controller {
                 AdvisingLogger.getLogger().warning(message + Arrays.toString(e.getStackTrace()));
             }
         });
+    }
+
+    /**
+     * Method to generate and get the string listener to get course codes from the List View
+     * @return new ChangeListener of String that is formatted correctly
+     * @author : Grant Fass
+     * @since : Mon, 19 Apr 2021
+     */
+    private ChangeListener<String> getStringListener() {
+        return new ChangeListener<>() {
+            final int listViewStartSize = mainListView.getItems().size();
+
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+                if (listViewStartSize != mainListView.getItems().size()) {
+                    mainListView.getSelectionModel().selectedItemProperty().removeListener(this);
+                } else if (newValue != null) {
+                    lastCourseCode = mainListView.getSelectionModel().getSelectedItem().substring(0, 10);
+                }
+            }
+        };
     }
     //endregion
 

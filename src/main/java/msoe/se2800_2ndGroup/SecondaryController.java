@@ -2,6 +2,9 @@ package msoe.se2800_2ndGroup;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -29,15 +32,47 @@ import javafx.fxml.FXML;
  */
 public class SecondaryController extends Controller {
 
+    @FXML
+    private TextField mainSearchBar;
+    @FXML
+    private Label mainLabel;
+    @FXML
+    private TextArea mainTextArea;
+
     public SecondaryController() {
         super();
     }
 
+    public void initialize() {
+        updateSearchBar();
+    }
 
-//    @FXML
-//    public void viewPrerequisiteGraph() {
-//        //TODO: should display in secondary window
-//    }
+    /**
+     * method to update the search bar with the last course code clicked on between stages when this one is loaded
+     * @author : Grant Fass
+     * @since : Mon, 19 Apr 2021
+     */
+    private void updateSearchBar() {
+        mainSearchBar.setText(lastCourseCode);
+    }
+
+
+    /**
+     * This method always runs on the FX thread
+     * This method first will get the course code and standardize it from the text field search bar
+     * This method will then get the prerequisite graph for the course and output it to the text area
+     * TODO: change this to use a canvas instead or something in the future
+     * @author : Grant Fass
+     * @since : Mon, 19 Apr 2021
+     */
+    @FXML
+    public void viewPrerequisiteGraph() {
+        App.getModel().ensureFXThread(() -> {
+            mainLabel.setText("Viewing Prerequisite Graph:");
+            String code = Model.standardizeCourse(mainSearchBar.getText());
+            mainTextArea.setText(App.getModel().getCourseGraph(code));
+        });
+    }
 
     /**
      * Method used to switch what controller and FXML resource is displayed in the GUI

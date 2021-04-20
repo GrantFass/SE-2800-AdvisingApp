@@ -578,7 +578,7 @@ public class Model {
      * @param course course string to be standardized
      * @return course code with only capitalized letters and numbers
      */
-    public String standardizeCourse(String course){
+    public static String standardizeCourse(String course){
         return course.toUpperCase().replaceAll("[^a-zA-Z0-9]", "").trim();
     }
 

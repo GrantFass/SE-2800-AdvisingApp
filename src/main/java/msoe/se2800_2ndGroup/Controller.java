@@ -52,6 +52,10 @@ public abstract class Controller {
      * the main stage of the program
      */
     private Stage stage;
+    /*
+     * The course code as a string of the last course clicked
+     */
+    public static String lastCourseCode = "";
     //endregion
 
     //region methods to be called from App.java on startup to set local vars

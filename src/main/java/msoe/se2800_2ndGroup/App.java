@@ -50,6 +50,16 @@ public class App extends Application {
      */
     private static final Model model = new Model();
 
+    /*
+     * The primary window controller. controller for the data manipulation window
+     */
+    private static final PrimaryController primaryController = new PrimaryController();
+
+    /*
+     * The secondary window controller. controller for the graph manipulation window
+     */
+    private static final SecondaryController secondaryController = new SecondaryController();
+
     /**
      * This method starts the FX program window and the program GUI
      *
@@ -68,16 +78,14 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //Link models to controllers
-        PrimaryController primaryController = new PrimaryController();
         primaryController.setStage(stage);
         AdvisingLogger.getLogger().log(Level.FINER, "Linking model to primaryController");
-        SecondaryController secondaryController = new SecondaryController();
         secondaryController.setStage(stage);
         AdvisingLogger.getLogger().log(Level.FINER, "Linking model to secondaryController");
-
         //Link FXML to scene
         scene = new Scene(loadFXML("primary"), 640, 480);
         stage.setScene(scene);
+        stage.setTitle("SE2800 Advising App: Group 2");
         stage.show();
         AdvisingLogger.getLogger().log(Level.FINER, "Showing Stage");
 
