@@ -155,7 +155,7 @@ public class ImportTranscript {
      */
     public ArrayList<Course> readInFile(Scanner scanner) throws IOException, Model.InvalidInputException {
         //load entire pdf into a single string
-        String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner);
+        String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner, System.out);
         File file = new File(pathName);
         return readInFile(file);
     }
