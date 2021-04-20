@@ -45,6 +45,7 @@ import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
  * * Add logger by Grant Fass on Thu, 15 Apr 2021
  * * Add method to store unofficial transcripts by Grant Fass on Thu, 15 Apr 2021
  * * Perform code cleanup from group feedback by Hunter Turcin on Mon, 19 Apr 2021
+ * * code cleanup from group feedback by turcinh on Tuesday, 20 April 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  * Copyright (C): TBD
@@ -191,11 +192,11 @@ public class Model {
             verifyOfferings();
             AdvisingLogger.getLogger().log(Level.FINER, "Collecting course offerings by term for major: " + major);
             for (Offering offering : getOfferings()) {
-                if (offering.availability().get(getMajor()).season().equalsIgnoreCase("fall") && displayFall) {
+                if (offering.availability().get(getMajor()).equals(Term.FALL) && displayFall) {
                     offeringsBySeason.add(offering);
-                } else if (offering.availability().get(getMajor()).season().equalsIgnoreCase("winter") && displayWinter) {
+                } else if (offering.availability().get(getMajor()).equals(Term.WINTER) && displayWinter) {
                     offeringsBySeason.add(offering);
-                } else if (offering.availability().get(getMajor()).season().equalsIgnoreCase("spring") && displaySpring) {
+                } else if (offering.availability().get(getMajor()).equals(Term.SPRING) && displaySpring) {
                     offeringsBySeason.add(offering);
                 }
             }
@@ -516,20 +517,13 @@ public class Model {
         }
         AdvisingLogger.getLogger().log(Level.FINER, String.format("Searching for prerequisites for the course with code: %s", selected == null ? "null" : selected.code()));
 
-        //TODO: make this cleaner
         if (selected != null) {
-            String preq = selected.prerequisite().toString();
-            if (selected.prerequisite().getClass().toString().endsWith("AndPrerequisite")) {
-                String leftPrerequisite = preq.substring(preq.indexOf("code=")+5, preq.indexOf(']'));
-                String rightPrequisite = preq.substring(preq.indexOf("code=", preq.indexOf("code=")+1)+5, preq.indexOf(']', preq.indexOf(']')+1));
-                return ("Prerequisites: " + leftPrerequisite + " and " + rightPrequisite);
-            } else if (selected.prerequisite().getClass().toString().endsWith("OrPrerequisite")){
-                String leftPrerequisite = preq.substring(preq.indexOf("code=")+5, preq.indexOf(']'));
-                String rightPrequisite = preq.substring(preq.indexOf("code=", preq.indexOf("code=")+1)+5, preq.indexOf(']', preq.indexOf(']')+1));
-                return ("Prerequisites: " + leftPrerequisite + " or " + rightPrequisite);
-            } else if (selected.prerequisite().getClass().toString().endsWith("SinglePrerequisite")) {
-                String singlePrerequisite = preq.substring(preq.indexOf("code=") + 5, preq.indexOf(']'));
-                return ("Prerequisites: " + singlePrerequisite);
+            if (selected.prerequisite() instanceof AndPrerequisite and) {
+                return ("Prerequisites: " + and.left() + " and " + and.right());
+            } else if (selected.prerequisite() instanceof OrPrerequisite or){
+                return ("Prerequisites: " + or.left() + " or " + or.right());
+            } else if (selected.prerequisite() instanceof SinglePrerequisite single) {
+                return ("Prerequisites: " + single.code());
             } else {
                 return ("Prerequisites: No prerequisite needed");
             }
