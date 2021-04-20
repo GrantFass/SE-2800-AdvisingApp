@@ -44,6 +44,9 @@
         <Menu mnemonicParsing="false" text="Graph Manipulation">
             <MenuItem mnemonicParsing="false" onAction="#viewPrerequisiteGraph" text="View Graph of Prerequisites"/>
         </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem text="Help" fx:id="helpMenuButton"/>
+        </Menu>
     </MenuBar>
 
     <Label VBox.vgrow="SOMETIMES" maxHeight="40" fx:id="mainLabel"/>

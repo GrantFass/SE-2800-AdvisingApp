@@ -148,6 +148,17 @@ public abstract class Controller {
     }
     //endregion
 
+    //region Help Menu methods
+    @FXML
+    private void displayHelp() {
+        String message = """
+                TODO
+                """;
+        displayAlert(Alert.AlertType.INFORMATION, "Program Help", null, message);
+        AdvisingLogger.getLogger().info("displaying help alert");
+    }
+    //endregion
+
     //region FXML methods for FILE menu
     /**
      * method used to shut down and exit the program

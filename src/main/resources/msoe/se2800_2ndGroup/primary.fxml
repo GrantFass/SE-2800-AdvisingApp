@@ -51,6 +51,9 @@
          <MenuItem mnemonicParsing="false" onAction="#getCourseRecommendations" text="Get Course Recommendations"/>
 <!--         <MenuItem mnemonicParsing="false" onAction="#viewPrerequisiteGraph" text="View Graph of Prerequisites"/>-->
       </Menu>
+      <Menu mnemonicParsing="false" text="Help">
+         <MenuItem text="Help" onAction="#displayHelp"/>
+      </Menu>
    </MenuBar>
 
    <Label VBox.vgrow="SOMETIMES" maxHeight="40" fx:id="mainLabel"/>
