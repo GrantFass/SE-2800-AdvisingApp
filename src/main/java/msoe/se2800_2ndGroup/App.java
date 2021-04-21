@@ -55,6 +55,16 @@ public class App extends Application {
      */
     private static final Model model = new Model();
 
+    /*
+     * The primary window controller. controller for the data manipulation window
+     */
+    private static final PrimaryController primaryController = new PrimaryController();
+
+    /*
+     * The secondary window controller. controller for the graph manipulation window
+     */
+    private static final SecondaryController secondaryController = new SecondaryController();
+
     /**
      * This method starts the FX program window and the program GUI
      *
@@ -73,16 +83,14 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //Link models to controllers
-        PrimaryController primaryController = new PrimaryController();
-        primaryController.setModel(model);
+        primaryController.setStage(stage);
         LOGGER.finer("Linking model to primaryController");
-        SecondaryController secondaryController = new SecondaryController();
-        secondaryController.setModel(model);
+        secondaryController.setStage(stage);
         LOGGER.finer("Linking model to secondaryController");
-
         //Link FXML to scene
         scene = new Scene(loadFXML("primary"), 640, 480);
         stage.setScene(scene);
+        stage.setTitle("SE2800 Advising App: Group 2");
         stage.show();
         LOGGER.finer("Showing Stage");
 
@@ -92,6 +100,19 @@ public class App extends Application {
         Thread cliThread = new Thread(cli::processCommandLine);
         cliThread.setDaemon(true);
         cliThread.start();
+    }
+
+    /**
+     * method to return the model to anywhere else in the program
+     *
+     * Used to sync up the same model to the CLI and all controllers.
+     * Have to do it this way since FXML controllers can not have constructors and since passing values set them to null.
+     * @return the model for the program
+     * @author : Grant Fass
+     * @since : Mon, 19 Apr 2021
+     */
+    public static Model getModel() {
+        return model;
     }
 
     /**
