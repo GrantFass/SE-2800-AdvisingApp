@@ -208,6 +208,6 @@ public class CLI {
      */
     public void outputHyphenLine() {
         System.out.println("------------------------------");
-        LOGGER.fine("\n------------------------------");
+        LOGGER.finer("\n------------------------------");
     }
 }
