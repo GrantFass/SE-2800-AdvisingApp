@@ -7,6 +7,7 @@ import msoe.se2800_2ndGroup.loaders.PrerequisitesLoader;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.*;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -227,7 +228,7 @@ public class Model {
         ArrayList<Offering> courseOfferings = getCourseOfferings(displayFall, displayWinter, displaySpring);
         AdvisingLogger.getLogger().log(Level.FINER, "Building string output for course offerings as string");
         StringBuilder builder = new StringBuilder();
-        builder.append(String.format("%7s %2s | %40s : %s\n", "CODE", "CR", "DESCRIPTION", "PREREQUISITES"));
+        builder.append(String.format("%10s %3s | %50s : %s\n", "CODE", "CR", "DESCRIPTION", "PREREQUISITES"));
         for (Offering o: courseOfferings) {
             //format is CODE CREDITS | DESCRIPTION : PRERECS
             builder.append(getOfferingAsString(o));
@@ -270,7 +271,7 @@ public class Model {
             AdvisingLogger.getLogger().log(Level.WARNING, "The input course to convert to string was null");
             throw new InvalidInputException("The input course was null");
         }
-        String output = String.format("%7s %2s | %40s : %s", course.code(), course.credits(), course.description(), course.prerequisite());
+        String output = String.format("%10s %3s | %50s : %s", course.code(), course.credits(), course.description(), course.prerequisite());
         AdvisingLogger.getLogger().log(Level.FINEST, "Converting Course: " + output);
         return output + "\n";
     }
@@ -291,7 +292,7 @@ public class Model {
             AdvisingLogger.getLogger().log(Level.WARNING, "The input elective to convert to string was null");
             throw new InvalidInputException("The input elective was null");
         }
-        String output = String.format("%7s %2s | %40s : %s", elective.getCode(), "?", "Elective Course Choice", "See Academic Catalog");
+        String output = String.format("%10s %3s | %50s : %s", elective.getCode(), "?", "Elective Course Choice", "See Academic Catalog");
         AdvisingLogger.getLogger().log(Level.FINEST, "Converting Elective: " + output);
         return output + "\n";
     }
@@ -313,15 +314,41 @@ public class Model {
 
     /**
      * TODO: test me
+     * Method used to load the unofficial transcript into the program by calling the readInFile method from ImportTranscript
+     * @param file the File the transcript is at. Assumes the file has already been verified
+     * @throws IOException for issues creating the specified file or reading it
+     * @author : Grant Fass
+     * @since : Tue, 13 Apr 2021
+     */
+    public void loadUnofficialTranscript(File file) throws IOException {
+        ImportTranscript importTranscript = new ImportTranscript();
+        AdvisingLogger.getLogger().log(Level.FINER, "Loading unofficial transcript using passed in File and a new importTranscript object");
+        transcriptCourses = importTranscript.readInFile(file);
+    }
+
+    /**
+     * TODO: test me
      * Method to store an the current List of transcript courses to a new unofficial transcript pdf in the .out folder
      * @throws IOException for issues creating the specified file or reading it
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021
      */
     public void storeUnofficialTranscript() throws IOException {
+        storeUnofficialTranscript("./out/Unofficial Transcript.pdf");
+    }
+
+    /**
+     * TODO: test me
+     * Method to store an the current List of transcript courses to a new unofficial transcript pdf in the specified location
+     * @param outputLocation the directory to store the file in
+     * @throws IOException for issues creating the specified file or reading it
+     * @author : Grant Fass
+     * @since : Thu, 15 Apr 2021
+     */
+    public void storeUnofficialTranscript(String outputLocation) throws IOException {
         UnofficialTranscript unofficialTranscript = new UnofficialTranscript();
         AdvisingLogger.getLogger().log(Level.FINER, "Saving current transcript courses to unofficial transcript using a new unofficialTranscript object");
-        unofficialTranscript.writeFile(getTranscriptCourses(), "./out/Unofficial Transcript.pdf");
+        unofficialTranscript.writeFile(getTranscriptCourses(), outputLocation + "/UnofficialTranscript.pdf");
     }
 
     /**
@@ -551,7 +578,7 @@ public class Model {
      * @param course course string to be standardized
      * @return course code with only capitalized letters and numbers
      */
-    public String standardizeCourse(String course){
+    public static String standardizeCourse(String course){
         return course.toUpperCase().replaceAll("[^a-zA-Z0-9]", "").trim();
     }
 
@@ -568,7 +595,7 @@ public class Model {
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
-    private void ensureFXThread(Runnable action) {
+    public void ensureFXThread(Runnable action) {
         if (Platform.isFxApplicationThread()) {
             action.run();
         } else {
@@ -624,7 +651,7 @@ public class Model {
                 AdvisingLogger.getLogger().log(Level.WARNING, "The specified input for major {" + major + "} did not match the expected pattern: /^[a-zA-Z\\s]{1,99}$");
                 throw new InvalidInputException("The specified input for major {" + major + "} did not match the expected pattern: /^[a-zA-Z\\s]{1,99}$");
             } else {
-                AdvisingLogger.getLogger().log(Level.FINER, "Storing specified major");
+                AdvisingLogger.getLogger().log(Level.FINE, "Storing specified major: " + major);
                 this.major = input.toUpperCase();
             }
         }
@@ -634,6 +661,7 @@ public class Model {
      * Loads in the prerequisites, curriculum, and offerings csv files from the locations that are specified.
      * These locations do not have any checks or verification on them. Thus this method is meant to be called from
      * other locations after verification has occurred such as in loadDefaultCourseData() and loadCourseData().
+     *  Assumes that all files have already been validated
      *
      * @param curriculumLocation the verified location to use for curriculum.csv
      * @param offeringsLocation the verified location to use for offerings.csv
@@ -643,7 +671,7 @@ public class Model {
      * @author : Grant Fass
      * @since : Tue, 6 Apr 2021
      */
-    private String loadCoursesFromSpecifiedLocations(String curriculumLocation, String offeringsLocation, String prerequisitesLocation) throws IOException {
+    public String loadCoursesFromSpecifiedLocations(String curriculumLocation, String offeringsLocation, String prerequisitesLocation) throws IOException {
 
         AdvisingLogger.getLogger().log(Level.FINER, String.format("Attempting to load courses from specified locations:\n\t%s\n\t%s\n\t%s", curriculumLocation, offeringsLocation, prerequisitesLocation));
         //Load the required courses first

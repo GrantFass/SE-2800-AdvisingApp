@@ -205,6 +205,6 @@ public class CLI {
      */
     public void outputHyphenLine() {
         System.out.println("------------------------------");
-        AdvisingLogger.getLogger().log(Level.FINE, "\n------------------------------");
+        AdvisingLogger.getLogger().log(Level.FINER, "\n------------------------------");
     }
 }

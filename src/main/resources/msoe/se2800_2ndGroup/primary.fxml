@@ -5,12 +5,59 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="msoe.se2800_2ndGroup.PrimaryController">
-   <children>
-      <Label text="Primary View" />
-      <Button fx:id="primaryButton" text="Switch to Secondary View" onAction="#switchToSecondary"/>
-   </children>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+<VBox spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="msoe.se2800_2ndGroup.PrimaryController">
+<!--   <padding>-->
+<!--      <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>-->
+<!--   </padding>-->
+
+   <MenuBar>
+      <!-- File IO menu -->
+      <Menu mnemonicParsing="false" text="File">
+         <MenuItem mnemonicParsing="false" onAction="#close" text="Exit Program"/>
+         <MenuItem mnemonicParsing="false" onAction="#loadTranscript" text="Load Transcript"/>
+         <MenuItem mnemonicParsing="false" onAction="#loadCourseData" text="Load Course Data"/>
+         <MenuItem mnemonicParsing="false" onAction="#storeTranscript" text="Store Transcript"/>
+      </Menu>
+      <!-- https://stackoverflow.com/questions/57911107/javafx-togglegroup-not-functioning-properly-with-accelerators-radiomenuitem -->
+      <!-- Major Selection Radio Button Menu -->
+      <Menu mnemonicParsing="false" text="Major Selection">
+         <RadioMenuItem text="CS - Computer Science" onAction="#storeMajor">
+            <toggleGroup>
+               <ToggleGroup fx:id="majorToggleGroup"/>
+            </toggleGroup>
+         </RadioMenuItem>
+         <RadioMenuItem text="SE - Software Engineering" onAction="#storeMajor" toggleGroup="$majorToggleGroup"/>
+      </Menu>
+      <!-- Term Selection Radio Button Menu -->
+      <Menu mnemonicParsing="false" text="Term Selection">
+         <CheckMenuItem text="Fall Term" fx:id="fallTermSelection"/>
+         <CheckMenuItem text="Winter Term" fx:id="winterTermSelection"/>
+         <CheckMenuItem text="Spring Term" fx:id="springTermSelection"/>
+      </Menu>
+      <!-- Data Manipulation Menu -->
+      <Menu mnemonicParsing="false" text="Data Manipulation">
+         <MenuItem mnemonicParsing="false" onAction="#viewCourseOfferings" text="View Course Offerings"/>
+         <MenuItem mnemonicParsing="false" onAction="#getCourseRecommendations" text="Get Course Recommendations"/>
+<!--         <MenuItem mnemonicParsing="false" onAction="#viewPrerequisiteGraph" text="View Graph of Prerequisites"/>-->
+      </Menu>
+      <Menu mnemonicParsing="false" text="Help">
+         <MenuItem text="Help" onAction="#displayHelp"/>
+      </Menu>
+   </MenuBar>
+
+   <Label VBox.vgrow="SOMETIMES" maxHeight="40" fx:id="mainLabel"/>
+   <ListView fx:id="mainListView" VBox.vgrow="ALWAYS" style="-fx-font-family: 'Courier New'"/>
+
+   <Button alignment="CENTER" VBox.vgrow="SOMETIMES" maxHeight="40" text="Switch to Graph Window" onAction="#switchToSecondary"/>
 </VBox>
