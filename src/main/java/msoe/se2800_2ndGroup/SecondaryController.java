@@ -53,7 +53,7 @@ public class SecondaryController extends Controller {
      * @since : Mon, 19 Apr 2021
      */
     private void updateSearchBar() {
-        mainSearchBar.setText(lastCourseCode);
+        mainSearchBar.setText(Model.standardizeCourse(lastCourseCode));
     }
 
 
