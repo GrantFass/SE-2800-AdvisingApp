@@ -18,12 +18,10 @@ import javafx.scene.control.TextField;
  * Description:
  * * This is the controller for the second window in the program
  * The SecondaryController class is responsible for:
- * * <...>
- * * <...>
- * * <...>
- * * <...>
+ * * Managing the actions exclusive to the graph window
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
+ * * Added methods to control text version of Prerequisite graphs by Grant Fass on Wed, 21 Apr 2021
  *
  * @since : Saturday, 20 March 2021
  * @author : Grant

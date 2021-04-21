@@ -34,6 +34,8 @@ import java.util.logging.Logger;
  * * File Created by Grant on Saturday, 20 March 2021
  * * Added CLI setup by Grant on Saturday, 20 March 2021
  * * Implement Logger by Grant Fass on Thu, 15 Apr 2021
+ * * Make Controllers static by Grant Fass on Wed, 21 Apr 2021
+ * * Code cleanup by Hunter T on Tue, 20 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  *
@@ -83,10 +85,10 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //Link models to controllers
-        primaryController.setStage(stage);
         LOGGER.finer("Linking model to primaryController");
-        secondaryController.setStage(stage);
+        primaryController.setStage(stage);
         LOGGER.finer("Linking model to secondaryController");
+        secondaryController.setStage(stage);
         //Link FXML to scene
         scene = new Scene(loadFXML("primary"), 640, 480);
         stage.setScene(scene);

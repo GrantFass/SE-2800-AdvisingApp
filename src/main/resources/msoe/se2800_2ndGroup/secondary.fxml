@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Button?>
-<?import javafx.geometry.Insets?>
-
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioMenuItem?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.control.CheckMenuItem?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <VBox spacing="20" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="msoe.se2800_2ndGroup.SecondaryController">
     <MenuBar>
@@ -45,7 +33,7 @@
             <MenuItem mnemonicParsing="false" onAction="#viewPrerequisiteGraph" text="View Graph of Prerequisites"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
-            <MenuItem text="Help" fx:id="helpMenuButton"/>
+            <MenuItem text="Help" onAction="#displayHelp"/>
         </Menu>
     </MenuBar>
 

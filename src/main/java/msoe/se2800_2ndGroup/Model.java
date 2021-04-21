@@ -341,7 +341,7 @@ public class Model {
      * @since : Thu, 15 Apr 2021
      */
     public void storeUnofficialTranscript() throws IOException {
-        storeUnofficialTranscript("./out/Unofficial Transcript.pdf");
+        storeUnofficialTranscript("./out");
     }
 
     /**
@@ -354,8 +354,9 @@ public class Model {
      */
     public void storeUnofficialTranscript(String outputLocation) throws IOException {
         UnofficialTranscript unofficialTranscript = new UnofficialTranscript();
-        LOGGER.finer("Saving current transcript courses to unofficial transcript using a new unofficialTranscript object");
-        unofficialTranscript.writeFile(getTranscriptCourses(), outputLocation + "/UnofficialTranscript.pdf");
+        String location = outputLocation + "/UnofficialTranscript.pdf";
+        LOGGER.finer("Saving current transcript courses to unofficial transcript using a new unofficialTranscript object in the location: " + location);
+        unofficialTranscript.writeFile(getTranscriptCourses(), location);
     }
 
     /**
