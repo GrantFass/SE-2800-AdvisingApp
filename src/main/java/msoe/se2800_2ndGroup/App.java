@@ -9,6 +9,7 @@ import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -39,6 +40,10 @@ import java.util.logging.Level;
  * Copyright (C): TBD
  */
 public class App extends Application {
+    /**
+     * Logging system.
+     */
+    private static final Logger LOGGER = AdvisingLogger.getLogger();
 
     /**
      * Scene linked to the Stage during startup for displaying content and switching windows dynamically
@@ -70,20 +75,20 @@ public class App extends Application {
         //Link models to controllers
         PrimaryController primaryController = new PrimaryController();
         primaryController.setModel(model);
-        AdvisingLogger.getLogger().log(Level.FINER, "Linking model to primaryController");
+        LOGGER.finer("Linking model to primaryController");
         SecondaryController secondaryController = new SecondaryController();
         secondaryController.setModel(model);
-        AdvisingLogger.getLogger().log(Level.FINER, "Linking model to secondaryController");
+        LOGGER.finer("Linking model to secondaryController");
 
         //Link FXML to scene
         scene = new Scene(loadFXML("primary"), 640, 480);
         stage.setScene(scene);
         stage.show();
-        AdvisingLogger.getLogger().log(Level.FINER, "Showing Stage");
+        LOGGER.finer("Showing Stage");
 
         //Add CLI
         CLI cli = new CLI(model);
-        AdvisingLogger.getLogger().log(Level.FINER, "Linking model to CLI");
+        LOGGER.finer("Linking model to CLI");
         Thread cliThread = new Thread(cli::processCommandLine);
         cliThread.setDaemon(true);
         cliThread.start();
@@ -104,7 +109,7 @@ public class App extends Application {
      * @since : Sat, 20 Mar 2021
      */
     static void setRoot(String fxml) throws IOException {
-        AdvisingLogger.getLogger().finer("setting scene root");
+        LOGGER.finer("setting scene root");
         scene.setRoot(loadFXML(fxml));
     }
 
@@ -124,7 +129,7 @@ public class App extends Application {
      */
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        AdvisingLogger.getLogger().log(Level.FINE, "Loading FXML", fxmlLoader);
+        LOGGER.log(Level.FINE, "Loading FXML", fxmlLoader);
         return fxmlLoader.load();
     }
 
@@ -139,7 +144,7 @@ public class App extends Application {
      */
     public static void main(String[] args) {
         AdvisingLogger.setupLogger();
-        AdvisingLogger.getLogger().info("Launching Program");
+        LOGGER.info("Launching Program");
         launch();
     }
 

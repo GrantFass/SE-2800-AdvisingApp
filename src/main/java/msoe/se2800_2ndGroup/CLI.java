@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -41,6 +42,10 @@ import java.util.logging.Level;
  * @since : Saturday, 20 March 2021
  */
 public class CLI {
+    /**
+     * Logging system.
+     */
+    private static final Logger LOGGER = AdvisingLogger.getLogger();
 
     /*
      * Model used for execution of tasks
@@ -75,12 +80,12 @@ public class CLI {
      * @since : Sat, 20 Mar 2021
      */
     public void processCommandLine() {
-        AdvisingLogger.getLogger().info("Starting CLI");
+        LOGGER.info("Starting CLI");
         //Load default course data on startup
         long startTime = System.nanoTime();
         try {
             final int nanosecondsToMilliseconds = 1000000;
-            AdvisingLogger.getLogger().info(String.format("%s in %d milliseconds\n", model.loadDefaultCourseData(), (System.nanoTime() - startTime) / nanosecondsToMilliseconds).replace("\n", "\\n"));
+            LOGGER.info(String.format("%s in %d milliseconds\n", model.loadDefaultCourseData(), (System.nanoTime() - startTime) / nanosecondsToMilliseconds).replace("\n", "\\n"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -90,34 +95,34 @@ public class CLI {
             try {
                 outputHyphenLine();
                 String input = in.nextLine().trim().toLowerCase();
-                AdvisingLogger.getLogger().log(Level.FINE, String.format("Your input: %s\n", input).replace("\n", "\\n"));
+                LOGGER.fine(String.format("Your input: %s\n", input).replace("\n", "\\n"));
                 switch (input) {
                     case "exit", "quit" -> {
-                        AdvisingLogger.getLogger().info("Shutting down program");
+                        LOGGER.info("Shutting down program");
                         model.exitProgram();
                     }
                     case "store major" -> {
                         System.out.print("Enter Major Abbreviation: ");
                         String major = in.next().trim().toLowerCase();
-                        AdvisingLogger.getLogger().log(Level.FINE, "Attempting to store major: " + major);
+                        LOGGER.fine("Attempting to store major: " + major);
                         model.storeMajor(major);
                         System.out.println("Major Stored");
-                        AdvisingLogger.getLogger().log(Level.FINE, "Major Stored");
+                        LOGGER.fine("Major Stored");
                     }
                     case "get course recommendation" -> {
                         HashMap<String, Boolean> terms = getTerms(in);
-                        AdvisingLogger.getLogger().log(Level.FINE, "Getting Course Recommendations");
+                        LOGGER.fine("Getting Course Recommendations");
                         String output = model.getCourseRecommendation(terms.get("fall"), terms.get("winter"), terms.get("spring"));
                         System.out.println(output);
-                        AdvisingLogger.getLogger().log(Level.FINE, "Output Course Recommendations: \n" + output, output);
+                        LOGGER.log(Level.FINE, "Output Course Recommendations: \n" + output, output);
                     }
                     case "load course data" -> {
                         final int nanosecondsToMilliseconds = 1000000;
                         String output = String.format("%s in %d milliseconds\n", model.loadCourseData(in), (System.nanoTime() - startTime) / nanosecondsToMilliseconds);
-                        AdvisingLogger.getLogger().log(Level.FINE, "Course data loaded utilizing standard scanner: \n" + output.replace("\n", "\\n"), output);
+                        LOGGER.log(Level.FINE, "Course data loaded utilizing standard scanner: \n" + output.replace("\n", "\\n"), output);
                     }
                     case "load pdf" -> {
-                        AdvisingLogger.getLogger().log(Level.FINE, "Loading unofficial transcript using standard scanner");
+                        LOGGER.fine("Loading unofficial transcript using standard scanner");
                         model.loadUnofficialTranscript(in);
                     }
                     case "view prerequisites" -> {
@@ -125,32 +130,32 @@ public class CLI {
                         String course = in.nextLine();
                         String prerequisites = model.viewPrerequisiteCourses(course);
                         System.out.println(prerequisites);
-                        AdvisingLogger.getLogger().log(Level.FINE, String.format("The prerequisites for the course of code: %s are: %s", course, prerequisites));
+                        LOGGER.fine(String.format("The prerequisites for the course of code: %s are: %s", course, prerequisites));
                     }
                     case "store pdf" -> {
-                        AdvisingLogger.getLogger().log(Level.FINER, "Storing unofficial transcript");
+                        LOGGER.fine("Storing unofficial transcript");
                         model.storeUnofficialTranscript();
                     }
                     case "view course offerings" -> {
                         HashMap<String, Boolean> terms = getTerms(in);
-                        AdvisingLogger.getLogger().log(Level.FINE, "Getting Course Offerings");
+                        LOGGER.fine("Getting Course Offerings");
                         String output = model.getCourseOfferingsAsString(terms.get("fall"), terms.get("winter"), terms.get("spring"));
                         System.out.println(output);
-                        AdvisingLogger.getLogger().log(Level.FINE, "Output Course Offerings", output);
+                        LOGGER.log(Level.FINE, "Output Course Offerings", output);
                     }
                     case "view prerequisite graph" -> {
                         System.out.print("Course code: ");
                         final var code = in.next().trim();
-                        AdvisingLogger.getLogger().log(Level.FINE, "Generating Prerequisite Graph For Course Code: " + code);
+                        LOGGER.fine("Generating Prerequisite Graph For Course Code: " + code);
                         final var graph = model.getCourseGraph(code);
                         System.out.println(graph);
-                        AdvisingLogger.getLogger().log(Level.FINE, "Prerequisite Graph Generated: \n" + graph, graph);
+                        LOGGER.log(Level.FINE, "Prerequisite Graph Generated: \n" + graph, graph);
                     }
                 }
             } catch (Model.InvalidInputException | IOException | NullPointerException e) {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
-                AdvisingLogger.getLogger().log(Level.WARNING, "Exception thrown by method in CLI", e);
+                LOGGER.log(Level.WARNING, "Exception thrown by method in CLI", e);
             }
         }
     }
@@ -164,7 +169,7 @@ public class CLI {
      * @since : Thu, 13 Apr 2021
      */
     private HashMap<String, Boolean> getTerms(Scanner in) {
-        AdvisingLogger.getLogger().log(Level.FINE, "Getting Terms");
+        LOGGER.fine("Getting Terms");
 
         HashMap<String, Boolean> hashMap = new HashMap<>();
 
@@ -173,7 +178,7 @@ public class CLI {
             hashMap.put(season, result);
         }
 
-        AdvisingLogger.getLogger().log(Level.FINE, String.format("Terms Stored: %s", hashMap), hashMap);
+        LOGGER.log(Level.FINE, String.format("Terms Stored: %s", hashMap), hashMap);
         return hashMap;
     }
 
@@ -203,6 +208,6 @@ public class CLI {
      */
     public void outputHyphenLine() {
         System.out.println("------------------------------");
-        AdvisingLogger.getLogger().log(Level.FINE, "\n------------------------------");
+        LOGGER.fine("\n------------------------------");
     }
 }

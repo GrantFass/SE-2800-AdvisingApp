@@ -3,7 +3,7 @@ package msoe.se2800_2ndGroup;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
@@ -40,6 +40,14 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * @since : Saturday, 20 March 2021
  */
 public class ImportTranscript {
+    /**
+     * Logging system.
+     */
+    private final static Logger LOGGER = AdvisingLogger.getLogger();
+
+    /**
+     * Words that are ignored from the PDF when extracting text.
+     */
     private final static String[] IGNORE_WORDS = new String[]{"Milwaukee School of Engineering", "Unofficial Transcript",
             "ID", "NAME", "SSN", "DATE PRINTED", "Undergraduate Division", "Number",
             "Transfer Work", "Term Totals", "Cumulative Totals", "Total Credits Earned",
@@ -62,16 +70,16 @@ public class ImportTranscript {
     private String filterForPassedClasses(String line) {
         //can add ' || line.endsWith("WIP")' if Work in progress courses need to be excluded
         if (line.endsWith("W") || line.endsWith("F")) {
-            AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input line (%s) ends in W or F which signifies the class was failed or withdrawn from and should be skipped", line));
+            LOGGER.finest(String.format("Input line (%s) ends in W or F which signifies the class was failed or withdrawn from and should be skipped", line));
             return null;
         }
         for (String ignore: IGNORE_WORDS) {
             if (line.contains(ignore)) {
-                AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input line (length = %d) contains an ignored word (%s)", line.length(), ignore));
+                LOGGER.finest(String.format("Input line (length = %d) contains an ignored word (%s)", line.length(), ignore));
                 return null;
             }
         }
-        AdvisingLogger.getLogger().log(Level.FINER, "line (" + line + ") is valid");
+        LOGGER.finer("line (" + line + ") is valid");
         return line;
     }
 
@@ -90,11 +98,11 @@ public class ImportTranscript {
     private String checkStringForCourseCode(String inputLine) {
         for (String word : inputLine.split(" ")) {
             if (!word.contains(".") && !word.contains("--") && word.matches("\\w{2}\\d.*")) {
-                AdvisingLogger.getLogger().log(Level.FINER, String.format("Input Line (%s) contains course code (%s)", inputLine, word));
+                LOGGER.finer(String.format("Input Line (%s) contains course code (%s)", inputLine, word));
                 return word.equals("SS415AMAmerican") ? "SS415AM" : word;
             }
         }
-        AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input Line (%s) does not contain a course code", inputLine));
+        LOGGER.finest(String.format("Input Line (%s) does not contain a course code", inputLine));
         return null;
     }
 
@@ -117,7 +125,7 @@ public class ImportTranscript {
      * @since : Thu, 15 Apr 2021
      */
     public ArrayList<Course> readInFile(File file) throws IOException {
-        AdvisingLogger.getLogger().log(Level.FINE, String.format("Reading in PDF file from location: %s", file));
+        LOGGER.fine(String.format("Reading in PDF file from location: %s", file));
         ArrayList<Course> courses = new ArrayList<>();
         PDDocument doc = PDDocument.load(file);
         String text = new PDFTextStripper().getText(doc);
@@ -136,7 +144,7 @@ public class ImportTranscript {
             }
         }
         ArrayList<Course> output = new ArrayList<>(new HashSet<>(courses));
-        AdvisingLogger.getLogger().log(Level.FINE, String.format("Read %d courses from transcript", output.size()));
+        LOGGER.fine(String.format("Read %d courses from transcript", output.size()));
         return output;
     }
 
