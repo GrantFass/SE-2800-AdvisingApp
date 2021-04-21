@@ -1,3 +1,7 @@
+package msoe.se2800_2ndGroup.models;
+
+import java.util.Collection;
+
 /*
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
  * Class: SE 2800 041
@@ -17,28 +21,19 @@
  *     - equals added by Hunter Turcin on 2021-03-31
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
+ *     - code cleanup from group feedback by Hunter Turcin on 2021-04-18
  * Copyright (C): 2021
- */
-package msoe.se2800_2ndGroup.models;
-
-import java.util.Collection;
-import java.util.Objects;
-
-/**
- * Project Name: Advising App
- * Class Name: SinglePrerequisite
- * Creation Date: Tuesday, 16 March 2021
- * Original Author: Hunter Turcin
- * Description: A single-course prerequisite.
- * The SinglePrerequisite class is responsible for:
- * - handling cases where only one course is needed for another
- * Modification Log:
- * - File Created by Hunter Turcin on 2021-03-16
- * - equals added by Hunter Turcin on 2021-03-31
- * - additional overridden Object methods added by Hunter Turcin on 2021-04-04
- * - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
+ *
+ * @author : Hunter Turcin
+ * @since : Tue, 16 Mar 2021
  */
 public record SinglePrerequisite(String code) implements Prerequisite {
+    /**
+     * Check if this course has been taken.
+     *
+     * @param codes course codes to use for checking
+     * @return true if satisfied
+     */
     @Override
     public boolean satisfiedBy(Collection<String> codes) {
         return codes.contains(code);

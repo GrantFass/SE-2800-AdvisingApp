@@ -3,7 +3,7 @@ package msoe.se2800_2ndGroup;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
@@ -21,7 +21,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * Project Name: magana041group2
  * Class Name: ImportTranscript
  * Description:
- * * <class description here>
+ * * Import data from unofficial transcripts in PDF format.
  * The ImportTranscript class is responsible for:
  * * Loading and parsing unofficial transcript PDF files into ArrayList of Course objects
  * Modification Log:
@@ -32,6 +32,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * * Update parsing to skip courses that were withdrawn from or failed by Grant Fass on Thu, 15 Apr 2021
  * * Fix error preventing courses with the word 'organization' in the description from being read by Grant Fass on Thu, 15 Apr 2021
  * * Add logger by Grant Fass on Thu, 15 Apr 2021
+ * * code cleanup from group feedback by turcinh on Tuesday, 20 April 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -39,6 +40,14 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * @since : Saturday, 20 March 2021
  */
 public class ImportTranscript {
+    /**
+     * Logging system.
+     */
+    private final static Logger LOGGER = AdvisingLogger.getLogger();
+
+    /**
+     * Words that are ignored from the PDF when extracting text.
+     */
     private final static String[] IGNORE_WORDS = new String[]{"Milwaukee School of Engineering", "Unofficial Transcript",
             "ID", "NAME", "SSN", "DATE PRINTED", "Undergraduate Division", "Number",
             "Transfer Work", "Term Totals", "Cumulative Totals", "Total Credits Earned",
@@ -58,19 +67,19 @@ public class ImportTranscript {
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
-    private String checkLineForIgnoredWordsAndFailedClassesAndWithdrawnClasses(String line) {
+    private String filterForPassedClasses(String line) {
         //can add ' || line.endsWith("WIP")' if Work in progress courses need to be excluded
         if (line.endsWith("W") || line.endsWith("F")) {
-            AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input line (%s) ends in W or F which signifies the class was failed or withdrawn from and should be skipped", line));
+            LOGGER.finest(String.format("Input line (%s) ends in W or F which signifies the class was failed or withdrawn from and should be skipped", line));
             return null;
         }
         for (String ignore: IGNORE_WORDS) {
             if (line.contains(ignore)) {
-                AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input line (length = %d) contains an ignored word (%s)", line.length(), ignore));
+                LOGGER.finest(String.format("Input line (length = %d) contains an ignored word (%s)", line.length(), ignore));
                 return null;
             }
         }
-        AdvisingLogger.getLogger().log(Level.FINER, "line (" + line + ") is valid");
+        LOGGER.finer("line (" + line + ") is valid");
         return line;
     }
 
@@ -83,17 +92,17 @@ public class ImportTranscript {
      * The returned list contains only the course codes then since all words containing descriptions or credits are removed
      * @param inputLine the String to split and scan for the course code
      * @return a String containing the course code or null if one was not found.
-     * @author : Grant Fass, Teresa T.
+     * @author : Grant Fass, Teresa T., Hunter Turcin
      * @since : Thu, 15 Apr 2021
      */
     private String checkStringForCourseCode(String inputLine) {
         for (String word : inputLine.split(" ")) {
-            if (!word.contains(".") && !word.contains("--") && word.matches(".*\\d.*")) {
-                AdvisingLogger.getLogger().log(Level.FINER, String.format("Input Line (%s) contains course code (%s)", inputLine, word));
+            if (!word.contains(".") && !word.contains("--") && word.matches("\\w{2}\\d.*")) {
+                LOGGER.finer(String.format("Input Line (%s) contains course code (%s)", inputLine, word));
                 return word.equals("SS415AMAmerican") ? "SS415AM" : word;
             }
         }
-        AdvisingLogger.getLogger().log(Level.FINEST, String.format("Input Line (%s) does not contain a course code", inputLine));
+        LOGGER.finest(String.format("Input Line (%s) does not contain a course code", inputLine));
         return null;
     }
 
@@ -116,7 +125,7 @@ public class ImportTranscript {
      * @since : Thu, 15 Apr 2021
      */
     public ArrayList<Course> readInFile(File file) throws IOException {
-        AdvisingLogger.getLogger().log(Level.FINE, String.format("Reading in PDF file from location: %s", file));
+        LOGGER.fine(String.format("Reading in PDF file from location: %s", file));
         ArrayList<Course> courses = new ArrayList<>();
         PDDocument doc = PDDocument.load(file);
         String text = new PDFTextStripper().getText(doc);
@@ -124,7 +133,7 @@ public class ImportTranscript {
         Set<String> inputLines = new HashSet<>(Arrays.asList(text.replace("\r", "").split("\n")));
         //remove ignored words from each line then attempt to parse into a course code
         for(String inputLine: inputLines) {
-            String s = checkLineForIgnoredWordsAndFailedClassesAndWithdrawnClasses(inputLine);
+            String s = filterForPassedClasses(inputLine);
             if (s != null) {
                 String courseCode = checkStringForCourseCode(s);
                 if (courseCode != null) {
@@ -135,7 +144,7 @@ public class ImportTranscript {
             }
         }
         ArrayList<Course> output = new ArrayList<>(new HashSet<>(courses));
-        AdvisingLogger.getLogger().log(Level.FINE, String.format("Read %d courses from transcript", output.size()));
+        LOGGER.fine(String.format("Read %d courses from transcript", output.size()));
         return output;
     }
 
@@ -154,7 +163,7 @@ public class ImportTranscript {
      */
     public ArrayList<Course> readInFile(Scanner scanner) throws IOException, Model.InvalidInputException {
         //load entire pdf into a single string
-        String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner);
+        String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner, System.out);
         File file = new File(pathName);
         return readInFile(file);
     }

@@ -14,7 +14,7 @@ import java.util.logging.*;
  * Project Name: AdvisingApp
  * Class Name: AdvisingLogger
  * Description:
- * * <class description here>
+ * * Provide a set of standard logging functionality to the application.
  * The AdvisingLogger class is responsible for:
  * * Managing the universal logger for the AdvisingApp project
  * Modification Log:

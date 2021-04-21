@@ -26,12 +26,10 @@ import msoe.se2800_2ndGroup.logger.AdvisingLogger;
  * * This is the controller for the primary window in the program
  * * This window is the first one launched on startup
  * The PrimaryController class is responsible for:
- * * <...>
- * * <...>
- * * <...>
- * * <...>
+ * * Controlling functions exclusive to the Primary data manipulation window
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
+ * * Added methods to manipulate data by Grant Fass on Wed, 21 Apr 2021
  *
  * @since : Saturday, 20 March 2021
  * @author : Grant

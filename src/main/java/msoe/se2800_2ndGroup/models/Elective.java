@@ -1,3 +1,10 @@
+package msoe.se2800_2ndGroup.models;
+
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Predicate;
+
 /*
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
  * Class: SE 2800 041
@@ -16,27 +23,11 @@
  *     - File Created by Hunter Turcin on 2021-03-16
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
+ *     - code cleanup from group feedback by Hunter Turcin on 2021-04-18
  * Copyright (C): 2021
- */
-package msoe.se2800_2ndGroup.models;
-
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Predicate;
-
-/**
- * Project Name: Advising App
- * Class Name: Elective
- * Creation Date: Tuesday, 16 March 2021
- * Original Author: Hunter Turcin
- * Description: An elective that can be satisfied by some courses.
- * The Elective class is responsible for:
- *     - verifying it has been satisfied by an appropriate course
- * Modification Log:
- *     - File Created by Hunter Turcin on 2021-03-16
- *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
- *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
+ *
+ * @author : Hunter Turcin
+ * @since : Tue, 16 Mar 2021
  */
 public class Elective implements CurriculumItem {
     // Information based on https://csse.msoe.us/se/se35/
@@ -50,11 +41,15 @@ public class Elective implements CurriculumItem {
     /**
      * Create a new elective.
      *
+     * The elective code determines which course code prefixes are considered
+     * to satisfy this elective (e.g. FREE is satisfied by all courses).
+     *
      * @param code type code of the elective
+     * @throws IllegalArgumentException unknown elective code
      * @author Hunter Turcin
      * @since Sun, 16 Mar 2021
      */
-    public Elective(String code) {
+    public Elective(String code) throws IllegalArgumentException {
         this.code = code;
         this.predicate = switch (code) {
             case "FREE" -> course -> true;
@@ -67,6 +62,14 @@ public class Elective implements CurriculumItem {
         };
     }
 
+    /**
+     * Check another elective has the same code.
+     *
+     * @param object other elective
+     * @return true if equal
+     * @author : Hunter Turcin
+     * @since : Sun, 4 Apr 2021
+     */
     @Override
     public boolean equals(Object object) {
         return object instanceof Elective other && code.equals(other.code);
@@ -82,6 +85,12 @@ public class Elective implements CurriculumItem {
         return String.format("Elective(code=\"%s\")", code);
     }
 
+    /**
+     * Check if a course satisfies this elective.
+     *
+     * @param course course to check
+     * @return true if satisfied
+     */
     @Override
     public boolean satisfiedBy(Course course) {
         return predicate.test(course);

@@ -20,6 +20,7 @@ import java.util.Collection;
  * * modeling a graph of courses for display
  * Modification Log:
  * * File Created by turcinh on Sunday, 10 April 2021
+ * * code cleanup from group feedback by turcinh on Monday, 19 April 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -27,6 +28,11 @@ import java.util.Collection;
  * @since : Sunday, 10 April 2021
  */
 public record GraphNode(Course course, Collection<GraphNode> children) {
+    /**
+     * The amount of indentation per graph level.
+     */
+    private static final String INDENTATION = "  ";
+
     /**
      * Create a new node with no initial children.
      *
@@ -51,9 +57,19 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
         return getStringGraph(0);
     }
 
+    /**
+     * Print the graph for this node and its children.
+     *
+     * Each level of children has higher indentation.
+     *
+     * @param depth amount of indentation to have before printing
+     * @return string of graph
+     * @author : Hunter Turcin
+     * @since : Sat, 10 Apr 2021
+     */
     private String getStringGraph(int depth) {
         final var builder = new StringBuilder();
-        builder.append("  ".repeat(depth));
+        builder.append(INDENTATION.repeat(depth));
         builder.append("+ ");
         builder.append(getStringNode());
 
@@ -65,6 +81,13 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
         return builder.toString();
     }
 
+    /**
+     * Get the string representation of this node.
+     *
+     * @return the string representation of this node
+     * @author : Hunter Turcin
+     * @since : Sat, 10 Apr 2021
+     */
     private String getStringNode() {
         return String.format("%s (%s)", course.code(), course.description());
     }
