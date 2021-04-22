@@ -1,10 +1,12 @@
-package msoe.se2800_2ndGroup;
+package msoe.se2800_2ndGroup.UI;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import msoe.se2800_2ndGroup.App;
+import msoe.se2800_2ndGroup.Model;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;

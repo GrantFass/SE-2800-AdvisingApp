@@ -116,10 +116,6 @@ public class Model {
     }
     //endregion
 
-
-
-
-
     /**
      * This method collects all of the offerings available in for the terms that are given
      *
@@ -308,10 +304,6 @@ public class Model {
         unofficialTranscript.writeFile(Data.getTranscriptCourses(), location);
     }
     //endregion
-
-
-
-
 
     /**
      * TODO: test me

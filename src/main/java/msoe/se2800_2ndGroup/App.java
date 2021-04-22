@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import msoe.se2800_2ndGroup.UI.CLI;
+import msoe.se2800_2ndGroup.UI.PrimaryController;
+import msoe.se2800_2ndGroup.UI.SecondaryController;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.IOException;
@@ -131,7 +134,7 @@ public class App extends Application {
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
-    static void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
         LOGGER.finer("setting scene root");
         scene.setRoot(loadFXML(fxml));
     }

@@ -7,4 +7,6 @@ module msoe.se2800_2ndGroup {
 
     opens msoe.se2800_2ndGroup to javafx.fxml;
     exports msoe.se2800_2ndGroup;
+    exports msoe.se2800_2ndGroup.UI;
+    opens msoe.se2800_2ndGroup.UI to javafx.fxml;
 }
