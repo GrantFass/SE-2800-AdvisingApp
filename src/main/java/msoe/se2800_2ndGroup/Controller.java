@@ -5,6 +5,7 @@ import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.File;
@@ -311,7 +312,7 @@ public abstract class Controller {
             App.getModel().ensureFXThread(() -> {
                 try {
                     App.getModel().storeMajor("CS");
-                } catch (Model.InvalidInputException e) {
+                } catch (CustomExceptions.InvalidInputException e) {
                     String message = String.format(" Invalid Input Exception occurred while " +
                                     "storing major: %s\n%s", majorText, e.getMessage());
                     displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception", message);
@@ -322,7 +323,7 @@ public abstract class Controller {
             App.getModel().ensureFXThread(() -> {
                 try {
                     App.getModel().storeMajor("SE");
-                } catch (Model.InvalidInputException e) {
+                } catch (CustomExceptions.InvalidInputException e) {
                     String message = String.format(" Invalid Input Exception occurred while " +
                             "storing major: %s\n%s", majorText, e.getMessage());
                     displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception", message);

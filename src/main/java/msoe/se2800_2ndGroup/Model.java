@@ -1,6 +1,7 @@
 package msoe.se2800_2ndGroup;
 
 import javafx.application.Platform;
+import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.loaders.CurriculumLoader;
 import msoe.se2800_2ndGroup.loaders.OfferingsLoader;
 import msoe.se2800_2ndGroup.loaders.PrerequisitesLoader;
@@ -49,6 +50,7 @@ import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
  * * Perform code cleanup from group feedback by Hunter Turcin on Mon, 19 Apr 2021
  * * code cleanup from group feedback by turcinh on Tuesday, 20 April 2021
  * * break into regions to further code refactoring by Grant Fass on Thu, 22 Apr 2021
+ * * Moved custom exception inner classes from Model.java to CustomExceptions.java by Grant Fass on Thu, 22 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  * Copyright (C): TBD
@@ -193,12 +195,12 @@ public class Model {
      * @param displayWinter a boolean representing weather or not to collect Offerings for the winter term
      * @param displaySpring a boolean representing weather or not to collect Offerings for the spring term
      * @return an ArrayList of Offerings from the selected terms
-     * @throws InvalidMajorException the major was not found.
-     * @throws InvalidOfferingsException if the offerings list is empty
+     * @throws CustomExceptions.InvalidMajorException the major was not found.
+     * @throws CustomExceptions.InvalidOfferingsException if the offerings list is empty
      * @author : Grant Fass
      * @since : Wed, 7 Apr 2021
      */
-    private ArrayList<Offering> getCourseOfferings(boolean displayFall, boolean displayWinter, boolean displaySpring) throws InvalidInputException {
+    private ArrayList<Offering> getCourseOfferings(boolean displayFall, boolean displayWinter, boolean displaySpring) throws CustomExceptions.InvalidInputException {
         verifyMajor();
         ArrayList<Offering> offeringsBySeason = new ArrayList<>();
         //collect the offerings by term available for the major
@@ -216,7 +218,7 @@ public class Model {
             }
         } catch (NullPointerException e) {
             LOGGER.log(Level.WARNING, String.format("The specified major %s was not found which means it was not input correctly", getMajor()), e);
-            throw new InvalidMajorException(String.format("The specified major %s was not found which means it was not input correctly", getMajor()));
+            throw new CustomExceptions.InvalidMajorException(String.format("The specified major %s was not found which means it was not input correctly", getMajor()));
         }
         return offeringsBySeason;
     }
@@ -232,11 +234,11 @@ public class Model {
      * @param displayWinter a boolean representing weather or not to collect Offerings for the winter term
      * @param displaySpring a boolean representing weather or not to collect Offerings for the spring term
      * @return the offerings for the input terms as a string.
-     * @throws InvalidInputException the major was not found.
+     * @throws CustomExceptions.InvalidInputException the major was not found.
      * @author : Grant Fass
      * @since : Wed, 7 Apr 2021
      */
-    public String getCourseOfferingsAsString(boolean displayFall, boolean displayWinter, boolean displaySpring) throws InvalidInputException {
+    public String getCourseOfferingsAsString(boolean displayFall, boolean displayWinter, boolean displaySpring) throws CustomExceptions.InvalidInputException {
         if (!displayFall && !displayWinter && !displaySpring) {
             return "No Terms Selected\n";
         }
@@ -260,14 +262,14 @@ public class Model {
      * The format is CODE CREDITS | DESCRIPTION : PREREQUISITES.
      * @param offering the offering to extract information from
      * @return an offerings information in a string format
-     * @throws InvalidInputException if the offering was null
+     * @throws CustomExceptions.InvalidInputException if the offering was null
      * @author : Grant Fass
      * @since : Wed, 7 Apr 2021
      */
-    private String getOfferingAsString(Offering offering) throws InvalidInputException {
+    private String getOfferingAsString(Offering offering) throws CustomExceptions.InvalidInputException {
         if (offering == null) {
             LOGGER.warning("The input offering to convert to string was null");
-            throw new InvalidInputException("The input offering was null");
+            throw new CustomExceptions.InvalidInputException("The input offering was null");
         }
         return getCourseAsString(offering.course());
     }
@@ -279,14 +281,14 @@ public class Model {
      * The format is CODE CREDITS | DESCRIPTION : PREREQUISITES.
      * @param course the course to extract information from
      * @return a courses information in string format
-     * @throws InvalidInputException if the course was null
+     * @throws CustomExceptions.InvalidInputException if the course was null
      * @author : Grant Fass
      * @since : Tue, 13 Apr 2021
      */
-    private String getCourseAsString(Course course) throws InvalidInputException {
+    private String getCourseAsString(Course course) throws CustomExceptions.InvalidInputException {
         if (course == null) {
             LOGGER.warning("The input course to convert to string was null");
-            throw new InvalidInputException("The input course was null");
+            throw new CustomExceptions.InvalidInputException("The input course was null");
         }
         String output = String.format("%10s %3s | %50s : %s", course.code(), course.credits(), course.description(), course.prerequisite());
         LOGGER.finest("Converting Course: " + output);
@@ -300,14 +302,14 @@ public class Model {
      * as the getCourseAsString method.
      * @param elective the elective to extract information from
      * @return an electives information in string format
-     * @throws InvalidInputException if the elective was null
+     * @throws CustomExceptions.InvalidInputException if the elective was null
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021
      */
-    private String getElectiveAsString(Elective elective) throws InvalidInputException {
+    private String getElectiveAsString(Elective elective) throws CustomExceptions.InvalidInputException {
         if (elective == null) {
             LOGGER.warning("The input elective to convert to string was null");
-            throw new InvalidInputException("The input elective was null");
+            throw new CustomExceptions.InvalidInputException("The input elective was null");
         }
         String output = String.format("%10s %3s | %50s : %s", elective.getCode(), "?", "Elective Course Choice", "See Academic Catalog");
         LOGGER.finest("Converting Elective: " + output);
@@ -322,11 +324,11 @@ public class Model {
      * Method used to load the unofficial transcript into the program by calling the readInFile method from ImportTranscript
      * @param in the scanner to use for IO operations
      * @throws IOException for issues creating the specified file or reading it
-     * @throws Model.InvalidInputException for issues verifying the specified file location
+     * @throws CustomExceptions.InvalidInputException for issues verifying the specified file location
      * @author : Grant Fass
      * @since : Tue, 13 Apr 2021
      */
-    public void loadUnofficialTranscript(Scanner in) throws InvalidInputException, IOException {
+    public void loadUnofficialTranscript(Scanner in) throws CustomExceptions.InvalidInputException, IOException {
         LOGGER.finer("Loading unofficial transcript using default scanner and a new importTranscript object");
         transcriptCourses = ImportTranscript.readInFile(in);
     }
@@ -378,19 +380,19 @@ public class Model {
      * This method will first check that the stored major is not null, blank, or empty; throwing an error if it is.
      * This method will then check that the major is formatted correctly in its Abbreviated Code form.
      * This method will throw an error if the stored major does not exist, or is improperly formatted.
-     * @throws InvalidMajorException if the stored major does not exist, or is improperly formatted.
+     * @throws CustomExceptions.InvalidMajorException if the stored major does not exist, or is improperly formatted.
      * @author : Grant Fass
      * @since : Wed, 7 Apr 2021
      */
-    private void verifyMajor() throws InvalidInputException {
+    private void verifyMajor() throws CustomExceptions.InvalidInputException {
         LOGGER.finer("Verifying Major has been stored and matches an expected major code");
         Set<String> potentialMajors = new HashSet<>(Arrays.asList("EE", "BSE PT", "CE", "UX", "AE", "NU", "CS", "AS", "SE", "MIS", "ME", "BME", "IE", "ME A"));
         if (getMajor() == null || getMajor().isBlank() || getMajor().isEmpty()) {
             LOGGER.warning("The specified major is missing or blank");
-            throw new InvalidMajorException("The specified major is missing or blank");
+            throw new CustomExceptions.InvalidMajorException("The specified major is missing or blank");
         } else if (!potentialMajors.contains(getMajor())) {
             LOGGER.warning(String.format("The specified major %s was not found within the listing of acceptable majors which means it was not input correctly", major));
-            throw new InvalidMajorException(String.format("The specified major %s was not found within the listing of acceptable majors which means it was not input correctly", major));
+            throw new CustomExceptions.InvalidMajorException(String.format("The specified major %s was not found within the listing of acceptable majors which means it was not input correctly", major));
         }
     }
 
@@ -399,15 +401,15 @@ public class Model {
      *
      * This method checks to see that the collection of offerings is not empty.
      *
-     * @throws InvalidOfferingsException if the collection of offerings is empty
+     * @throws CustomExceptions.InvalidOfferingsException if the collection of offerings is empty
      * @author : Grant Fass
      * @since : Wed, 7 Apr 2021
      */
-    private void verifyOfferings() throws InvalidInputException {
+    private void verifyOfferings() throws CustomExceptions.InvalidInputException {
         LOGGER.finer("Verifying Offerings have been loaded");
         if (getOfferings().isEmpty()) {
             LOGGER.warning("There are no offerings loaded right now");
-            throw new InvalidOfferingsException("There are no offerings loaded right now");
+            throw new CustomExceptions.InvalidOfferingsException("There are no offerings loaded right now");
         }
     }
 
@@ -416,15 +418,15 @@ public class Model {
      *
      * This method checks to see if the transcriptCourses collection is null or empty
      *
-     * @throws InvalidTranscriptException when there is no data stored for the transcript courses
+     * @throws CustomExceptions.InvalidTranscriptException when there is no data stored for the transcript courses
      * @author : Grant Fass
      * @since : Wed, 7 Apr 2021
      */
-    private void verifyTranscript() throws InvalidInputException {
+    private void verifyTranscript() throws CustomExceptions.InvalidInputException {
         LOGGER.finer("Verifying Transcript has been loaded");
         if (getTranscriptCourses() == null || getTranscriptCourses().isEmpty()) {
             LOGGER.warning("Transcript course data is not yet loaded");
-            throw new InvalidTranscriptException("Transcript course data is not yet loaded");
+            throw new CustomExceptions.InvalidTranscriptException("Transcript course data is not yet loaded");
         }
     }
     //endregion
@@ -438,13 +440,13 @@ public class Model {
      * This method then finds the list of courses not yet satisfied in the curriculum and compares it against the offerings.
      * This method then takes the unsatisfied offerings that are available to be taken in the specified term and outputs them as a string.
      *
-     * @throws InvalidInputException for various reasons like not having a major stored, failing to validate major,
+     * @throws CustomExceptions.InvalidInputException for various reasons like not having a major stored, failing to validate major,
      *              failing to validate offerings, failing to validate transcript, or not having a curriculum for the major.
      * @return the list of course recommendations for the specified terms as a string
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
-    public String getCourseRecommendation(boolean getFall, boolean getWinter, boolean getSpring) throws InvalidInputException {
+    public String getCourseRecommendation(boolean getFall, boolean getWinter, boolean getSpring) throws CustomExceptions.InvalidInputException {
         if (!getFall && !getWinter && !getSpring) {
             return "No Terms Selected";
         }
@@ -515,12 +517,12 @@ public class Model {
      *
      * @param completedCourses the list of already completed courses, usually from the loaded unofficial transcript
      * @return the list of CurriculumItems that have not yet been satisfied
-     * @throws InvalidCurriculaException if the curriculum was not found for the stored major
-     * @throws InvalidMajorException if there is an issue with the stored major
+     * @throws CustomExceptions.InvalidCurriculaException if the curriculum was not found for the stored major
+     * @throws CustomExceptions.InvalidMajorException if there is an issue with the stored major
      * @author : Grant Fass
      * @since : Tue, 13 Apr 2021
      */
-    private List<CurriculumItem> getCurriculaExcludingCompletedCourses(ArrayList<Course> completedCourses) throws InvalidInputException {
+    private List<CurriculumItem> getCurriculaExcludingCompletedCourses(ArrayList<Course> completedCourses) throws CustomExceptions.InvalidInputException {
         verifyMajor();
         LOGGER.fine("Searching For Curricula");
         for (Curriculum curriculum: getCurricula()) {
@@ -531,7 +533,7 @@ public class Model {
             }
         }
         LOGGER.warning("Curriculum for stored major was not found");
-        throw new InvalidCurriculaException("Curriculum for selected major not found");
+        throw new CustomExceptions.InvalidCurriculaException("Curriculum for selected major not found");
     }
 
     /**
@@ -644,17 +646,17 @@ public class Model {
      *  <a href="#{@link}">{@link "https://stackoverflow.com/a/48523095"}</a>: Help Finding Regex
      *
      * @param major the major to store
-     * @throws InvalidInputException if the specified input for major does not match the regex.
+     * @throws CustomExceptions.InvalidInputException if the specified input for major does not match the regex.
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
-    public void storeMajor(String major) throws InvalidInputException {
+    public void storeMajor(String major) throws CustomExceptions.InvalidInputException {
         if (major == null) {
             LOGGER.warning("The specified input for major was null");
-            throw new InvalidInputException("The specified input for major was null");
+            throw new CustomExceptions.InvalidInputException("The specified input for major was null");
         } else if (major.isEmpty() || major.isBlank()) {
             LOGGER.warning("The specified input for major was empty or blank");
-            throw new InvalidInputException("The specified input for major was empty or blank");
+            throw new CustomExceptions.InvalidInputException("The specified input for major was empty or blank");
         } else {
             //change hyphens and underscores to spaces, change double spaces to single spaces, trim spaces off start and end.
             LOGGER.finer("Removing invalid characters from input major");
@@ -664,7 +666,7 @@ public class Model {
             }
             if (!input.matches("[a-zA-Z\\s]{1,99}")) {
                 LOGGER.warning("The specified input for major {" + major + "} did not match the expected pattern: /^[a-zA-Z\\s]{1,99}$");
-                throw new InvalidInputException("The specified input for major {" + major + "} did not match the expected pattern: /^[a-zA-Z\\s]{1,99}$");
+                throw new CustomExceptions.InvalidInputException("The specified input for major {" + major + "} did not match the expected pattern: /^[a-zA-Z\\s]{1,99}$");
             } else {
                 LOGGER.fine("Storing specified major: " + major);
                 this.major = input.toUpperCase();
@@ -737,13 +739,13 @@ public class Model {
      * This method is thought to be called from the CLI.
      *
      * @param in An existing scanner to use to query the user for input
-     * @throws InvalidInputException when there is an issue with the user input locations for the files
+     * @throws CustomExceptions.InvalidInputException when there is an issue with the user input locations for the files
      * @throws IOException if there is an issue reading in the CSV files
      * @return A formatted string containing the number of lines loaded into each file.
      * @author : Grant Fass
      * @since : Thu, 1 Apr 2021
      */
-    public String loadCourseData(Scanner in) throws InvalidInputException, IOException {
+    public String loadCourseData(Scanner in) throws CustomExceptions.InvalidInputException, IOException {
         LOGGER.finer("Querying user using passed scanner to retrieve locations and load course data");
         //Ask the user if default file locations should be used or if a custom location should be used
         boolean useDefaultFiles = useDefaultFilesQuery(in);
@@ -807,89 +809,6 @@ public class Model {
                 new Course("CE", 0, new NullPrerequisite(), "Computer Engineering Major"),
                 new Course("UX", 0, new NullPrerequisite(), "User Experience Program Enrollment")
         );
-    }
-    //endregion
-
-    //TODO: break these out into their own class
-    //region custom exceptions
-    /**
-     * This class creates a custom checked exception for invalid input
-     *
-     * Sources:
-     *  <a href="#{@link}">{@link "https://www.baeldung.com/java-new-custom-exception"}</a>: Help creating custom exceptions
-     *
-     * @author : Grant Fass
-     * @since : Sat, 20 Mar 2021
-     */
-    public static class InvalidInputException extends Exception {
-        public InvalidInputException(String errorMessage) {
-            super(errorMessage);
-        }
-    }
-
-    /**
-     * This class creates a custom checked exception to be used whenever the specified major is invalid.
-     * Extends InvalidInputException
-     *
-     * @author : Grant Fass
-     * @since : Thu, 15 Apr 2021
-     */
-    public static class InvalidMajorException extends InvalidInputException {
-        public InvalidMajorException(String errorMessage) {
-            super(errorMessage);
-        }
-    }
-
-    /**
-     * This class creates a custom checked exception to be used whenever the specified offerings is invalid.
-     * Extends InvalidInputException
-     *
-     * @author : Grant Fass
-     * @since : Thu, 15 Apr 2021
-     */
-    public static class InvalidOfferingsException extends InvalidInputException {
-        public InvalidOfferingsException(String errorMessage) {
-            super(errorMessage);
-        }
-    }
-
-    /**
-     * This class creates a custom checked exception to be used whenever the specified curricula is invalid.
-     * Extends InvalidInputException
-     *
-     * @author : Grant Fass
-     * @since : Thu, 15 Apr 2021
-     */
-    public static class InvalidCurriculaException extends InvalidInputException {
-        public InvalidCurriculaException(String errorMessage) {
-            super(errorMessage);
-        }
-    }
-
-    /**
-     * This class creates a custom checked exception to be used whenever the specified prerequisites is invalid.
-     * Extends InvalidInputException
-     *
-     * @author : Grant Fass
-     * @since : Thu, 15 Apr 2021
-     */
-    public static class InvalidPrerequisitesException extends InvalidInputException {
-        public InvalidPrerequisitesException(String errorMessage) {
-            super(errorMessage);
-        }
-    }
-
-    /**
-     * This class creates a custom checked exception to be used whenever the specified transcript courses is invalid.
-     * Extends InvalidInputException
-     *
-     * @author : Grant Fass
-     * @since : Thu, 15 Apr 2021
-     */
-    public static class InvalidTranscriptException extends InvalidInputException {
-        public InvalidTranscriptException(String errorMessage) {
-            super(errorMessage);
-        }
     }
     //endregion
 }

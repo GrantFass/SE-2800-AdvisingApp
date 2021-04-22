@@ -1,5 +1,6 @@
 package msoe.se2800_2ndGroup;
 
+import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.File;
@@ -176,12 +177,12 @@ public class FileIO {
      * @param nameOfFile the name of the file to query the user to enter the location for
      * @param in An existing scanner to use to query the user for input
      * @param out output stream to print to
-     * @throws Model.InvalidInputException if there is a problem validating the file location input by the user
+     * @throws CustomExceptions.InvalidInputException if there is a problem validating the file location input by the user
      * @return the path to the file as a String or an error if there is a problem validating the location
      * @author : Grant Fass
      * @since : Thu, 1 Apr 2021
      */
-    public static String getUserInputFileLocation(String nameOfFile, String fileExtension, Scanner in, PrintStream out) throws Model.InvalidInputException {
+    public static String getUserInputFileLocation(String nameOfFile, String fileExtension, Scanner in, PrintStream out) throws CustomExceptions.InvalidInputException {
         LOGGER.fine("Getting user input file location");
         String location = "";
         //query user and get file
@@ -190,13 +191,13 @@ public class FileIO {
         //validate
         if (!validateFileLocation(location, fileExtension)) {
             LOGGER.warning("The specified location has failed validation");
-            throw new Model.InvalidInputException("The specified location failed validation");
+            throw new CustomExceptions.InvalidInputException("The specified location failed validation");
         }
         if (validateLocation(location)) {
             return location;
         }
         LOGGER.warning("The specified location was empty or blank");
-        throw new Model.InvalidInputException("the specified location is empty or blank");
+        throw new CustomExceptions.InvalidInputException("the specified location is empty or blank");
     }
 
     /**
@@ -218,12 +219,12 @@ public class FileIO {
      *                    The value should usually be System.in. If a null value is entered it should
      *                    default to System.in
      * @param outputStream the source for the text to be output to
-     * @throws Model.InvalidInputException if there is a problem validating the file location input by the user
+     * @throws CustomExceptions.InvalidInputException if there is a problem validating the file location input by the user
      * @return the path to the file as a String or an error if there is a problem validating the location
      * @author : Grant Fass, Hunter Turcin
      * @since : Fri, 26 Mar 2021
      */
-    public static String getUserInputFileLocation(String nameOfFile, String fileExtension, InputStream inputStream, PrintStream outputStream) throws Model.InvalidInputException {
+    public static String getUserInputFileLocation(String nameOfFile, String fileExtension, InputStream inputStream, PrintStream outputStream) throws CustomExceptions.InvalidInputException {
         try (final var in = new Scanner(inputStream)) {
             return getUserInputFileLocation(nameOfFile, fileExtension, in, outputStream);
         }
@@ -241,12 +242,12 @@ public class FileIO {
      *
      * @param nameOfFile the name of the file to query the user to enter the location for
      * @param fileExtension the extension of the file to use / verify
-     * @throws Model.InvalidInputException if there is a problem validating the file location input by the user
+     * @throws CustomExceptions.InvalidInputException if there is a problem validating the file location input by the user
      * @return the path to the file as a String or an error if there is a problem validating the location
      * @author : Grant Fass
      * @since : Fri, 26 Mar 2021
      */
-    public static String getUserInputFileLocation(String nameOfFile, String fileExtension) throws Model.InvalidInputException {
+    public static String getUserInputFileLocation(String nameOfFile, String fileExtension) throws CustomExceptions.InvalidInputException {
         return getUserInputFileLocation(nameOfFile, fileExtension, System.in, System.out);
     }
 

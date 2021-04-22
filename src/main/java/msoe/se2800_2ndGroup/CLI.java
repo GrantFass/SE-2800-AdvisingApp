@@ -1,5 +1,6 @@
 package msoe.se2800_2ndGroup;
 
+import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.IOException;
@@ -152,7 +153,7 @@ public class CLI {
                         LOGGER.log(Level.FINE, "Prerequisite Graph Generated: \n" + graph, graph);
                     }
                 }
-            } catch (Model.InvalidInputException | IOException | NullPointerException e) {
+            } catch (CustomExceptions.InvalidInputException | IOException | NullPointerException e) {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
                 LOGGER.log(Level.WARNING, "Exception thrown by method in CLI", e);

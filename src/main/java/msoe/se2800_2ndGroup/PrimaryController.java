@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 /**
@@ -76,7 +77,7 @@ public class PrimaryController extends Controller {
                         winterTermSelection.isSelected() ? "Winter, " : "",
                         springTermSelection.isSelected() ? "Spring, " : ""));
                 mainListView.getSelectionModel().selectedItemProperty().addListener(getStringListener());
-            } catch (Model.InvalidInputException e) {
+            } catch (CustomExceptions.InvalidInputException e) {
                 String message = String.format(" Invalid Input Exception occurred while " +
                         "generating course offerings\n%s", e.getMessage());
                 displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception", message);
@@ -108,7 +109,7 @@ public class PrimaryController extends Controller {
                         winterTermSelection.isSelected() ? "Winter, " : "",
                         springTermSelection.isSelected() ? "Spring, " : ""));
                 mainListView.getSelectionModel().selectedItemProperty().addListener(getStringListener());
-            } catch (Model.InvalidInputException e) {
+            } catch (CustomExceptions.InvalidInputException e) {
                 String message = String.format(" Invalid Input Exception occurred while " +
                         "generating course recommendations\n%s", e.getMessage());
                 displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception", message);

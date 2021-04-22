@@ -1,6 +1,6 @@
 package msoe.se2800_2ndGroup;
 
-import org.junit.jupiter.api.BeforeEach;
+import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -164,12 +164,12 @@ class FileIOTest {
             String data = Model.getDefaultCurriculumLocation();
             assertEquals(data, FileIO.getUserInputFileLocation("Curriculum.csv", ".csv", new ByteArrayInputStream(data.getBytes()), System.out));
             //assertEquals(data, FileIO.getUserInputFileLocation("Curriculum.csv", new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
-        } catch (Model.InvalidInputException e) {
+        } catch (CustomExceptions.InvalidInputException e) {
             fail();
         }
         // fail if file does not exist
         String data = Model.getDefaultCurriculumLocation() + "TTTT";
-        assertThrows(Model.InvalidInputException.class, () -> FileIO.getUserInputFileLocation("Curriculum.csv", ".csv", new ByteArrayInputStream(data.getBytes()), System.out));
+        assertThrows(CustomExceptions.InvalidInputException.class, () -> FileIO.getUserInputFileLocation("Curriculum.csv", ".csv", new ByteArrayInputStream(data.getBytes()), System.out));
         //assertThrows(Model.InvalidInputException.class, () -> FileIO.getUserInputFileLocation("Curriculum.csv", new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
     }
 }

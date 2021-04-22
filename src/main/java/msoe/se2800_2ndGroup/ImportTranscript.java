@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
+import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -158,11 +159,11 @@ public class ImportTranscript {
      * @param scanner the scanner object to use to query the user for a file location.
      * @return an ArrayList of Course objects containing the courses from the transcript
      * @throws IOException for issues creating the specified file or reading it
-     * @throws Model.InvalidInputException for issues verifying the specified file location
+     * @throws CustomExceptions.InvalidInputException for issues verifying the specified file location
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
-    public static ArrayList<Course> readInFile(Scanner scanner) throws IOException, Model.InvalidInputException {
+    public static ArrayList<Course> readInFile(Scanner scanner) throws IOException, CustomExceptions.InvalidInputException {
         //load entire pdf into a single string
         String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner, System.out);
         File file = new File(pathName);
