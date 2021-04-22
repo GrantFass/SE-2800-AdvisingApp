@@ -33,6 +33,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
  * * Fix error preventing courses with the word 'organization' in the description from being read by Grant Fass on Thu, 15 Apr 2021
  * * Add logger by Grant Fass on Thu, 15 Apr 2021
  * * code cleanup from group feedback by turcinh on Tuesday, 20 April 2021
+ * * Make methods static by Grant Fass on Thu, 22 Apr 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -67,7 +68,7 @@ public class ImportTranscript {
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
-    private String filterForPassedClasses(String line) {
+    private static String filterForPassedClasses(String line) {
         //can add ' || line.endsWith("WIP")' if Work in progress courses need to be excluded
         if (line.endsWith("W") || line.endsWith("F")) {
             LOGGER.finest(String.format("Input line (%s) ends in W or F which signifies the class was failed or withdrawn from and should be skipped", line));
@@ -95,7 +96,7 @@ public class ImportTranscript {
      * @author : Grant Fass, Teresa T., Hunter Turcin
      * @since : Thu, 15 Apr 2021
      */
-    private String checkStringForCourseCode(String inputLine) {
+    private static String checkStringForCourseCode(String inputLine) {
         for (String word : inputLine.split(" ")) {
             if (!word.contains(".") && !word.contains("--") && word.matches("\\w{2}\\d.*")) {
                 LOGGER.finer(String.format("Input Line (%s) contains course code (%s)", inputLine, word));
@@ -124,7 +125,7 @@ public class ImportTranscript {
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
-    public ArrayList<Course> readInFile(File file) throws IOException {
+    public static ArrayList<Course> readInFile(File file) throws IOException {
         LOGGER.fine(String.format("Reading in PDF file from location: %s", file));
         ArrayList<Course> courses = new ArrayList<>();
         PDDocument doc = PDDocument.load(file);
@@ -161,7 +162,7 @@ public class ImportTranscript {
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
-    public ArrayList<Course> readInFile(Scanner scanner) throws IOException, Model.InvalidInputException {
+    public static ArrayList<Course> readInFile(Scanner scanner) throws IOException, Model.InvalidInputException {
         //load entire pdf into a single string
         String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner, System.out);
         File file = new File(pathName);

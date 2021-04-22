@@ -314,9 +314,8 @@ public class Model {
      * @since : Tue, 13 Apr 2021
      */
     public void loadUnofficialTranscript(Scanner in) throws InvalidInputException, IOException {
-        ImportTranscript importTranscript = new ImportTranscript();
         LOGGER.finer("Loading unofficial transcript using default scanner and a new importTranscript object");
-        transcriptCourses = importTranscript.readInFile(in);
+        transcriptCourses = ImportTranscript.readInFile(in);
     }
 
     /**
@@ -328,9 +327,8 @@ public class Model {
      * @since : Tue, 13 Apr 2021
      */
     public void loadUnofficialTranscript(File file) throws IOException {
-        ImportTranscript importTranscript = new ImportTranscript();
         AdvisingLogger.getLogger().log(Level.FINER, "Loading unofficial transcript using passed in File and a new importTranscript object");
-        transcriptCourses = importTranscript.readInFile(file);
+        transcriptCourses = ImportTranscript.readInFile(file);
     }
 
     /**
