@@ -1,4 +1,4 @@
-package msoe.se2800_2ndGroup;
+package msoe.se2800_2ndGroup.Graphing;
 
 import msoe.se2800_2ndGroup.models.*;
 

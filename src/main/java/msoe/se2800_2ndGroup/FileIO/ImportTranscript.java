@@ -1,4 +1,4 @@
-package msoe.se2800_2ndGroup;
+package msoe.se2800_2ndGroup.FileIO;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.FileIO.FileIO;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
 import org.apache.pdfbox.pdmodel.PDDocument;

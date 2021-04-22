@@ -1,4 +1,4 @@
-package msoe.se2800_2ndGroup;
+package msoe.se2800_2ndGroup.FileIO;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;

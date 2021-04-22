@@ -1,4 +1,4 @@
-package msoe.se2800_2ndGroup;
+package msoe.se2800_2ndGroup.Graphing;
 
 import msoe.se2800_2ndGroup.models.Course;
 
@@ -38,7 +38,7 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
      *
      * @param course the course for this node
      */
-    GraphNode(Course course) {
+    public GraphNode(Course course) {
         this(course, new ArrayList<>());
     }
 
@@ -53,7 +53,7 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
      * @author : Hunter Turcin
      * @since : Sat, 10 Apr 2021
      */
-    String getStringGraph() {
+    public String getStringGraph() {
         return getStringGraph(0);
     }
 

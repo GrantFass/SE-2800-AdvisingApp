@@ -1,4 +1,4 @@
-package msoe.se2800_2ndGroup;
+package msoe.se2800_2ndGroup.FileIO;
 
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
@@ -56,7 +56,7 @@ public class UnofficialTranscript {
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
-    public void writeFile(ArrayList<Course> courses, String outputLocation) throws IOException {
+    public static void writeFile(ArrayList<Course> courses, String outputLocation) throws IOException {
         if(outputLocation == null || outputLocation.isBlank()) {
             outputLocation = "./out/Unofficial Transcript.pdf";
         }
@@ -81,7 +81,7 @@ public class UnofficialTranscript {
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021
      */
-    private void closePDF(PDPageContentStream contentStream) throws IOException {
+    private static void closePDF(PDPageContentStream contentStream) throws IOException {
         contentStream.endText();
         contentStream.close();
     }
@@ -93,7 +93,7 @@ public class UnofficialTranscript {
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021
      */
-    private void setUpPDF(PDPageContentStream contentStream) throws IOException {
+    private static void setUpPDF(PDPageContentStream contentStream) throws IOException {
         PDFont font = PDType1Font.HELVETICA;
         contentStream.beginText();
         contentStream.setFont(font, 12);
@@ -108,7 +108,7 @@ public class UnofficialTranscript {
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021
      */
-    private void buildPDFBody(PDPageContentStream contentStream, ArrayList<Course> courses) throws IOException {
+    private static void buildPDFBody(PDPageContentStream contentStream, ArrayList<Course> courses) throws IOException {
         for (Course course : courses) {
             contentStream.showText(getCourseForOutput(course));
             contentStream.newLineAtOffset(0, -15);
@@ -122,7 +122,7 @@ public class UnofficialTranscript {
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021
      */
-    private void buildPDFHeader(PDPageContentStream contentStream) throws IOException {
+    private static void buildPDFHeader(PDPageContentStream contentStream) throws IOException {
         contentStream.showText("--School Name--");
         contentStream.newLineAtOffset(0, -15);
         contentStream.showText("--Student Name--");
@@ -147,7 +147,7 @@ public class UnofficialTranscript {
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021
      */
-    private String getCourseForOutput(Course course) {
+    private static String getCourseForOutput(Course course) {
         String output = String.format("Completed Course: %s", course.code());
         AdvisingLogger.getLogger().log(Level.FINER, "processing course: " + course.code());
         return output;

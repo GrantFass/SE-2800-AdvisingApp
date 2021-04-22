@@ -3,6 +3,9 @@ package msoe.se2800_2ndGroup;
 import javafx.application.Platform;
 import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.FileIO.ImportTranscript;
+import msoe.se2800_2ndGroup.FileIO.UnofficialTranscript;
+import msoe.se2800_2ndGroup.Graphing.GraphMaker;
 import msoe.se2800_2ndGroup.loaders.CurriculumLoader;
 import msoe.se2800_2ndGroup.loaders.OfferingsLoader;
 import msoe.se2800_2ndGroup.loaders.PrerequisitesLoader;
@@ -16,8 +19,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static msoe.se2800_2ndGroup.FileIO.getUserInputFileLocation;
-import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
+import static msoe.se2800_2ndGroup.FileIO.FileIO.getUserInputFileLocation;
+import static msoe.se2800_2ndGroup.FileIO.FileIO.useDefaultFilesQuery;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;

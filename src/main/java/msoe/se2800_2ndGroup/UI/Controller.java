@@ -7,7 +7,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import msoe.se2800_2ndGroup.App;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
-import msoe.se2800_2ndGroup.FileIO;
+import msoe.se2800_2ndGroup.FileIO.FileIO;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.File;
