@@ -1,7 +1,7 @@
 package msoe.se2800_2ndGroup.UI;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
-import msoe.se2800_2ndGroup.Model;
+import msoe.se2800_2ndGroup.Data.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.IOException;

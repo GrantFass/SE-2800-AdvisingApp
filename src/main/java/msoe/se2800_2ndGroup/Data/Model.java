@@ -1,7 +1,6 @@
-package msoe.se2800_2ndGroup;
+package msoe.se2800_2ndGroup.Data;
 
 import javafx.application.Platform;
-import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.FileIO.ImportTranscript;
 import msoe.se2800_2ndGroup.FileIO.UnofficialTranscript;
@@ -301,10 +300,9 @@ public class Model {
      * @since : Thu, 15 Apr 2021
      */
     public void storeUnofficialTranscript(String outputLocation) throws IOException {
-        UnofficialTranscript unofficialTranscript = new UnofficialTranscript();
         String location = outputLocation + "/UnofficialTranscript.pdf";
         LOGGER.finer("Saving current transcript courses to unofficial transcript using a new unofficialTranscript object in the location: " + location);
-        unofficialTranscript.writeFile(Data.getTranscriptCourses(), location);
+        UnofficialTranscript.writeFile(Data.getTranscriptCourses(), location);
     }
     //endregion
 

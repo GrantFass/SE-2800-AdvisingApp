@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import msoe.se2800_2ndGroup.Data.Model;
 import msoe.se2800_2ndGroup.UI.CLI;
 import msoe.se2800_2ndGroup.UI.PrimaryController;
 import msoe.se2800_2ndGroup.UI.SecondaryController;

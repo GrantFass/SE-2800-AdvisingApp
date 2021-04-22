@@ -1,7 +1,6 @@
 package msoe.se2800_2ndGroup.Data;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
-import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
 import msoe.se2800_2ndGroup.models.Curriculum;

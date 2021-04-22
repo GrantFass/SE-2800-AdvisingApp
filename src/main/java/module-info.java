@@ -13,4 +13,7 @@ module msoe.se2800_2ndGroup {
     opens msoe.se2800_2ndGroup.FileIO to javafx.fxml;
     exports msoe.se2800_2ndGroup.Graphing;
     opens msoe.se2800_2ndGroup.Graphing to javafx.fxml;
+    exports msoe.se2800_2ndGroup.Data;
+    opens msoe.se2800_2ndGroup.Data to javafx.fxml;
+    exports msoe.se2800_2ndGroup.Exceptions;
 }

@@ -1,6 +1,7 @@
 package msoe.se2800_2ndGroup;
 
 import msoe.se2800_2ndGroup.Data.Data;
+import msoe.se2800_2ndGroup.Data.Model;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
