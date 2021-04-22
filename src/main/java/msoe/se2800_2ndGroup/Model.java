@@ -48,6 +48,7 @@ import static msoe.se2800_2ndGroup.FileIO.useDefaultFilesQuery;
  * * Add method to store unofficial transcripts by Grant Fass on Thu, 15 Apr 2021
  * * Perform code cleanup from group feedback by Hunter Turcin on Mon, 19 Apr 2021
  * * code cleanup from group feedback by turcinh on Tuesday, 20 April 2021
+ * * break into regions to further code refactoring by Grant Fass on Thu, 22 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  * Copyright (C): TBD
@@ -58,6 +59,8 @@ public class Model {
      */
     private static final Logger LOGGER = AdvisingLogger.getLogger();
 
+    //TODO: check if the instance vars can be static class vars instead?
+    //region instanceVars
     // Variable to store the major of the user
     private String major;
     // Variables to store the course data
@@ -65,7 +68,9 @@ public class Model {
     private Collection<Offering> offerings;
     private Collection<Course> prerequisiteCourses;
     private ArrayList<Course> transcriptCourses;
+    //endregion
 
+    //region static getters
     /**
      * This method returns the absolute path to the file in the method header as a String.
      *
@@ -116,7 +121,9 @@ public class Model {
     public static String getDefaultPrerequisitesLocation() {
         return (Objects.requireNonNull(Model.class.getResource("prerequisites_updated.csv"))).toString().replace("file:/", "");
     }
+    //endregion
 
+    //region instance var getters
     /**
      * This method returns the current major
      *
@@ -173,6 +180,7 @@ public class Model {
     private ArrayList<Course> getTranscriptCourses() {
         return Objects.requireNonNullElseGet(transcriptCourses, ArrayList::new);
     }
+    //endregion
 
     /**
      * This method collects all of the offerings available in for the terms that are given
@@ -243,6 +251,8 @@ public class Model {
         return builder.toString();
     }
 
+    //TODO: these can most likely be static
+    //region methods to convert course / elective / offering to string
     /**
      * This method extracts the important information from a given offering and returns a string containing the values
      *
@@ -303,7 +313,10 @@ public class Model {
         LOGGER.finest("Converting Elective: " + output);
         return output + "\n";
     }
+    //endregion
 
+    //TODO: these are not necessarily needed... most only contain loggers ontop of the transcript info
+    //region Transcript FileIO
     /**
      * TODO: test me
      * Method used to load the unofficial transcript into the program by calling the readInFile method from ImportTranscript
@@ -356,7 +369,9 @@ public class Model {
         LOGGER.finer("Saving current transcript courses to unofficial transcript using a new unofficialTranscript object in the location: " + location);
         unofficialTranscript.writeFile(getTranscriptCourses(), location);
     }
+    //endregion
 
+    //region instance variable verification methods
     /**
      * this method will check to see if the stored major is valid
      *
@@ -412,6 +427,7 @@ public class Model {
             throw new InvalidTranscriptException("Transcript course data is not yet loaded");
         }
     }
+    //endregion
 
     /**
      * TODO: test me
@@ -470,7 +486,7 @@ public class Model {
      * @author : Grant Fass
      * @since : Tue, 13 Apr 2021
      */
-    private List<CurriculumItem> getUnsatisfiedMatchingTerm(List<Offering> offeringsInTerm, List<CurriculumItem> unsatisfiedCourses) {
+    private static List<CurriculumItem> getUnsatisfiedMatchingTerm(List<Offering> offeringsInTerm, List<CurriculumItem> unsatisfiedCourses) {
         LOGGER.finer("Getting unsatisfied terms that match between offeringsInTerm and unsatisfiedCourses");
         ArrayList<CurriculumItem> out = new ArrayList<>();
         for (CurriculumItem curriculumItem: unsatisfiedCourses) {
@@ -594,7 +610,7 @@ public class Model {
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
-    public void ensureFXThread(Runnable action) {
+    public static void ensureFXThread(Runnable action) {
         if (Platform.isFxApplicationThread()) {
             action.run();
         } else {
@@ -614,7 +630,7 @@ public class Model {
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
-    public void exitProgram() {
+    public static void exitProgram() {
         ensureFXThread(() -> System.exit(0));
     }
 
@@ -656,6 +672,7 @@ public class Model {
         }
     }
 
+    //region course data loading methods
     /**
      * Loads in the prerequisites, curriculum, and offerings csv files from the locations that are specified.
      * These locations do not have any checks or verification on them. Thus this method is meant to be called from
@@ -744,7 +761,9 @@ public class Model {
 
         return loadCoursesFromSpecifiedLocations(curriculumLocation, offeringsLocation, prerequisitesLocation);
     }
+    //endregion
 
+    //region graphing methods
     /**
      * TODO: test me
      * Get a textual representation of a graph of a course's prerequisites.
@@ -789,7 +808,9 @@ public class Model {
                 new Course("UX", 0, new NullPrerequisite(), "User Experience Program Enrollment")
         );
     }
+    //endregion
 
+    //TODO: break these out into their own class
     //region custom exceptions
     /**
      * This class creates a custom checked exception for invalid input
