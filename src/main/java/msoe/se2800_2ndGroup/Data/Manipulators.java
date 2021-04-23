@@ -7,6 +7,8 @@ import msoe.se2800_2ndGroup.models.CurriculumItem;
 import msoe.se2800_2ndGroup.models.Elective;
 import msoe.se2800_2ndGroup.models.Offering;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -162,6 +164,21 @@ public class Manipulators {
             builder.append("No courses found\n");
         }
         return builder.toString();
+    }
+
+    /**
+     * This method converts a list of courses to a list of course codes
+     * @param courses the courses to convert to codes
+     * @return a list of course codes
+     * @author : Grant Fass
+     * @since : Thu, 22 Apr 2021
+     */
+    public static Collection<String> getCourseCodes(List<Course> courses) {
+        Collection<String> out = new ArrayList<>();
+        for(Course course: courses) {
+            out.add(course.code());
+        }
+        return out;
     }
 
     /**

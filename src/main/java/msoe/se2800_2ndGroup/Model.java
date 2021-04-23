@@ -164,7 +164,7 @@ public class Model {
      * @since : Thu, 15 Apr 2021
      */
     public static void storeUnofficialTranscript(String outputLocation) throws IOException {
-        String location = outputLocation + "/UnofficialTranscript.pdf";
+        String location = String.format("%s\\UnofficialTranscript-(%tF).pdf", outputLocation, System.currentTimeMillis());
         LOGGER.finer("Saving current transcript courses to unofficial transcript using a new unofficialTranscript object in the location: " + location);
         TranscriptIO.writeFile(Data.getTranscriptCourses(), location);
     }

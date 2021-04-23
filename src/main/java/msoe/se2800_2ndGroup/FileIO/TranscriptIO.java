@@ -49,6 +49,7 @@ import java.util.logging.Logger;
  * Modification Log:
  * * File Created by Grant on Thursday, 22 April 2021
  * * Merged files from both ImportTranscript.java and UnofficialTranscript.java into a single class by Grant Fass on Thu, 22 Apr 2021
+ * * Fix pdf loading not closing files correctly by Grant Fass on Thu, 22 Apr 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -269,6 +270,7 @@ public class TranscriptIO {
         ArrayList<Course> courses = new ArrayList<>();
         PDDocument doc = PDDocument.load(file);
         String text = new PDFTextStripper().getText(doc);
+        doc.close();
         //split pdf into individual lines
         Set<String> inputLines = new HashSet<>(Arrays.asList(text.replace("\r", "").split("\n")));
         //remove ignored words from each line then attempt to parse into a course code
