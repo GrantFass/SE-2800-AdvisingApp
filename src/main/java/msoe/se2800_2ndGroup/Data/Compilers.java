@@ -197,9 +197,9 @@ public class Compilers {
 
         if (selected != null) {
             if (selected.prerequisite() instanceof AndPrerequisite and) {
-                return ("Prerequisites: " + and.left() + " and " + and.right());
+                return ("Prerequisites: " + ((SinglePrerequisite) and.left()).code() + " and " + ((SinglePrerequisite) and.right()).code());
             } else if (selected.prerequisite() instanceof OrPrerequisite or){
-                return ("Prerequisites: " + or.left() + " or " + or.right());
+                return ("Prerequisites: " + ((SinglePrerequisite) or.left()).code() + " or " + ((SinglePrerequisite) or.right()).code());
             } else if (selected.prerequisite() instanceof SinglePrerequisite single) {
                 return ("Prerequisites: " + single.code());
             } else {
