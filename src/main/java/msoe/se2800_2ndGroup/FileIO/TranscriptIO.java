@@ -73,23 +73,23 @@ public class TranscriptIO {
 
     /**
      * Write the unofficial transcript to a PDF.
-     *
+     * <p>
      * Sensitive information is not stored by the program and will thus not be
      * present on the generated PDF. The PDF is generated in such a way that it
      * can be used as input to this program.
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://www.tutorialspoint.com/pdfbox/pdfbox_adding_pages.htm"}</a>: Creating PDF
-     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/47731904"}</a>: Newlines in output PDF
+     * <a href="#{@link}">{@link "https://www.tutorialspoint.com/pdfbox/pdfbox_adding_pages.htm"}</a>: Creating PDF
+     * <a href="#{@link}">{@link "https://stackoverflow.com/a/47731904"}</a>: Newlines in output PDF
      *
-     * @param courses the list of courses to output to the PDF
+     * @param courses        the list of courses to output to the PDF
      * @param outputLocation the location to store the output location to, will default to "./out/Unofficial Transcript.pdf"
      * @throws IOException for errors in writing to the PDF file
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
     public static void writeFile(ArrayList<Course> courses, String outputLocation) throws IOException {
-        if(outputLocation == null || outputLocation.isBlank()) {
+        if (outputLocation == null || outputLocation.isBlank()) {
             outputLocation = "./out/Unofficial Transcript.pdf";
         }
         PDDocument doc = new PDDocument();
@@ -108,6 +108,7 @@ public class TranscriptIO {
 
     /**
      * closes and finishes all of the operations associated with writing to a PDF file
+     *
      * @param contentStream the pdf to finish output to
      * @throws IOException if there is a problem finishing output
      * @author : Grant Fass
@@ -120,6 +121,7 @@ public class TranscriptIO {
 
     /**
      * sets up the font and initial output line for the pdf
+     *
      * @param contentStream the pdf to set up
      * @throws IOException if there is an issue setting up the pdf
      * @author : Grant Fass
@@ -134,8 +136,9 @@ public class TranscriptIO {
 
     /**
      * Method to build the body of the PDF by outputting each course in the standard format on its own line
+     *
      * @param contentStream the PDF to output the body on
-     * @param courses the list of courses to output
+     * @param courses       the list of courses to output
      * @throws IOException if there is an issue outputting the body
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021
@@ -149,6 +152,7 @@ public class TranscriptIO {
 
     /**
      * method to build a standard header to the top of the output PDF
+     *
      * @param contentStream the PDF to output the header on
      * @throws IOException if there is an issue outputting the header
      * @author : Grant Fass
@@ -168,11 +172,11 @@ public class TranscriptIO {
 
     /**
      * method to format a course into a standard format used for outputting to a PDF document
-     *
+     * <p>
      * There is a listing of invalid chars for output such as \n and \r as per the below source link.
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://stackoverflow.com/questions/46644570/pdfbox-u000a-controllf-is-not-available-in-this-font-helvetica-encoding"}</a>: Output string invalid chars
+     * <a href="#{@link}">{@link "https://stackoverflow.com/questions/46644570/pdfbox-u000a-controllf-is-not-available-in-this-font-helvetica-encoding"}</a>: Output string invalid chars
      *
      * @param course the course to format
      * @return the course formatted as a string
@@ -188,13 +192,15 @@ public class TranscriptIO {
     //endregion
 
     //region methods for importing transcripts
+
     /**
      * This method will check if the current target line contains any of the values in the array of Ignored Words
-     *
+     * <p>
      * This method iterates through the list of ignored words and compares them against the target line that is passed
      * into the method as a parameter using the .contains method for strings. If an ignored line is found the method
      * will return null, otherwise the method will return the line itself.
      * This method will also return null if the line ends in a W or an F which indicates the course was not passed or withdrawn from.
+     *
      * @param line the String to check for ignored words
      * @return null if an ignored line is found, otherwise return the parameter string
      * @author : Grant Fass, Teresa T.
@@ -206,7 +212,7 @@ public class TranscriptIO {
             LOGGER.finest(String.format("Input line (%s) ends in W or F which signifies the class was failed or withdrawn from and should be skipped", line));
             return null;
         }
-        for (String ignore: IGNORE_WORDS) {
+        for (String ignore : IGNORE_WORDS) {
             if (line.contains(ignore)) {
                 LOGGER.finest(String.format("Input line (length = %d) contains an ignored word (%s)", line.length(), ignore));
                 return null;
@@ -218,11 +224,12 @@ public class TranscriptIO {
 
     /**
      * This method checks for the course code in the string and returns it
-     *
+     * <p>
      * This method first splits the passed in inputLine on each space (' ').
      * This method then checks to see if the each of the words that were separated contain ('.') or ('--') and that they contain a digit
      * If the split words do not contain either of the strings, and they contain a digit then they are added to the output arrayList and returned.
      * The returned list contains only the course codes then since all words containing descriptions or credits are removed
+     *
      * @param inputLine the String to split and scan for the course code
      * @return a String containing the course code or null if one was not found.
      * @author : Grant Fass, Teresa T., Hunter Turcin
@@ -241,15 +248,15 @@ public class TranscriptIO {
 
     /**
      * This method reads in the entire pdf then parses out the course codes and returns them as an ArrayList of courses.
-     *
+     * <p>
      * The method will use the PDF loader to load the entire PDF into a single String object.
      * The method then splits the pdf String into individual lines.
      * For each line the method removes all ignored words then extracts course codes if they exist.
      * Then each course code is turned into a Course object and returned as part of an ArrayList.
      * This method converts both the input text array and output course array list to hash sets to remove duplicates
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://www.programiz.com/java-programming/examples/convert-array-set"}</a>: Help converting arrays to hash sets
+     * <a href="#{@link}">{@link "https://www.programiz.com/java-programming/examples/convert-array-set"}</a>: Help converting arrays to hash sets
      *
      * @param file the file object to use to create the PDDocument object to parse the PDF.
      * @return an ArrayList of Course objects containing the courses from the transcript
@@ -265,7 +272,7 @@ public class TranscriptIO {
         //split pdf into individual lines
         Set<String> inputLines = new HashSet<>(Arrays.asList(text.replace("\r", "").split("\n")));
         //remove ignored words from each line then attempt to parse into a course code
-        for(String inputLine: inputLines) {
+        for (String inputLine : inputLines) {
             String s = filterForPassedClasses(inputLine);
             if (s != null) {
                 String courseCode = checkStringForCourseCode(s);
@@ -283,13 +290,14 @@ public class TranscriptIO {
 
     /**
      * This method reads in the entire pdf then parses out the course codes and returns them as an ArrayList of courses.
-     *
+     * <p>
      * This method first queries the user for a file location using the standard FileIO.getUserInputFileLocation
      * method. Then the method passes off to the other readInFile(File file) method to create the PDF reading object
      * and parse the courses out.
+     *
      * @param scanner the scanner object to use to query the user for a file location.
      * @return an ArrayList of Course objects containing the courses from the transcript
-     * @throws IOException for issues creating the specified file or reading it
+     * @throws IOException                            for issues creating the specified file or reading it
      * @throws CustomExceptions.InvalidInputException for issues verifying the specified file location
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021

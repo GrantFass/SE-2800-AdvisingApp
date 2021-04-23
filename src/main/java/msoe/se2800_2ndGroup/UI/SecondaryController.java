@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.Model;
 
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class SecondaryController extends Controller {
      * @since : Mon, 19 Apr 2021
      */
     private void updateSearchBar() {
-        mainSearchBar.setText(Model.standardizeCourse(lastCourseCode));
+        mainSearchBar.setText(Manipulators.standardizeCourse(lastCourseCode));
     }
 
 
@@ -70,7 +71,7 @@ public class SecondaryController extends Controller {
     public void viewPrerequisiteGraph() {
         Model.ensureFXThread(() -> {
             mainLabel.setText("Viewing Prerequisite Graph:");
-            String code = Model.standardizeCourse(mainSearchBar.getText());
+            String code = Manipulators.standardizeCourse(mainSearchBar.getText());
             mainTextArea.setText(Model.getCourseGraph(code));
         });
     }

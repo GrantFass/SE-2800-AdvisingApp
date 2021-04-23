@@ -41,6 +41,7 @@ import java.util.logging.Logger;
  * * Removed references to Model.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
  * <p>
  * Copyright (C): TBD
+ *
  * @author : Grant
  * @since : Saturday, 20 March 2021
  */
@@ -76,7 +77,8 @@ public class CLI {
         }
         //Loop for CLI operations
         Scanner in = new Scanner(System.in);
-        while (true) {
+        boolean run = true;
+        while (run) {
             try {
                 outputHyphenLine();
                 String input = in.nextLine().trim().toLowerCase();
@@ -84,7 +86,7 @@ public class CLI {
                 switch (input) {
                     case "exit", "quit" -> {
                         LOGGER.info("Shutting down program");
-                        Model.exitProgram();
+                        run = false;
                     }
                     case "store major" -> {
                         System.out.print("Enter Major Abbreviation: ");
@@ -148,6 +150,7 @@ public class CLI {
 
     /**
      * This method queries the user for which terms they would like to display data for
+     *
      * @param in the scanner used to query the user
      * @return a HashMap containing the keys 'fall', 'winter', 'spring' and boolean values associated with the key
      * @author : Grant Fass, Hunter Turcin
@@ -158,7 +161,7 @@ public class CLI {
 
         HashMap<String, Boolean> hashMap = new HashMap<>();
 
-        for (final var season : new String[] { "fall", "winter", "spring" }) {
+        for (final var season : new String[]{"fall", "winter", "spring"}) {
             final var result = askBinary(in, String.format("Would you like to display %s courses?", season));
             hashMap.put(season, result);
         }
@@ -169,10 +172,10 @@ public class CLI {
 
     /**
      * Ask the user a yes-or-no question.
-     *
+     * <p>
      * Instructions are appended to the end of the prompt.
      *
-     * @param in input source
+     * @param in     input source
      * @param prompt question to ask
      * @return true if yes, false if no
      * @author : Hunter Turcin

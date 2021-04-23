@@ -34,10 +34,10 @@ import java.util.Arrays;
  * * Added methods to manipulate data by Grant Fass on Wed, 21 Apr 2021
  * * Removed references to Model.java from App.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
  *
- * @since : Saturday, 20 March 2021
  * @author : Grant
- *
+ * <p>
  * Copyright (C): TBD
+ * @since : Saturday, 20 March 2021
  */
 public class PrimaryController extends Controller {
 
@@ -58,10 +58,11 @@ public class PrimaryController extends Controller {
 
     /**
      * method to generate the course offerings
-     *
+     * <p>
      * This method is always run on the FX thread and uses commands from Model.java
      * This method first creates a String array by getting the course offerings as string and splitting by '\n'
      * Then this method adds all the offering items in the array to the list view
+     *
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
      */
@@ -90,10 +91,11 @@ public class PrimaryController extends Controller {
 
     /**
      * method to generate the course recommendations
-     *
+     * <p>
      * This method is always run on the FX thread and uses commands from Model.java
      * This method first creates a String array by getting the course recommendations as string and splitting by '\n'
      * Then this method adds all the recommended items in the array to the list view
+     *
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
      */
@@ -122,6 +124,7 @@ public class PrimaryController extends Controller {
 
     /**
      * Method to generate and get the string listener to get course codes from the List View
+     *
      * @return new ChangeListener of String that is formatted correctly
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
@@ -145,11 +148,11 @@ public class PrimaryController extends Controller {
     /**
      * TODO: Clean this up later when FXML is updated. Want to better use superclass
      * Method used to switch what controller and FXML resource is displayed in the GUI
-     *
+     * <p>
      * Method switches the displayed controller and FXML by calling App.setRoot with the associated FXML resource of the window to switch to.
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://openjfx.io/openjfx-docs/#maven"}</a> Help setting up FXML loading with Maven
+     * <a href="#{@link}">{@link "https://openjfx.io/openjfx-docs/#maven"}</a> Help setting up FXML loading with Maven
      *
      * @throws IOException this is thrown when there is an issue in loading the fxml resource
      * @author : Grant Fass

@@ -29,12 +29,12 @@ import java.util.Objects;
 public class DefaultLocations {
     /**
      * This method returns the absolute path to the file in the method header as a String.
-     *
+     * <p>
      * This method uses the class.getResource method to find the required resource path
      * This method relies on a resource link in pom.xml
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/44241904"}</a>: Help finding the location of the file
+     * <a href="#{@link}">{@link "https://stackoverflow.com/a/44241904"}</a>: Help finding the location of the file
      *
      * @return the absolute path to the default location for curriculum.csv as a String
      * @author : Grant Fass
@@ -46,12 +46,12 @@ public class DefaultLocations {
 
     /**
      * This method returns the absolute path to the file in the method header as a String.
-     *
+     * <p>
      * This method uses the class.getResource method to find the required resource path
      * This method relies on a resource link in pom.xml
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/44241904"}</a>: Help finding the location of the file
+     * <a href="#{@link}">{@link "https://stackoverflow.com/a/44241904"}</a>: Help finding the location of the file
      *
      * @return the absolute path to the default location for curriculum.csv as a String
      * @author : Grant Fass
@@ -63,12 +63,12 @@ public class DefaultLocations {
 
     /**
      * This method returns the absolute path to the file in the method header as a String.
-     *
+     * <p>
      * This method uses the class.getResource method to find the required resource path
      * This method relies on a resource link in pom.xml
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/44241904"}</a>: Help finding the location of the file
+     * <a href="#{@link}">{@link "https://stackoverflow.com/a/44241904"}</a>: Help finding the location of the file
      *
      * @return the absolute path to the default location for curriculum.csv as a String
      * @author : Grant Fass

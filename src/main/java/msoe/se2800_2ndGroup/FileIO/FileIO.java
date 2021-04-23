@@ -46,7 +46,7 @@ public class FileIO {
 
     /**
      * This method validates that the input location for a file matches specified criteria
-     *
+     * <p>
      * This method validates that the input location is valid by attempting to turn the location into
      * a file then verifying that the file exists
      *
@@ -69,12 +69,12 @@ public class FileIO {
 
     /**
      * This method validates that the input location for a file matches specified criteria
-     *
+     * <p>
      * This method validates that the input location is valid by attempting to turn the location into
      * a file then verifying that the file exists
      * This overloaded method additionally checks that the file extension matches the input extension
      *
-     * @param location the path to the file as a String
+     * @param location              the path to the file as a String
      * @param expectedFileExtension the extension of the file that is expected.
      * @return True if the location passes validation, false otherwise
      * @author : Grant Fass
@@ -93,7 +93,7 @@ public class FileIO {
 
     /**
      * This method determines if the default file location should be used or not
-     *
+     * <p>
      * This method queries the user about the file source to use
      * The method then retrieves user input from the passed in scanner
      *
@@ -115,13 +115,13 @@ public class FileIO {
 
     /**
      * This method determines if the default file location should be used or not
-     *
+     * <p>
      * This method queries the user about the file source to use
      * The method then retrieves user input from the specified input source
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/6416179"}</a>: Helped determine how to
-     *              pass in an input stream to better facilitate testing.
+     * <a href="#{@link}">{@link "https://stackoverflow.com/a/6416179"}</a>: Helped determine how to
+     * pass in an input stream to better facilitate testing.
      *
      * @param inputStream the source for the input used to determine if default files should be used.
      *                    The value should usually be System.in. If a null value is entered it should
@@ -148,7 +148,7 @@ public class FileIO {
 
     /**
      * This method determines if the default file location should be used or not
-     *
+     * <p>
      * This method queries the user about the file source to use
      * The method then retrieves user input from System.in.
      * This version of the method calls the more verbose option by passing in the
@@ -164,21 +164,21 @@ public class FileIO {
 
     /**
      * This method queries the user for the location of a specified file and returns it
-     *
+     * <p>
      * This method uses the passed in scanner to query the user to retrieve
      * the location of the file specified by the parameter String in the method header.
      * The location of the user input file is then validated.
      * If the validation fails then an Exception is thrown.
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/6416179"}</a>: Helped determine how to
-     *              pass in an input stream to better facilitate testing.
+     * <a href="#{@link}">{@link "https://stackoverflow.com/a/6416179"}</a>: Helped determine how to
+     * pass in an input stream to better facilitate testing.
      *
      * @param nameOfFile the name of the file to query the user to enter the location for
-     * @param in An existing scanner to use to query the user for input
-     * @param out output stream to print to
-     * @throws CustomExceptions.InvalidInputException if there is a problem validating the file location input by the user
+     * @param in         An existing scanner to use to query the user for input
+     * @param out        output stream to print to
      * @return the path to the file as a String or an error if there is a problem validating the location
+     * @throws CustomExceptions.InvalidInputException if there is a problem validating the file location input by the user
      * @author : Grant Fass
      * @since : Thu, 1 Apr 2021
      */
@@ -202,25 +202,25 @@ public class FileIO {
 
     /**
      * This method queries the user for the location of a specified file and returns it
-     *
+     * <p>
      * This method uses the standard input and output streams for the system to query the user to retrieve
      * the location of the file specified by the parameter String in the method header.
      * The location of the user input file is then validated.
      * If the validation fails then an Exception is thrown.
      * This version of the method takes in an input stream as a parameter to better facilitate testing.
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/6416179"}</a>: Helped determine how to
-     *              pass in an input stream to better facilitate testing.
+     * <a href="#{@link}">{@link "https://stackoverflow.com/a/6416179"}</a>: Helped determine how to
+     * pass in an input stream to better facilitate testing.
      *
-     * @param nameOfFile the name of the file to query the user to enter the location for
+     * @param nameOfFile    the name of the file to query the user to enter the location for
      * @param fileExtension the extension of the file to use / verify
-     * @param inputStream the source for the input used to determine if default files should be used.
-     *                    The value should usually be System.in. If a null value is entered it should
-     *                    default to System.in
-     * @param outputStream the source for the text to be output to
-     * @throws CustomExceptions.InvalidInputException if there is a problem validating the file location input by the user
+     * @param inputStream   the source for the input used to determine if default files should be used.
+     *                      The value should usually be System.in. If a null value is entered it should
+     *                      default to System.in
+     * @param outputStream  the source for the text to be output to
      * @return the path to the file as a String or an error if there is a problem validating the location
+     * @throws CustomExceptions.InvalidInputException if there is a problem validating the file location input by the user
      * @author : Grant Fass, Hunter Turcin
      * @since : Fri, 26 Mar 2021
      */
@@ -232,7 +232,7 @@ public class FileIO {
 
     /**
      * This method queries the user for the location of a specified file and returns it
-     *
+     * <p>
      * This method uses the standard input and output streams for the system to query the user to retrieve
      * the location of the file specified by the parameter String in the method header.
      * The location of the user input file is then validated.
@@ -240,10 +240,10 @@ public class FileIO {
      * This version of the method calls the more verbose option by passing in
      * the default input source.
      *
-     * @param nameOfFile the name of the file to query the user to enter the location for
+     * @param nameOfFile    the name of the file to query the user to enter the location for
      * @param fileExtension the extension of the file to use / verify
-     * @throws CustomExceptions.InvalidInputException if there is a problem validating the file location input by the user
      * @return the path to the file as a String or an error if there is a problem validating the location
+     * @throws CustomExceptions.InvalidInputException if there is a problem validating the file location input by the user
      * @author : Grant Fass
      * @since : Fri, 26 Mar 2021
      */

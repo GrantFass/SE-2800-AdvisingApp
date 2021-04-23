@@ -27,9 +27,9 @@ public class CustomExceptions {
 
     /**
      * This class creates a custom checked exception for invalid input
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://www.baeldung.com/java-new-custom-exception"}</a>: Help creating custom exceptions
+     * <a href="#{@link}">{@link "https://www.baeldung.com/java-new-custom-exception"}</a>: Help creating custom exceptions
      *
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021

@@ -1,6 +1,7 @@
 package msoe.se2800_2ndGroup;
 
 import msoe.se2800_2ndGroup.Data.Data;
+import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.FileIO.CourseDataIO;
 import msoe.se2800_2ndGroup.FileIO.DefaultLocations;
@@ -429,36 +430,36 @@ class ModelTest {
     void standardizeCourse() {
 
         // Capitalization
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("Se2800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("se2800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("sE2800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE2800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("Se2800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("se2800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("sE2800"));
 
         // Whitespaces
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE 2800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("  SE2800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2800  "));
-        Assertions.assertEquals("SE2800", model.standardizeCourse(" S E  2 8   0     0       "));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE 2800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("  SE2800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE2800  "));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse(" S E  2 8   0     0       "));
 
         // Punctuation
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2??800?"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE!2!8!0!!!0"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("-S-E2--800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE_2__800_"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE.2..80..0"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2,8,,,0,0,"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE(2)8((00"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2{8}00{"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("//S/E280/0"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE|2||80|0"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE'2''''''8'0'0"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("S$$E2$$8$00"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE2??800?"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE!2!8!0!!!0"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("-S-E2--800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE_2__800_"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE.2..80..0"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE2,8,,,0,0,"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE(2)8((00"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE2{8}00{"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("//S/E280/0"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE|2||80|0"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE'2''''''8'0'0"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("S$$E2$$8$00"));
 
         // Mix
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE  -2#.... 800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("     S-e2+++8{}{}{}{00"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("se28  0????0!"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("s E 2 ----8 0@0~~~~~~~"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE  -2#.... 800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("     S-e2+++8{}{}{}{00"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("se28  0????0!"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("s E 2 ----8 0@0~~~~~~~"));
 
     }
 }

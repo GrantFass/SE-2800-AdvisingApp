@@ -2,7 +2,6 @@ package msoe.se2800_2ndGroup.Data;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.Graphing.GraphMaker;
-import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.*;
 
@@ -186,7 +185,7 @@ public class Compilers {
      * @since : Mon, 12 Apr 2021
      */
     public static String getPrerequisitesForCourse(String course) {
-        course = Model.standardizeCourse(course);
+        course = Manipulators.standardizeCourse(course);
         Course selected = null;
         for (Course prerequisiteCourse: Data.prerequisiteCourses){
             if (prerequisiteCourse.code().equals(course)){

@@ -45,9 +45,10 @@ import java.util.Arrays;
  */
 public abstract class Controller {
 
-    //region FXML vars
-    @FXML
-    private ToggleGroup majorToggleGroup;
+    /*
+     * The course code as a string of the last course clicked
+     */
+    public static String lastCourseCode = "";
     @FXML
     public CheckMenuItem fallTermSelection;
     @FXML
@@ -55,23 +56,42 @@ public abstract class Controller {
     @FXML
     public CheckMenuItem springTermSelection;
     //endregion
-
+    //region FXML vars
+    @FXML
+    private ToggleGroup majorToggleGroup;
     //region private vars
     /*
      * the main stage of the program
      */
     private Stage stage;
-    /*
-     * The course code as a string of the last course clicked
-     */
-    public static String lastCourseCode = "";
     //endregion
 
     //region methods to be called from App.java on startup to set local vars
 
     /**
-     * this method links the stage to use for all of the controllers
+     * display an alert with the specified format and values
      *
+     * @param alertType the type of alert to display
+     * @param title     the title of the alert
+     * @param header    the header text to display in the alert
+     * @param content   the content text to display in the alert
+     * @author : Grant Fass
+     * @since : Mon, 19 Apr 2021
+     */
+    public static void displayAlert(Alert.AlertType alertType, String title, String header, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+    //endregion
+
+    //region file and directory location methods
+
+    /**
+     * this method links the stage to use for all of the controllers
+     * <p>
      * This method is called from App.java on startup.
      * It is used to ensure that all of the controllers share the same stage.
      *
@@ -82,14 +102,13 @@ public abstract class Controller {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-    //endregion
 
-    //region file and directory location methods
     /**
      * This method is used to get the location of a directory by using a DirectoryChooser
-     *
+     * <p>
      * This method opens up a directory chooser on the stored stage with the specified title at a default location based
      * on the user's OS.
+     *
      * @param directoryChooserTitle the title of the window to open
      * @return the File location of the directory
      * @author : Grant Fass
@@ -105,13 +124,14 @@ public abstract class Controller {
 
     /**
      * This method is used to get the location of a file by using a FileChooser
-     *
+     * <p>
      * This method is used to query the user for file locations by using a FileChooser that is opened from the main stage.
      * The file chooser uses the passed in extension filters in order to determine what files to accept
      * The file chooser also sets the initial directory based on the OS of the user
-     * @param fileChooserTitle the title to use in the FileChooser popup
+     *
+     * @param fileChooserTitle           the title to use in the FileChooser popup
      * @param extensionFilterDescription the description for the file chooser extension filter to use. EX: "TXT"
-     * @param extensionFilterExtension the actual extension to filter files for. EX: ".txt"
+     * @param extensionFilterExtension   the actual extension to filter files for. EX: ".txt"
      * @return a File location of the selected file
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
@@ -126,14 +146,15 @@ public abstract class Controller {
         File out = fileChooser.showOpenDialog(stage);
         return out == null ? new File("") : out;
     }
+    //endregion
 
     /**
      * This method is used to get the default file location
-     *
+     * <p>
      * This method calculates the default file location based on what OS the system is currently using
-
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://mkyong.com/java/how-to-detect-os-in-java-systemgetpropertyosname/"}</a> Help detecting OS
+     * <a href="#{@link}">{@link "https://mkyong.com/java/how-to-detect-os-in-java-systemgetpropertyosname/"}</a> Help detecting OS
      *
      * @return a string containing the initial directory
      * @author : Grant Fass
@@ -156,6 +177,8 @@ public abstract class Controller {
         return out;
     }
     //endregion
+
+    //region FXML methods for FILE menu
 
     //region Help Menu methods
     @FXML
@@ -180,13 +203,12 @@ public abstract class Controller {
         displayAlert(Alert.AlertType.INFORMATION, "Program Help", null, message);
         AdvisingLogger.getLogger().info("displaying help alert");
     }
-    //endregion
 
-    //region FXML methods for FILE menu
     /**
      * method used to shut down and exit the program
-     *
+     * <p>
      * This method is always run on the FX thread and uses the exit program method from model
+     *
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
      */
@@ -197,12 +219,13 @@ public abstract class Controller {
 
     /**
      * method used to load transcripts
-     *
+     * <p>
      * This method is always run on the FX thread and uses commands from Model.java
      * This method will query the user for a file location using a FileChooser
      * This method will then validate the file location
      * This method will display an alert if file validation fails
      * This method will load transcript pdf file from the specified location
+     *
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
      */
@@ -231,10 +254,11 @@ public abstract class Controller {
 
     /**
      * method used to store transcripts
-     *
+     * <p>
      * This method is always run on the FX thread and uses commands from Model.java
      * This method will query the user for a file location using a DirectoryChooser
      * This method will then store the transcript to the specified directory
+     *
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
      */
@@ -254,15 +278,19 @@ public abstract class Controller {
             });
         }
     }
+    //endregion
+
+    //region FXML methods for Major Selection menu
 
     /**
      * method used to load course data
-     *
+     * <p>
      * This method is always run on the FX thread and uses commands from Model.java
      * This method will query the user for a file location using a FileChooser
      * This method will then validate the file location
      * This method will display an alert if file validation fails
      * This method will load course data csv files from the specified location
+     *
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
      */
@@ -303,13 +331,15 @@ public abstract class Controller {
             }
         }
     }
+
     //endregion
 
-    //region FXML methods for Major Selection menu
+    //region GUI alert methods
 
     /**
      * Method used to store the major in the program using a radio toggle group in the menu bar
      * Method runs each time a radio button is selected
+     *
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
      */
@@ -322,7 +352,7 @@ public abstract class Controller {
                     Data.storeMajor("CS");
                 } catch (CustomExceptions.InvalidInputException e) {
                     String message = String.format(" Invalid Input Exception occurred while " +
-                                    "storing major: %s\n%s", majorText, e.getMessage());
+                            "storing major: %s\n%s", majorText, e.getMessage());
                     displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception", message);
                     AdvisingLogger.getLogger().warning(message + Arrays.toString(e.getStackTrace()));
                 }
@@ -343,34 +373,15 @@ public abstract class Controller {
 
     //endregion
 
-    //region GUI alert methods
-    /**
-     * display an alert with the specified format and values
-     * @param alertType the type of alert to display
-     * @param title the title of the alert
-     * @param header the header text to display in the alert
-     * @param content the content text to display in the alert
-     * @author : Grant Fass
-     * @since : Mon, 19 Apr 2021
-     */
-    public static void displayAlert(Alert.AlertType alertType, String title, String header, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
-    //endregion
-
     //region FXML window switching methods
+
     /**
      * Method used to switch what controller and FXML resource is displayed in the GUI
-     *
+     * <p>
      * Method switches the displayed controller and FXML by calling App.setRoot with the associated FXML resource of the window to switch to.
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://openjfx.io/openjfx-docs/#maven"}</a> Help setting up FXML loading with Maven
+     * <a href="#{@link}">{@link "https://openjfx.io/openjfx-docs/#maven"}</a> Help setting up FXML loading with Maven
      *
      * @param fxml the fxml resource to switch to, excludes the .fxml from the name.
      * @throws IOException this is thrown when there is an issue in loading the fxml resource

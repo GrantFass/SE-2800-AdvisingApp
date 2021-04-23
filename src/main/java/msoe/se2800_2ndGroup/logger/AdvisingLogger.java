@@ -35,11 +35,11 @@ public class AdvisingLogger {
 
     /**
      * method to properly setup the logger. Called at program startup in App.main()
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://examples.javacodegeeks.com/core-java/util/logging/java-util-logging-example/"}</a>: Help setting up the logger defaults
-     *  <a href="#{@link}">{@link "https://www.journaldev.com/977/logger-in-java-logging-example"}</a>: Help adding a custom formatter for fileHandler
-     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/2533250"}</a>: Stop echoing to console twice
+     * <a href="#{@link}">{@link "https://examples.javacodegeeks.com/core-java/util/logging/java-util-logging-example/"}</a>: Help setting up the logger defaults
+     * <a href="#{@link}">{@link "https://www.journaldev.com/977/logger-in-java-logging-example"}</a>: Help adding a custom formatter for fileHandler
+     * <a href="#{@link}">{@link "https://stackoverflow.com/a/2533250"}</a>: Stop echoing to console twice
      *
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021
@@ -68,6 +68,7 @@ public class AdvisingLogger {
 
     /**
      * Method used to access the same logger from anywhere
+     *
      * @return the logger object
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021
@@ -78,9 +79,9 @@ public class AdvisingLogger {
 
     /**
      * A formatter class used as a custom format for the File Handler
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://www.journaldev.com/977/logger-in-java-logging-example"}</a>: Help adding a custom formatter for fileHandler
+     * <a href="#{@link}">{@link "https://www.journaldev.com/977/logger-in-java-logging-example"}</a>: Help adding a custom formatter for fileHandler
      *
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021

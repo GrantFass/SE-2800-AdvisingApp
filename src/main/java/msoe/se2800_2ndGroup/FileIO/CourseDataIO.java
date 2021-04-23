@@ -51,13 +51,13 @@ public class CourseDataIO {
      * Loads in the prerequisites, curriculum, and offerings csv files from the locations that are specified.
      * These locations do not have any checks or verification on them. Thus this method is meant to be called from
      * other locations after verification has occurred such as in loadDefaultCourseData() and loadCourseData().
-     *  Assumes that all files have already been validated
+     * Assumes that all files have already been validated
      *
-     * @param curriculumLocation the verified location to use for curriculum.csv
-     * @param offeringsLocation the verified location to use for offerings.csv
+     * @param curriculumLocation    the verified location to use for curriculum.csv
+     * @param offeringsLocation     the verified location to use for offerings.csv
      * @param prerequisitesLocation the verified location to use for prerequisites.csv
-     * @throws IOException when there are issues reading in the CSV files
      * @return A formatted string containing the number of lines loaded into each file.
+     * @throws IOException when there are issues reading in the CSV files
      * @author : Grant Fass
      * @since : Tue, 6 Apr 2021
      */

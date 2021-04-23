@@ -37,11 +37,13 @@ public class Manipulators {
      * Logging system.
      */
     private static final Logger LOGGER = AdvisingLogger.getLogger();
+
     /**
      * This method extracts the important information from a given offering and returns a string containing the values
-     *
+     * <p>
      * This method uses String formatting to display a passed offering in a readable format.
      * The format is CODE CREDITS | DESCRIPTION : PREREQUISITES.
+     *
      * @param offering the offering to extract information from
      * @return an offerings information in a string format
      * @throws CustomExceptions.InvalidInputException if the offering was null
@@ -58,9 +60,10 @@ public class Manipulators {
 
     /**
      * this method extracts the important information from a given course and returns a string containing the values
-     *
+     * <p>
      * this method uses string formatting to display a passed course in a readable format.
      * The format is CODE CREDITS | DESCRIPTION : PREREQUISITES.
+     *
      * @param course the course to extract information from
      * @return a courses information in string format
      * @throws CustomExceptions.InvalidInputException if the course was null
@@ -79,9 +82,10 @@ public class Manipulators {
 
     /**
      * this method extracts the important information from a given elective and returns a string containing the values
-     *
+     * <p>
      * This method outputs the values for an elective in a readable format using the same formatting specifications
      * as the getCourseAsString method.
+     *
      * @param elective the elective to extract information from
      * @return an electives information in string format
      * @throws CustomExceptions.InvalidInputException if the elective was null
@@ -100,7 +104,7 @@ public class Manipulators {
 
     /**
      * This method returns the list of offerings for the input terms as a readable string.
-     *
+     * <p>
      * This method gets the ArrayList of offerings for the input terms.
      * This method then iterates through the offerings and extracts the useful information to a string.
      * This string is then appended to a string builder which is returned.
@@ -108,7 +112,7 @@ public class Manipulators {
      * @param offerings the list of offerings to convert to a string
      * @return the offerings for the input terms as a string.
      * @throws CustomExceptions.InvalidInputException the major was not found or there was an error converting a
-     * specific course
+     *                                                specific course
      * @author : Grant Fass
      * @since : Wed, 7 Apr 2021
      */
@@ -129,7 +133,7 @@ public class Manipulators {
 
     /**
      * This method converts a list of curriculum items to a single string as output
-     *
+     * <p>
      * This method first checks if the passed in listing of items is empty.
      * After verifying the items are not empty it iterates through each item checking if it is a course
      * or an elective, converting them to a string, then appending them to the builder to be returned.
@@ -138,7 +142,7 @@ public class Manipulators {
      * @return a string containing either a message stating that no courses were found or a listing of each
      * course and elective in the list of curriculum items as a string.
      * @throws CustomExceptions.InvalidInputException if there is an issue converting a course or an elective
-     * to their string format
+     *                                                to their string format
      * @author : Grant Fass
      * @since : Thu, 22 Apr 2021
      */
@@ -147,7 +151,7 @@ public class Manipulators {
         StringBuilder builder = new StringBuilder();
         if (!curriculumItems.isEmpty()) {
             builder.append(String.format("%7s %2s | %40s : %s\n", "CODE", "CR", "DESCRIPTION", "PREREQUISITES"));
-            for (CurriculumItem curriculumItem: curriculumItems) {
+            for (CurriculumItem curriculumItem : curriculumItems) {
                 if (curriculumItem instanceof Course) {
                     builder.append(getCourseAsString((Course) curriculumItem));
                 } else if (curriculumItem instanceof Elective) {
@@ -158,5 +162,23 @@ public class Manipulators {
             builder.append("No courses found\n");
         }
         return builder.toString();
+    }
+
+    /**
+     * This method takes the passed in course string to remove any and all
+     * non-alphanumeric characters in the string.
+     * <p>
+     * This method relies on the use of regex to remove unwanted characters
+     * <p>
+     * Sources:
+     * <a href="#{@link}">{@link "https://www.geeksforgeeks.org/how-to-remove-all-non-alphanumeric-characters-from-a-string-in-java/"}</a>: Reference for regex expression
+     *
+     * @param course course string to be standardized
+     * @return course code with only capitalized letters and numbers
+     * @author : Claudia Poptile
+     * @since : Tue, 13 Apr 2021
+     */
+    public static String standardizeCourse(String course) {
+        return course.toUpperCase().replaceAll("[^a-zA-Z0-9]", "").trim();
     }
 }
