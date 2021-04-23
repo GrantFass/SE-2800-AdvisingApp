@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import msoe.se2800_2ndGroup.UI.CLI;
+import msoe.se2800_2ndGroup.UI.PrimaryController;
+import msoe.se2800_2ndGroup.UI.SecondaryController;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.IOException;
@@ -36,6 +39,7 @@ import java.util.logging.Logger;
  * * Implement Logger by Grant Fass on Thu, 15 Apr 2021
  * * Make Controllers static by Grant Fass on Wed, 21 Apr 2021
  * * Code cleanup by Hunter T on Tue, 20 Apr 2021
+ * * Removed references to Model.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
  * @since : Saturday, 20 March 2021
  * @author : Grant
  *
@@ -51,11 +55,6 @@ public class App extends Application {
      * Scene linked to the Stage during startup for displaying content and switching windows dynamically
      */
     public static Scene scene;
-
-    /*
-     * The model linked to the GUI and CLI to make sure they both use the same information
-     */
-    private static final Model model = new Model();
 
     /*
      * The primary window controller. controller for the data manipulation window
@@ -97,24 +96,11 @@ public class App extends Application {
         LOGGER.finer("Showing Stage");
 
         //Add CLI
-        CLI cli = new CLI(model);
+        CLI cli = new CLI();
         LOGGER.finer("Linking model to CLI");
         Thread cliThread = new Thread(cli::processCommandLine);
         cliThread.setDaemon(true);
         cliThread.start();
-    }
-
-    /**
-     * method to return the model to anywhere else in the program
-     *
-     * Used to sync up the same model to the CLI and all controllers.
-     * Have to do it this way since FXML controllers can not have constructors and since passing values set them to null.
-     * @return the model for the program
-     * @author : Grant Fass
-     * @since : Mon, 19 Apr 2021
-     */
-    public static Model getModel() {
-        return model;
     }
 
     /**
@@ -131,7 +117,7 @@ public class App extends Application {
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
-    static void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
         LOGGER.finer("setting scene root");
         scene.setRoot(loadFXML(fxml));
     }

@@ -1,5 +1,10 @@
 package msoe.se2800_2ndGroup;
 
+import msoe.se2800_2ndGroup.Data.Data;
+import msoe.se2800_2ndGroup.Data.Manipulators;
+import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.FileIO.CourseDataIO;
+import msoe.se2800_2ndGroup.FileIO.DefaultLocations;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * * Fix Store Major Test by Grant Fass on Thu, 15 Apr 2021
  * * Implement test for getCourseOfferingsAsString() by Grant Fass on Thu, 15 Apr 2021
  * * Implement tests that fail with relevant messages due to not being completable for getCourseGraph, getCourseRecommendation, & loadUnofficialTranscript by Grant Fass on Thu, 15 Apr 2021
+ * * Fix getCourseOfferingsAsString test by Grant Fass on Thu, 22 Apr 2021
  * Copyright (C): TBD
  *
  * @author : Grant
@@ -62,119 +68,119 @@ class ModelTest {
     @Test
     void storeMajor() {
         //region Invalid Inputs
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor(""));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("1"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor(null));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("Invalid Input1"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("1Invalid Input"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("Inva1lid Input"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("1Invalid Input1"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("1Inva31id In4put1"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("1In4va35641id In4pu55t1"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("!*(Begins in Special Chars"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("Ends in Special Char%%$"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("Inval$$id Inp&*u(t"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("1In4)--va3$5641id In4p(u55t1"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("This string is invalid because it is longer than one hundred characters long and I need to keep typing"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("This string is invalid because it is exactly one hundred characters long and I need to keep typinggg"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("1This string is invalid be3cause it is exactly one hu1ndred characters long and it contains numbers1"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("This str2ing 2 is 1invalid because it is longer than one hu12ndred characters long and It contains numbers123"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("This str2ing 2 is 1i+nvalid because it is longer than one hu12ndred characters long and It contains $specia%l characte^rs and n*umbers"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("(Th#is str2ing 2 is 1invalid its exactly 100 charac@ters long co^ntains num&bers with special chars%"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("!This st@ring is# exact$ly one hundered charac)ters an>d cont&ains specia.l charac^ters too typing %"));
-        Assertions.assertThrows(Model.InvalidInputException.class, () -> model.storeMajor("!This st@ring is# ov$er one hundered charac)ters an>d cont&ains specia.l charac^ters too keep longer typing %"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor(""));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor(null));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("Invalid Input1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1Invalid Input"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("Inva1lid Input"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1Invalid Input1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1Inva31id In4put1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1In4va35641id In4pu55t1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("!*(Begins in Special Chars"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("Ends in Special Char%%$"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("Inval$$id Inp&*u(t"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1In4)--va3$5641id In4p(u55t1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("This string is invalid because it is longer than one hundred characters long and I need to keep typing"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("This string is invalid because it is exactly one hundred characters long and I need to keep typinggg"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1This string is invalid be3cause it is exactly one hu1ndred characters long and it contains numbers1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("This str2ing 2 is 1invalid because it is longer than one hu12ndred characters long and It contains numbers123"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("This str2ing 2 is 1i+nvalid because it is longer than one hu12ndred characters long and It contains $specia%l characte^rs and n*umbers"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("(Th#is str2ing 2 is 1invalid its exactly 100 charac@ters long co^ntains num&bers with special chars%"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("!This st@ring is# exact$ly one hundered charac)ters an>d cont&ains specia.l charac^ters too typing %"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("!This st@ring is# ov$er one hundered charac)ters an>d cont&ains specia.l charac^ters too keep longer typing %"));
         //endregion
 
         //region Valid Inputs
         try {
             //Capitalization
-            model.storeMajor("valid input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("vaLid Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
+            Data.storeMajor("valid input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("vaLid Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
 
             //allow max length of 99 and min length of 1
 
-            model.storeMajor("V");
-            Assertions.assertEquals("V", model.getMajor());
-            model.storeMajor("vaLid Input that is ninety nine characters long exactly how much longer do I need to type for thiss");
-            Assertions.assertEquals("VALID INPUT THAT IS NINETY NINE CHARACTERS LONG EXACTLY HOW MUCH LONGER DO I NEED TO TYPE FOR THISS", model.getMajor());
+            Data.storeMajor("V");
+            Assertions.assertEquals("V", Data.getMajor());
+            Data.storeMajor("vaLid Input that is ninety nine characters long exactly how much longer do I need to type for thiss");
+            Assertions.assertEquals("VALID INPUT THAT IS NINETY NINE CHARACTERS LONG EXACTLY HOW MUCH LONGER DO I NEED TO TYPE FOR THISS", Data.getMajor());
 
             //no spaces
-            model.storeMajor("ValidInput");
-            Assertions.assertEquals("VALIDINPUT", model.getMajor());
+            Data.storeMajor("ValidInput");
+            Assertions.assertEquals("VALIDINPUT", Data.getMajor());
 
             //Single leading and or trailing space
-            model.storeMajor(" Valid Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid Input ");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor(" Valid Input ");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
+            Data.storeMajor(" Valid Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid Input ");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor(" Valid Input ");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
 
             //Triple leading and or trailing space
-            model.storeMajor("   Valid Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid Input   ");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("   Valid Input   ");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
+            Data.storeMajor("   Valid Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid Input   ");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("   Valid Input   ");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
 
             //Double or Triple Space in Middle
-            model.storeMajor("Valid  Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid   Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
+            Data.storeMajor("Valid  Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid   Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
 
             //Underscores
-            model.storeMajor("Valid_Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("_Valid _Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid_ Input_");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("_Valid_Input_");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("_Valid_ _Input_");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid___Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("___Valid___Input___");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid Input___");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid___ Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("___Valid ___Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid___ Input___");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
+            Data.storeMajor("Valid_Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("_Valid _Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid_ Input_");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("_Valid_Input_");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("_Valid_ _Input_");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid___Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("___Valid___Input___");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid Input___");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid___ Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("___Valid ___Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid___ Input___");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
 
             //Hyphens
-            model.storeMajor("Valid-Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("-Valid -Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid- Input-");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("-Valid-Input-");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("-Valid- -Input-");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid---Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("---Valid---Input---");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid Input---");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid--- Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("---Valid ---Input");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
-            model.storeMajor("Valid--- Input---");
-            Assertions.assertEquals("VALID INPUT", model.getMajor());
+            Data.storeMajor("Valid-Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("-Valid -Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid- Input-");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("-Valid-Input-");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("-Valid- -Input-");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid---Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("---Valid---Input---");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid Input---");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid--- Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("---Valid ---Input");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
+            Data.storeMajor("Valid--- Input---");
+            Assertions.assertEquals("VALID INPUT", Data.getMajor());
         } catch (Exception e) {
             //These should already be handled with the previous invalid inputs thus should fail.
             System.out.println(e.getMessage());
@@ -193,8 +199,8 @@ class ModelTest {
      */
     @Test
     void getDefaultCurriculumLocation() {
-        assertNotNull(Model.getDefaultCurriculumLocation());
-        assertTrue(Model.getDefaultCurriculumLocation().contains("/msoe/se2800_2ndGroup/curriculum.csv"));
+        assertNotNull(DefaultLocations.getDefaultCurriculumLocation());
+        assertTrue(DefaultLocations.getDefaultCurriculumLocation().contains("/msoe/se2800_2ndGroup/curriculum.csv"));
     }
 
     /**
@@ -207,8 +213,8 @@ class ModelTest {
      */
     @Test
     void getDefaultOfferingsLocation() {
-        assertNotNull(Model.getDefaultOfferingsLocation());
-        assertTrue(Model.getDefaultOfferingsLocation().contains("/msoe/se2800_2ndGroup/offerings.csv"));
+        assertNotNull(DefaultLocations.getDefaultOfferingsLocation());
+        assertTrue(DefaultLocations.getDefaultOfferingsLocation().contains("/msoe/se2800_2ndGroup/offerings.csv"));
     }
 
     /**
@@ -221,8 +227,8 @@ class ModelTest {
      */
     @Test
     void getDefaultPrerequisitesLocation() {
-        assertNotNull(Model.getDefaultPrerequisitesLocation());
-        assertTrue(Model.getDefaultPrerequisitesLocation().contains("/msoe/se2800_2ndGroup/prerequisites_updated.csv"));
+        assertNotNull(DefaultLocations.getDefaultPrerequisitesLocation());
+        assertTrue(DefaultLocations.getDefaultPrerequisitesLocation().contains("/msoe/se2800_2ndGroup/prerequisites_updated.csv"));
     }
 
     /**
@@ -237,12 +243,12 @@ class ModelTest {
     void getCourseOfferingsAsString() {
         try {
             //Test that error is thrown when no offerings and no major have been loaded
-            assertThrows(Model.InvalidMajorException.class, () -> model.getCourseOfferingsAsString(false, true, false));
+            assertThrows(CustomExceptions.InvalidMajorException.class, () -> model.getCourseOfferingsAsString(false, true, false));
             //Test that error is still thrown when no offerings have been loaded but major has
-            model.storeMajor("CS");
-            assertThrows(Model.InvalidOfferingsException.class, () -> model.getCourseOfferingsAsString(false, true, false));
+            Data.storeMajor("CS");
+            assertThrows(CustomExceptions.InvalidOfferingsException.class, () -> model.getCourseOfferingsAsString(false, true, false));
             //load course data so that verification of offerings does not throw errors
-            model.loadDefaultCourseData();
+            CourseDataIO.loadCourseDataFromDefaults();
             //test that does not throw error for various variable combinations
             model.getCourseOfferingsAsString(false, false, false);
             model.getCourseOfferingsAsString(false, false, true);
@@ -256,15 +262,15 @@ class ModelTest {
             assertEquals("No Terms Selected\n", model.getCourseOfferingsAsString(false, false, false));
             //test that method output matches the expected output for each term
             String expectedFallOutput = "   CODE CR |                              DESCRIPTION : PREREQUISITES\n" +
-                    " BA2220  3 |        Foundations of Business Economics : NullPrerequisite()\n" +
-                    " CS1011  4 |                   Software Development I : NullPrerequisite()\n" +
+                    " BA2220  3 |        Foundations of Business Economics : NullPrerequisite[]\n" +
+                    " CS1011  4 |                   Software Development I : NullPrerequisite[]\n" +
                     " CS2911  4 |                        Network Protocols : OrPrerequisite[left=SinglePrerequisite[code=CS1011], right=SinglePrerequisite[code=SE1011]]\n" +
                     " CS3040  4 |                    Programming Languages : SinglePrerequisite[code=CS2040]\n" +
                     " CS3400  4 |                         Machine Learning : AndPrerequisite[left=SinglePrerequisite[code=CS2852], right=SinglePrerequisite[code=MA383]]\n" +
                     " CS3860  4 |                         Database Systems : AndPrerequisite[left=SinglePrerequisite[code=CS2852], right=SinglePrerequisite[code=MA2310]]\n" +
                     " CS4000  3 |                          Senior Design I : SinglePrerequisite[code=SR]\n" +
-                    " GS1001  4 |                       Freshman Studies I : NullPrerequisite()\n" +
-                    "  MA136  4 |                               Calculus I : NullPrerequisite()\n" +
+                    " GS1001  4 |                       Freshman Studies I : NullPrerequisite[]\n" +
+                    "  MA136  4 |                               Calculus I : NullPrerequisite[]\n" +
                     " MA2323  4 |                              Calculus IV : SinglePrerequisite[code=MA2314]\n" +
                     " MA2310  3 |                   Discrete Mathematics I : SinglePrerequisite[code=SO]\n" +
                     "  MA262  3 |               Probability and Statistics : SinglePrerequisite[code=MA137]\n" +
@@ -276,7 +282,7 @@ class ModelTest {
                     " CS3300  4 |                             Data Science : AndPrerequisite[left=SinglePrerequisite[code=CS3400], right=SinglePrerequisite[code=MA262]]\n" +
                     " CS3840  4 |                        Operating Systems : AndPrerequisite[left=SinglePrerequisite[code=CS2711], right=OrPrerequisite[left=SinglePrerequisite[code=CS2040], right=SinglePrerequisite[code=SE2040]]]\n" +
                     " CS4010  3 |                         Senior Design II : SinglePrerequisite[code=SR]\n" +
-                    " GS1002  4 |                      Freshman Studies II : NullPrerequisite()\n" +
+                    " GS1002  4 |                      Freshman Studies II : NullPrerequisite[]\n" +
                     "  HU432  3 | Ethics for Professional Managers and Engineers : SinglePrerequisite[code=JR]\n" +
                     "  MA137  4 |                              Calculus II : SinglePrerequisite[code=MA136]\n" +
                     " MA3320  3 |                  Discrete Mathematics II : SinglePrerequisite[code=MA2310]\n" +
@@ -293,16 +299,16 @@ class ModelTest {
                     " CS3851  4 |                               Algorithms : AndPrerequisite[left=SinglePrerequisite[code=CS2852], right=SinglePrerequisite[code=MA3320]]\n" +
                     " CS3450  4 |                            Deep Learning : SinglePrerequisite[code=CS3400]\n" +
                     " CS4020  3 |                        Senior Design III : SinglePrerequisite[code=SR]\n" +
-                    " GS1003  4 |                     Freshman Studies III : NullPrerequisite()\n" +
+                    " GS1003  4 |                     Freshman Studies III : NullPrerequisite[]\n" +
                     " MA2314  4 |                             Calculus III : SinglePrerequisite[code=MA137]\n" +
                     "  MA383  3 |                           Linear Algebra : OrPrerequisite[left=OrPrerequisite[left=SinglePrerequisite[code=MA231], right=SinglePrerequisite[code=MA225]], right=SinglePrerequisite[code=MA3501]]\n" +
                     " PH2021  4 |            Physics II - ElectroMagnetism : AndPrerequisite[left=SinglePrerequisite[code=PH2011], right=SinglePrerequisite[code=MA137]]\n" +
                     " SE2800  3 |           Software Engineering Process I : AndPrerequisite[left=SinglePrerequisite[code=CS2852], right=SinglePrerequisite[code=SE2030]]\n";
 
-            assertEquals(expectedSpringOutput, model.getCourseOfferingsAsString(false, false, true));
-            assertEquals(expectedWinterOutput, model.getCourseOfferingsAsString(false, true, false));
-            assertEquals(expectedFallOutput, model.getCourseOfferingsAsString(true, false, false));
-        } catch (Model.InvalidInputException | IOException e) {
+            assertEquals(expectedSpringOutput.replace(" ", ""), model.getCourseOfferingsAsString(false, false, true).replace(" ", ""));
+            assertEquals(expectedWinterOutput.replace(" ", ""), model.getCourseOfferingsAsString(false, true, false).replace(" ", ""));
+            assertEquals(expectedFallOutput.replace(" ", ""), model.getCourseOfferingsAsString(true, false, false).replace(" ", ""));
+        } catch (CustomExceptions.InvalidInputException | IOException e) {
             fail(e.getMessage());
         }
     }
@@ -322,17 +328,17 @@ class ModelTest {
     void getCourseRecommendation() {
         try {
             //Test that error is thrown when no offerings, major, or transcript have been loaded.
-            assertThrows(Model.InvalidMajorException.class, () -> model.getCourseRecommendation(false, true, false));
+            assertThrows(CustomExceptions.InvalidMajorException.class, () -> model.getCourseRecommendation(false, true, false));
             //Test that error is still thrown when offerings and transcript have not been loaded.
-            model.storeMajor("CS");
-            assertThrows(Model.InvalidOfferingsException.class, () -> model.getCourseRecommendation(false, true, false));
+            Data.storeMajor("CS");
+            assertThrows(CustomExceptions.InvalidOfferingsException.class, () -> model.getCourseRecommendation(false, true, false));
             //Test that error is still thrown when transcript has not been loaded.
-            model.loadDefaultCourseData();
-            assertThrows(Model.InvalidTranscriptException.class, () -> model.getCourseRecommendation(false, true, false));
+            CourseDataIO.loadCourseDataFromDefaults();
+            assertThrows(CustomExceptions.InvalidTranscriptException.class, () -> model.getCourseRecommendation(false, true, false));
 
             //TODO: Stuck for now since Feature #11 is needed first
             fail("TODO: Need Test Transcript to continue");
-        } catch (Model.InvalidInputException | IOException e) {
+        } catch (CustomExceptions.InvalidInputException | IOException e) {
             fail(e.getMessage());
         }
     }
@@ -340,7 +346,7 @@ class ModelTest {
     @Test
     void loadDefaultCourseData() {
         try {
-            String actual = model.loadDefaultCourseData();
+            String actual = CourseDataIO.loadCourseDataFromDefaults();
             assertTrue(actual.contains("Loaded 193 prerequisites, 2 curricula, and 85 offerings"));
         } catch (IOException e) {
             fail();
@@ -361,7 +367,7 @@ class ModelTest {
     @Test
     void viewPrerequisiteCourses() {
         try {
-            model.loadDefaultCourseData();
+            CourseDataIO.loadCourseDataFromDefaults();
 
             //region Invalid courses
             Assertions.assertEquals("No course found.", model.viewPrerequisiteCourses("B1020"));
@@ -424,36 +430,36 @@ class ModelTest {
     void standardizeCourse() {
 
         // Capitalization
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("Se2800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("se2800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("sE2800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE2800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("Se2800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("se2800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("sE2800"));
 
         // Whitespaces
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE 2800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("  SE2800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2800  "));
-        Assertions.assertEquals("SE2800", model.standardizeCourse(" S E  2 8   0     0       "));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE 2800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("  SE2800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE2800  "));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse(" S E  2 8   0     0       "));
 
         // Punctuation
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2??800?"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE!2!8!0!!!0"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("-S-E2--800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE_2__800_"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE.2..80..0"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2,8,,,0,0,"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE(2)8((00"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE2{8}00{"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("//S/E280/0"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE|2||80|0"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE'2''''''8'0'0"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("S$$E2$$8$00"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE2??800?"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE!2!8!0!!!0"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("-S-E2--800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE_2__800_"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE.2..80..0"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE2,8,,,0,0,"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE(2)8((00"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE2{8}00{"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("//S/E280/0"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE|2||80|0"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE'2''''''8'0'0"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("S$$E2$$8$00"));
 
         // Mix
-        Assertions.assertEquals("SE2800", model.standardizeCourse("SE  -2#.... 800"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("     S-e2+++8{}{}{}{00"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("se28  0????0!"));
-        Assertions.assertEquals("SE2800", model.standardizeCourse("s E 2 ----8 0@0~~~~~~~"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("SE  -2#.... 800"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("     S-e2+++8{}{}{}{00"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("se28  0????0!"));
+        Assertions.assertEquals("SE2800", Manipulators.standardizeCourse("s E 2 ----8 0@0~~~~~~~"));
 
     }
 }

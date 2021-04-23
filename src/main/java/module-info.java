@@ -7,4 +7,14 @@ module msoe.se2800_2ndGroup {
 
     opens msoe.se2800_2ndGroup to javafx.fxml;
     exports msoe.se2800_2ndGroup;
+    exports msoe.se2800_2ndGroup.UI;
+    opens msoe.se2800_2ndGroup.UI to javafx.fxml;
+    exports msoe.se2800_2ndGroup.FileIO;
+    opens msoe.se2800_2ndGroup.FileIO to javafx.fxml;
+    exports msoe.se2800_2ndGroup.Graphing;
+    opens msoe.se2800_2ndGroup.Graphing to javafx.fxml;
+    exports msoe.se2800_2ndGroup.Data;
+    opens msoe.se2800_2ndGroup.Data to javafx.fxml;
+    exports msoe.se2800_2ndGroup.Exceptions;
+    exports msoe.se2800_2ndGroup.models;
 }

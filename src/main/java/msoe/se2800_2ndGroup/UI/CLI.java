@@ -1,5 +1,7 @@
-package msoe.se2800_2ndGroup;
+package msoe.se2800_2ndGroup.UI;
 
+import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.IOException;
@@ -36,8 +38,10 @@ import java.util.logging.Logger;
  * * Implement logger by Grant Fass on Thu, 15 Apr 2021
  * * Add CLI option to store unofficial transcripts
  * * code cleanup from group feedback by turcinh on Tuesday, 20 April 2021
+ * * Removed references to Model.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
  * <p>
  * Copyright (C): TBD
+ *
  * @author : Grant
  * @since : Saturday, 20 March 2021
  */
@@ -46,24 +50,6 @@ public class CLI {
      * Logging system.
      */
     private static final Logger LOGGER = AdvisingLogger.getLogger();
-
-    /*
-     * Model used for execution of tasks
-     */
-    private final Model model;
-
-    /**
-     * Constructor for the class
-     * <p>
-     * This constructor links a model to this instance so that it operates with the same information as the GUI
-     *
-     * @param model the model to link
-     * @author : Grant Fass
-     * @since : Sat, 20 Mar 2021
-     */
-    public CLI(Model model) {
-        this.model = model;
-    }
 
     /**
      * This method runs all of the CLI operations for the project
@@ -85,13 +71,14 @@ public class CLI {
         long startTime = System.nanoTime();
         try {
             final int nanosecondsToMilliseconds = 1000000;
-            LOGGER.info(String.format("%s in %d milliseconds\n", model.loadDefaultCourseData(), (System.nanoTime() - startTime) / nanosecondsToMilliseconds).replace("\n", "\\n"));
+            LOGGER.info(String.format("%s in %d milliseconds\n", Model.loadDefaultCourseData(), (System.nanoTime() - startTime) / nanosecondsToMilliseconds).replace("\n", "\\n"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         //Loop for CLI operations
         Scanner in = new Scanner(System.in);
-        while (true) {
+        boolean run = true;
+        while (run) {
             try {
                 outputHyphenLine();
                 String input = in.nextLine().trim().toLowerCase();
@@ -99,47 +86,47 @@ public class CLI {
                 switch (input) {
                     case "exit", "quit" -> {
                         LOGGER.info("Shutting down program");
-                        model.exitProgram();
+                        run = false;
                     }
                     case "store major" -> {
                         System.out.print("Enter Major Abbreviation: ");
                         String major = in.next().trim().toLowerCase();
                         LOGGER.fine("Attempting to store major: " + major);
-                        model.storeMajor(major);
+                        Model.storeMajor(major);
                         System.out.println("Major Stored");
                         LOGGER.fine("Major Stored");
                     }
                     case "get course recommendation" -> {
                         HashMap<String, Boolean> terms = getTerms(in);
                         LOGGER.fine("Getting Course Recommendations");
-                        String output = model.getCourseRecommendation(terms.get("fall"), terms.get("winter"), terms.get("spring"));
+                        String output = Model.getCourseRecommendation(terms.get("fall"), terms.get("winter"), terms.get("spring"));
                         System.out.println(output);
                         LOGGER.log(Level.FINE, "Output Course Recommendations: \n" + output, output);
                     }
                     case "load course data" -> {
                         final int nanosecondsToMilliseconds = 1000000;
-                        String output = String.format("%s in %d milliseconds\n", model.loadCourseData(in), (System.nanoTime() - startTime) / nanosecondsToMilliseconds);
+                        String output = String.format("%s in %d milliseconds\n", Model.loadCourseData(in), (System.nanoTime() - startTime) / nanosecondsToMilliseconds);
                         LOGGER.log(Level.FINE, "Course data loaded utilizing standard scanner: \n" + output.replace("\n", "\\n"), output);
                     }
                     case "load pdf" -> {
                         LOGGER.fine("Loading unofficial transcript using standard scanner");
-                        model.loadUnofficialTranscript(in);
+                        Model.loadUnofficialTranscript(in);
                     }
                     case "view prerequisites" -> {
                         System.out.println("Enter course: ");
                         String course = in.nextLine();
-                        String prerequisites = model.viewPrerequisiteCourses(course);
+                        String prerequisites = Model.viewPrerequisiteCourses(course);
                         System.out.println(prerequisites);
                         LOGGER.fine(String.format("The prerequisites for the course of code: %s are: %s", course, prerequisites));
                     }
                     case "store pdf" -> {
                         LOGGER.fine("Storing unofficial transcript");
-                        model.storeUnofficialTranscript();
+                        Model.storeUnofficialTranscript();
                     }
                     case "view course offerings" -> {
                         HashMap<String, Boolean> terms = getTerms(in);
                         LOGGER.fine("Getting Course Offerings");
-                        String output = model.getCourseOfferingsAsString(terms.get("fall"), terms.get("winter"), terms.get("spring"));
+                        String output = Model.getCourseOfferingsAsString(terms.get("fall"), terms.get("winter"), terms.get("spring"));
                         System.out.println(output);
                         LOGGER.log(Level.FINE, "Output Course Offerings", output);
                     }
@@ -147,12 +134,12 @@ public class CLI {
                         System.out.print("Course code: ");
                         final var code = in.next().trim();
                         LOGGER.fine("Generating Prerequisite Graph For Course Code: " + code);
-                        final var graph = model.getCourseGraph(code);
+                        final var graph = Model.getCourseGraph(code);
                         System.out.println(graph);
                         LOGGER.log(Level.FINE, "Prerequisite Graph Generated: \n" + graph, graph);
                     }
                 }
-            } catch (Model.InvalidInputException | IOException | NullPointerException e) {
+            } catch (CustomExceptions.InvalidInputException | IOException | NullPointerException e) {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
                 LOGGER.log(Level.WARNING, "Exception thrown by method in CLI", e);
@@ -163,6 +150,7 @@ public class CLI {
 
     /**
      * This method queries the user for which terms they would like to display data for
+     *
      * @param in the scanner used to query the user
      * @return a HashMap containing the keys 'fall', 'winter', 'spring' and boolean values associated with the key
      * @author : Grant Fass, Hunter Turcin
@@ -173,7 +161,7 @@ public class CLI {
 
         HashMap<String, Boolean> hashMap = new HashMap<>();
 
-        for (final var season : new String[] { "fall", "winter", "spring" }) {
+        for (final var season : new String[]{"fall", "winter", "spring"}) {
             final var result = askBinary(in, String.format("Would you like to display %s courses?", season));
             hashMap.put(season, result);
         }
@@ -184,10 +172,10 @@ public class CLI {
 
     /**
      * Ask the user a yes-or-no question.
-     *
+     * <p>
      * Instructions are appended to the end of the prompt.
      *
-     * @param in input source
+     * @param in     input source
      * @param prompt question to ask
      * @return true if yes, false if no
      * @author : Hunter Turcin

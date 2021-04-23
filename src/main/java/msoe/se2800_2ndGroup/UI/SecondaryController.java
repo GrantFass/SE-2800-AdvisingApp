@@ -1,10 +1,13 @@
-package msoe.se2800_2ndGroup;
+package msoe.se2800_2ndGroup.UI;
 
-import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import msoe.se2800_2ndGroup.Data.Manipulators;
+import msoe.se2800_2ndGroup.Model;
+
+import java.io.IOException;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -22,6 +25,7 @@ import javafx.scene.control.TextField;
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
  * * Added methods to control text version of Prerequisite graphs by Grant Fass on Wed, 21 Apr 2021
+ * * Removed references to Model.java from App.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
  *
  * @since : Saturday, 20 March 2021
  * @author : Grant
@@ -51,7 +55,7 @@ public class SecondaryController extends Controller {
      * @since : Mon, 19 Apr 2021
      */
     private void updateSearchBar() {
-        mainSearchBar.setText(Model.standardizeCourse(lastCourseCode));
+        mainSearchBar.setText(Manipulators.standardizeCourse(lastCourseCode));
     }
 
 
@@ -65,10 +69,10 @@ public class SecondaryController extends Controller {
      */
     @FXML
     public void viewPrerequisiteGraph() {
-        App.getModel().ensureFXThread(() -> {
+        Model.ensureFXThread(() -> {
             mainLabel.setText("Viewing Prerequisite Graph:");
-            String code = Model.standardizeCourse(mainSearchBar.getText());
-            mainTextArea.setText(App.getModel().getCourseGraph(code));
+            String code = Manipulators.standardizeCourse(mainSearchBar.getText());
+            mainTextArea.setText(Model.getCourseGraph(code));
         });
     }
 

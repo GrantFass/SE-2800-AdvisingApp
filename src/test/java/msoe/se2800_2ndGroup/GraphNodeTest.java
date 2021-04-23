@@ -2,6 +2,7 @@ package msoe.se2800_2ndGroup;
 
 import static org.junit.Assert.assertEquals;
 
+import msoe.se2800_2ndGroup.Graphing.GraphNode;
 import msoe.se2800_2ndGroup.models.Course;
 import msoe.se2800_2ndGroup.models.NullPrerequisite;
 import org.junit.Test;
