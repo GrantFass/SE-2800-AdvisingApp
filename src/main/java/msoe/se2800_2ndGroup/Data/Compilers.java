@@ -6,6 +6,7 @@ import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -27,6 +28,8 @@ import java.util.logging.Logger;
  * Modification Log:
  * * File Created by Grant on Thursday, 22 April 2021
  * * Moved compilation methods from Model.java to Compilers.java by Grant Fass on Thu, 22 Apr 2021
+ * * Add method to only get courses with satisfied prerequisites by Grant Fass on Thu, 22 Apr 2021
+ * * Fix output of duplicate course codes in course recommendations due to electives being satisfied by Grant Fass on Thu, 22 Apr 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -52,24 +55,26 @@ public class Compilers {
      * @author : Grant Fass
      * @since : Tue, 13 Apr 2021
      */
-    public static List<CurriculumItem> getUnsatisfiedMatchingTerm(List<Offering> offeringsInTerm, List<CurriculumItem> unsatisfiedCourses) {
+    public static List<CurriculumItem> getUnsatisfiedCurriculumItemsForSpecifiedTerm(List<Offering> offeringsInTerm, List<CurriculumItem> unsatisfiedCourses) {
         LOGGER.finer("Getting unsatisfied terms that match between offeringsInTerm and unsatisfiedCourses");
-        ArrayList<CurriculumItem> out = new ArrayList<>();
+        ArrayList<CurriculumItem> outputCourses = new ArrayList<>();
+        ArrayList<CurriculumItem> outputElectives = new ArrayList<>();
         for (CurriculumItem curriculumItem: unsatisfiedCourses) {
             for (Offering offering: offeringsInTerm) {
-                if (curriculumItem.satisfiedBy(offering.course())) {
+                if (!(curriculumItem instanceof Elective) && curriculumItem.satisfiedBy(offering.course())) {
                     LOGGER.finer("Adding Course: " + curriculumItem);
-                    out.add(offering.course());
+                    outputCourses.add(offering.course());
                 } else if (curriculumItem instanceof Course) {
                     LOGGER.finest(String.format("Course %s does not match Offering %s", ((Course) curriculumItem).code(), offering.course().code()));
                 }
             }
             if (curriculumItem instanceof Elective) {
                 LOGGER.finer("Adding Elective: " + curriculumItem);
-                out.add(curriculumItem);
+                outputElectives.add(curriculumItem);
             }
         }
-        return out;
+        outputCourses.addAll(outputElectives);
+        return outputCourses;
     }
 
     /**
@@ -143,6 +148,24 @@ public class Compilers {
     }
 
     /**
+     * This method processes a list of curriculum items and determines if the items contained within have their prerequisites satisfied
+     * @param curriculumItems the list of items to check for satisfied prerequisites
+     * @param completedCourseCodes the list of completed course codes used to satisfy prerequisites
+     * @return the list of items only containing courses that have satisfied prerequisites and electives
+     * @author : Grant Fass
+     * @since : Thu, 22 Apr 2021
+     */
+    public static List<CurriculumItem> getCurriculumItemsWithSatisfiedPrerequisites(List<CurriculumItem> curriculumItems, Collection<String> completedCourseCodes) {
+        List<CurriculumItem> output = new ArrayList<>();
+        for (CurriculumItem curriculumItem: curriculumItems) {
+            if ((curriculumItem instanceof Course) && ((Course) curriculumItem).prerequisite().satisfiedBy(completedCourseCodes) || (curriculumItem instanceof Elective)) {
+                output.add(curriculumItem);
+            }
+        }
+        return output;
+    }
+
+    /**
      * This method process course recommendations for various terms and returns them
      *
      * This method first verifies that the Major, Offerings, and Transcript have been loaded and are not empty.
@@ -165,7 +188,8 @@ public class Compilers {
         //start computing recommendations
         ArrayList<Offering> offeringsForTerm = getCourseOfferings(getFall, getWinter, getSpring);
         List<CurriculumItem> uncompletedCurriculumCourses = getCurriculaExcludingCompletedCourses(Data.getTranscriptCourses());
-        return Compilers.getUnsatisfiedMatchingTerm(offeringsForTerm, uncompletedCurriculumCourses);
+        List<CurriculumItem> unsatisfiedCurriculumItems = getUnsatisfiedCurriculumItemsForSpecifiedTerm(offeringsForTerm, uncompletedCurriculumCourses);
+        return getCurriculumItemsWithSatisfiedPrerequisites(unsatisfiedCurriculumItems, Manipulators.getCourseCodes(Data.getTranscriptCourses()));
     }
 
     /**
