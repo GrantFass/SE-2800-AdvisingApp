@@ -1,6 +1,7 @@
 package msoe.se2800_2ndGroup.Data;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
 import msoe.se2800_2ndGroup.models.Curriculum;
@@ -27,6 +28,7 @@ import java.util.logging.Logger;
  * Modification Log:
  * * File Created by Grant on Thursday, 22 April 2021
  * * Moved variables, getters, and verification methods for datum objects from Model.java to Data.java by Grant Fass on Thu, 22 Apr 2021
+ * * Moved store major method from Model.java to Data.java by Grant Fass on Thu, 22 Apr 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -166,7 +168,46 @@ public class Data {
             throw new CustomExceptions.InvalidTranscriptException("Transcript course data is not yet loaded");
         }
     }
+
     //endregion
+
+    /**
+     * This method stores the input text as a major if it is valid
+     *
+     * This method checks that the major only contains characters a-z case insensitive between 0 and 100 times also allowing whitespace.
+     * If the input string matches the regex then it is stored, otherwise an error is thrown
+     *
+     * Sources:
+     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/48523095"}</a>: Help Finding Regex
+     *
+     * @param major the major to store
+     * @throws CustomExceptions.InvalidInputException if the specified input for major does not match the regex.
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
+     */
+    public static void storeMajor(String major) throws CustomExceptions.InvalidInputException {
+        if (major == null) {
+            LOGGER.warning("The specified input for major was null");
+            throw new CustomExceptions.InvalidInputException("The specified input for major was null");
+        } else if (major.isEmpty() || major.isBlank()) {
+            LOGGER.warning("The specified input for major was empty or blank");
+            throw new CustomExceptions.InvalidInputException("The specified input for major was empty or blank");
+        } else {
+            //change hyphens and underscores to spaces, change double spaces to single spaces, trim spaces off start and end.
+            LOGGER.finer("Removing invalid characters from input major");
+            String input = major.replaceAll("_", " ").replaceAll("-", " ").trim();
+            while (input.contains("  ")) {
+                input = input.replaceAll("[\\s]{2}", " ");
+            }
+            if (!input.matches("[a-zA-Z\\s]{1,99}")) {
+                LOGGER.warning("The specified input for major {" + major + "} did not match the expected pattern: /^[a-zA-Z\\s]{1,99}$");
+                throw new CustomExceptions.InvalidInputException("The specified input for major {" + major + "} did not match the expected pattern: /^[a-zA-Z\\s]{1,99}$");
+            } else {
+                LOGGER.fine("Storing specified major: " + major);
+                Data.major = input.toUpperCase();
+            }
+        }
+    }
 
 
 }

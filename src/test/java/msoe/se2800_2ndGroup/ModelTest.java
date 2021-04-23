@@ -2,6 +2,7 @@ package msoe.se2800_2ndGroup;
 
 import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.FileIO.CourseDataIO;
 import msoe.se2800_2ndGroup.FileIO.DefaultLocations;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,118 +67,118 @@ class ModelTest {
     @Test
     void storeMajor() {
         //region Invalid Inputs
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor(""));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("1"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor(null));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("Invalid Input1"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("1Invalid Input"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("Inva1lid Input"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("1Invalid Input1"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("1Inva31id In4put1"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("1In4va35641id In4pu55t1"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("!*(Begins in Special Chars"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("Ends in Special Char%%$"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("Inval$$id Inp&*u(t"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("1In4)--va3$5641id In4p(u55t1"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("This string is invalid because it is longer than one hundred characters long and I need to keep typing"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("This string is invalid because it is exactly one hundred characters long and I need to keep typinggg"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("1This string is invalid be3cause it is exactly one hu1ndred characters long and it contains numbers1"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("This str2ing 2 is 1invalid because it is longer than one hu12ndred characters long and It contains numbers123"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("This str2ing 2 is 1i+nvalid because it is longer than one hu12ndred characters long and It contains $specia%l characte^rs and n*umbers"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("(Th#is str2ing 2 is 1invalid its exactly 100 charac@ters long co^ntains num&bers with special chars%"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("!This st@ring is# exact$ly one hundered charac)ters an>d cont&ains specia.l charac^ters too typing %"));
-        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> model.storeMajor("!This st@ring is# ov$er one hundered charac)ters an>d cont&ains specia.l charac^ters too keep longer typing %"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor(""));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor(null));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("Invalid Input1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1Invalid Input"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("Inva1lid Input"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1Invalid Input1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1Inva31id In4put1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1In4va35641id In4pu55t1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("!*(Begins in Special Chars"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("Ends in Special Char%%$"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("Inval$$id Inp&*u(t"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1In4)--va3$5641id In4p(u55t1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("This string is invalid because it is longer than one hundred characters long and I need to keep typing"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("This string is invalid because it is exactly one hundred characters long and I need to keep typinggg"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("1This string is invalid be3cause it is exactly one hu1ndred characters long and it contains numbers1"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("This str2ing 2 is 1invalid because it is longer than one hu12ndred characters long and It contains numbers123"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("This str2ing 2 is 1i+nvalid because it is longer than one hu12ndred characters long and It contains $specia%l characte^rs and n*umbers"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("(Th#is str2ing 2 is 1invalid its exactly 100 charac@ters long co^ntains num&bers with special chars%"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("!This st@ring is# exact$ly one hundered charac)ters an>d cont&ains specia.l charac^ters too typing %"));
+        Assertions.assertThrows(CustomExceptions.InvalidInputException.class, () -> Data.storeMajor("!This st@ring is# ov$er one hundered charac)ters an>d cont&ains specia.l charac^ters too keep longer typing %"));
         //endregion
 
         //region Valid Inputs
         try {
             //Capitalization
-            model.storeMajor("valid input");
+            Data.storeMajor("valid input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("vaLid Input");
+            Data.storeMajor("vaLid Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid Input");
+            Data.storeMajor("Valid Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
 
             //allow max length of 99 and min length of 1
 
-            model.storeMajor("V");
+            Data.storeMajor("V");
             Assertions.assertEquals("V", Data.getMajor());
-            model.storeMajor("vaLid Input that is ninety nine characters long exactly how much longer do I need to type for thiss");
+            Data.storeMajor("vaLid Input that is ninety nine characters long exactly how much longer do I need to type for thiss");
             Assertions.assertEquals("VALID INPUT THAT IS NINETY NINE CHARACTERS LONG EXACTLY HOW MUCH LONGER DO I NEED TO TYPE FOR THISS", Data.getMajor());
 
             //no spaces
-            model.storeMajor("ValidInput");
+            Data.storeMajor("ValidInput");
             Assertions.assertEquals("VALIDINPUT", Data.getMajor());
 
             //Single leading and or trailing space
-            model.storeMajor(" Valid Input");
+            Data.storeMajor(" Valid Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid Input ");
+            Data.storeMajor("Valid Input ");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor(" Valid Input ");
+            Data.storeMajor(" Valid Input ");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
 
             //Triple leading and or trailing space
-            model.storeMajor("   Valid Input");
+            Data.storeMajor("   Valid Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid Input   ");
+            Data.storeMajor("Valid Input   ");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("   Valid Input   ");
+            Data.storeMajor("   Valid Input   ");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
 
             //Double or Triple Space in Middle
-            model.storeMajor("Valid  Input");
+            Data.storeMajor("Valid  Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid   Input");
+            Data.storeMajor("Valid   Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
 
             //Underscores
-            model.storeMajor("Valid_Input");
+            Data.storeMajor("Valid_Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("_Valid _Input");
+            Data.storeMajor("_Valid _Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid_ Input_");
+            Data.storeMajor("Valid_ Input_");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("_Valid_Input_");
+            Data.storeMajor("_Valid_Input_");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("_Valid_ _Input_");
+            Data.storeMajor("_Valid_ _Input_");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid___Input");
+            Data.storeMajor("Valid___Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("___Valid___Input___");
+            Data.storeMajor("___Valid___Input___");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid Input___");
+            Data.storeMajor("Valid Input___");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid___ Input");
+            Data.storeMajor("Valid___ Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("___Valid ___Input");
+            Data.storeMajor("___Valid ___Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid___ Input___");
+            Data.storeMajor("Valid___ Input___");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
 
             //Hyphens
-            model.storeMajor("Valid-Input");
+            Data.storeMajor("Valid-Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("-Valid -Input");
+            Data.storeMajor("-Valid -Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid- Input-");
+            Data.storeMajor("Valid- Input-");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("-Valid-Input-");
+            Data.storeMajor("-Valid-Input-");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("-Valid- -Input-");
+            Data.storeMajor("-Valid- -Input-");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid---Input");
+            Data.storeMajor("Valid---Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("---Valid---Input---");
+            Data.storeMajor("---Valid---Input---");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid Input---");
+            Data.storeMajor("Valid Input---");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid--- Input");
+            Data.storeMajor("Valid--- Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("---Valid ---Input");
+            Data.storeMajor("---Valid ---Input");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
-            model.storeMajor("Valid--- Input---");
+            Data.storeMajor("Valid--- Input---");
             Assertions.assertEquals("VALID INPUT", Data.getMajor());
         } catch (Exception e) {
             //These should already be handled with the previous invalid inputs thus should fail.
@@ -243,10 +244,10 @@ class ModelTest {
             //Test that error is thrown when no offerings and no major have been loaded
             assertThrows(CustomExceptions.InvalidMajorException.class, () -> model.getCourseOfferingsAsString(false, true, false));
             //Test that error is still thrown when no offerings have been loaded but major has
-            model.storeMajor("CS");
+            Data.storeMajor("CS");
             assertThrows(CustomExceptions.InvalidOfferingsException.class, () -> model.getCourseOfferingsAsString(false, true, false));
             //load course data so that verification of offerings does not throw errors
-            model.loadDefaultCourseData();
+            CourseDataIO.loadCourseDataFromDefaults();
             //test that does not throw error for various variable combinations
             model.getCourseOfferingsAsString(false, false, false);
             model.getCourseOfferingsAsString(false, false, true);
@@ -328,10 +329,10 @@ class ModelTest {
             //Test that error is thrown when no offerings, major, or transcript have been loaded.
             assertThrows(CustomExceptions.InvalidMajorException.class, () -> model.getCourseRecommendation(false, true, false));
             //Test that error is still thrown when offerings and transcript have not been loaded.
-            model.storeMajor("CS");
+            Data.storeMajor("CS");
             assertThrows(CustomExceptions.InvalidOfferingsException.class, () -> model.getCourseRecommendation(false, true, false));
             //Test that error is still thrown when transcript has not been loaded.
-            model.loadDefaultCourseData();
+            CourseDataIO.loadCourseDataFromDefaults();
             assertThrows(CustomExceptions.InvalidTranscriptException.class, () -> model.getCourseRecommendation(false, true, false));
 
             //TODO: Stuck for now since Feature #11 is needed first
@@ -344,7 +345,7 @@ class ModelTest {
     @Test
     void loadDefaultCourseData() {
         try {
-            String actual = model.loadDefaultCourseData();
+            String actual = CourseDataIO.loadCourseDataFromDefaults();
             assertTrue(actual.contains("Loaded 193 prerequisites, 2 curricula, and 85 offerings"));
         } catch (IOException e) {
             fail();
@@ -365,7 +366,7 @@ class ModelTest {
     @Test
     void viewPrerequisiteCourses() {
         try {
-            model.loadDefaultCourseData();
+            CourseDataIO.loadCourseDataFromDefaults();
 
             //region Invalid courses
             Assertions.assertEquals("No course found.", model.viewPrerequisiteCourses("B1020"));

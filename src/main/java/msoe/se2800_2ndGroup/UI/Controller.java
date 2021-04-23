@@ -6,7 +6,9 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import msoe.se2800_2ndGroup.App;
+import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.FileIO.CourseDataIO;
 import msoe.se2800_2ndGroup.FileIO.FileIO;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
@@ -278,7 +280,7 @@ public abstract class Controller {
             } else {
                 App.getModel().ensureFXThread(() -> {
                     try {
-                        String message = App.getModel().loadCoursesFromSpecifiedLocations(curriculumLocation.getAbsolutePath(),
+                        String message = CourseDataIO.loadCoursesFromSpecifiedLocations(curriculumLocation.getAbsolutePath(),
                                 offeringsLocation.getAbsolutePath(), prerequisitesLocation.getAbsolutePath());
 
                         displayAlert(Alert.AlertType.INFORMATION, "Success", "File Load", message);
@@ -313,7 +315,7 @@ public abstract class Controller {
         if (majorText.startsWith("CS")) {
             App.getModel().ensureFXThread(() -> {
                 try {
-                    App.getModel().storeMajor("CS");
+                    Data.storeMajor("CS");
                 } catch (CustomExceptions.InvalidInputException e) {
                     String message = String.format(" Invalid Input Exception occurred while " +
                                     "storing major: %s\n%s", majorText, e.getMessage());
@@ -324,7 +326,7 @@ public abstract class Controller {
         } else if (majorText.startsWith("SE")) {
             App.getModel().ensureFXThread(() -> {
                 try {
-                    App.getModel().storeMajor("SE");
+                    Data.storeMajor("SE");
                 } catch (CustomExceptions.InvalidInputException e) {
                     String message = String.format(" Invalid Input Exception occurred while " +
                             "storing major: %s\n%s", majorText, e.getMessage());

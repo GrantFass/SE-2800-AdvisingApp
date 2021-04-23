@@ -1,5 +1,6 @@
 package msoe.se2800_2ndGroup.UI;
 
+import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
@@ -87,7 +88,7 @@ public class CLI {
         long startTime = System.nanoTime();
         try {
             final int nanosecondsToMilliseconds = 1000000;
-            LOGGER.info(String.format("%s in %d milliseconds\n", model.loadDefaultCourseData(), (System.nanoTime() - startTime) / nanosecondsToMilliseconds).replace("\n", "\\n"));
+            LOGGER.info(String.format("%s in %d milliseconds\n", Model.loadDefaultCourseData(), (System.nanoTime() - startTime) / nanosecondsToMilliseconds).replace("\n", "\\n"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -107,7 +108,7 @@ public class CLI {
                         System.out.print("Enter Major Abbreviation: ");
                         String major = in.next().trim().toLowerCase();
                         LOGGER.fine("Attempting to store major: " + major);
-                        model.storeMajor(major);
+                        Model.storeMajor(major);
                         System.out.println("Major Stored");
                         LOGGER.fine("Major Stored");
                     }
