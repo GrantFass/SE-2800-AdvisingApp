@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import msoe.se2800_2ndGroup.App;
-import msoe.se2800_2ndGroup.Data.Model;
+import msoe.se2800_2ndGroup.Model;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;

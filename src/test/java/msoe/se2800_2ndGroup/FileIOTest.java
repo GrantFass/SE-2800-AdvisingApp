@@ -1,6 +1,5 @@
 package msoe.se2800_2ndGroup;
 
-import msoe.se2800_2ndGroup.Data.Model;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.FileIO.FileIO;
 import org.junit.jupiter.api.Test;

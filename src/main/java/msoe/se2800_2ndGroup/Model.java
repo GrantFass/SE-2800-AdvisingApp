@@ -1,9 +1,9 @@
-package msoe.se2800_2ndGroup.Data;
+package msoe.se2800_2ndGroup;
 
 import javafx.application.Platform;
+import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
-import msoe.se2800_2ndGroup.FileIO.ImportTranscript;
-import msoe.se2800_2ndGroup.FileIO.UnofficialTranscript;
+import msoe.se2800_2ndGroup.FileIO.TranscriptIO;
 import msoe.se2800_2ndGroup.Graphing.GraphMaker;
 import msoe.se2800_2ndGroup.loaders.CurriculumLoader;
 import msoe.se2800_2ndGroup.loaders.OfferingsLoader;
@@ -264,7 +264,7 @@ public class Model {
      */
     public void loadUnofficialTranscript(Scanner in) throws CustomExceptions.InvalidInputException, IOException {
         LOGGER.finer("Loading unofficial transcript using default scanner and a new importTranscript object");
-        Data.transcriptCourses = ImportTranscript.readInFile(in);
+        Data.transcriptCourses = TranscriptIO.readInFile(in);
     }
 
     /**
@@ -277,7 +277,7 @@ public class Model {
      */
     public void loadUnofficialTranscript(File file) throws IOException {
         AdvisingLogger.getLogger().log(Level.FINER, "Loading unofficial transcript using passed in File and a new importTranscript object");
-        Data.transcriptCourses = ImportTranscript.readInFile(file);
+        Data.transcriptCourses = TranscriptIO.readInFile(file);
     }
 
     /**
@@ -302,7 +302,7 @@ public class Model {
     public void storeUnofficialTranscript(String outputLocation) throws IOException {
         String location = outputLocation + "/UnofficialTranscript.pdf";
         LOGGER.finer("Saving current transcript courses to unofficial transcript using a new unofficialTranscript object in the location: " + location);
-        UnofficialTranscript.writeFile(Data.getTranscriptCourses(), location);
+        TranscriptIO.writeFile(Data.getTranscriptCourses(), location);
     }
     //endregion
 
