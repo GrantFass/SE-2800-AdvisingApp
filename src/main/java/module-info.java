@@ -16,4 +16,5 @@ module msoe.se2800_2ndGroup {
     exports msoe.se2800_2ndGroup.Data;
     opens msoe.se2800_2ndGroup.Data to javafx.fxml;
     exports msoe.se2800_2ndGroup.Exceptions;
+    exports msoe.se2800_2ndGroup.models;
 }

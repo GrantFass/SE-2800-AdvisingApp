@@ -2,6 +2,7 @@ package msoe.se2800_2ndGroup;
 
 import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.FileIO.DefaultLocations;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -196,8 +197,8 @@ class ModelTest {
      */
     @Test
     void getDefaultCurriculumLocation() {
-        assertNotNull(Model.getDefaultCurriculumLocation());
-        assertTrue(Model.getDefaultCurriculumLocation().contains("/msoe/se2800_2ndGroup/curriculum.csv"));
+        assertNotNull(DefaultLocations.getDefaultCurriculumLocation());
+        assertTrue(DefaultLocations.getDefaultCurriculumLocation().contains("/msoe/se2800_2ndGroup/curriculum.csv"));
     }
 
     /**
@@ -210,8 +211,8 @@ class ModelTest {
      */
     @Test
     void getDefaultOfferingsLocation() {
-        assertNotNull(Model.getDefaultOfferingsLocation());
-        assertTrue(Model.getDefaultOfferingsLocation().contains("/msoe/se2800_2ndGroup/offerings.csv"));
+        assertNotNull(DefaultLocations.getDefaultOfferingsLocation());
+        assertTrue(DefaultLocations.getDefaultOfferingsLocation().contains("/msoe/se2800_2ndGroup/offerings.csv"));
     }
 
     /**
@@ -224,8 +225,8 @@ class ModelTest {
      */
     @Test
     void getDefaultPrerequisitesLocation() {
-        assertNotNull(Model.getDefaultPrerequisitesLocation());
-        assertTrue(Model.getDefaultPrerequisitesLocation().contains("/msoe/se2800_2ndGroup/prerequisites_updated.csv"));
+        assertNotNull(DefaultLocations.getDefaultPrerequisitesLocation());
+        assertTrue(DefaultLocations.getDefaultPrerequisitesLocation().contains("/msoe/se2800_2ndGroup/prerequisites_updated.csv"));
     }
 
     /**

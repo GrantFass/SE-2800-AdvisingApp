@@ -1,6 +1,7 @@
 package msoe.se2800_2ndGroup;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.FileIO.DefaultLocations;
 import msoe.se2800_2ndGroup.FileIO.FileIO;
 import org.junit.jupiter.api.Test;
 
@@ -54,9 +55,9 @@ class FileIOTest {
     @Test
     void validateFileLocation() {
         // First test that files that should exist work with the generic method.
-        assertTrue(FileIO.validateFileLocation(Model.getDefaultCurriculumLocation()));
-        assertTrue(FileIO.validateFileLocation(Model.getDefaultOfferingsLocation()));
-        assertTrue(FileIO.validateFileLocation(Model.getDefaultPrerequisitesLocation()));
+        assertTrue(FileIO.validateFileLocation(DefaultLocations.getDefaultCurriculumLocation()));
+        assertTrue(FileIO.validateFileLocation(DefaultLocations.getDefaultOfferingsLocation()));
+        assertTrue(FileIO.validateFileLocation(DefaultLocations.getDefaultPrerequisitesLocation()));
         // Now test that files that should not exist return false
         assertFalse(FileIO.validateFileLocation("C://ThisSHouldReturnFalse.doc"));
         assertFalse(FileIO.validateFileLocation("C://somethingWrongHere.txt"));
@@ -66,16 +67,16 @@ class FileIOTest {
         assertFalse(FileIO.validateFileLocation(""));
         assertFalse(FileIO.validateFileLocation(null));
         // Test that files that should exist return true with the correct extension
-        assertTrue(FileIO.validateFileLocation(Model.getDefaultCurriculumLocation(), ".csv"));
-        assertTrue(FileIO.validateFileLocation(Model.getDefaultOfferingsLocation(), ".CSV"));
-        assertTrue(FileIO.validateFileLocation(Model.getDefaultPrerequisitesLocation(), ".Csv"));
+        assertTrue(FileIO.validateFileLocation(DefaultLocations.getDefaultCurriculumLocation(), ".csv"));
+        assertTrue(FileIO.validateFileLocation(DefaultLocations.getDefaultOfferingsLocation(), ".CSV"));
+        assertTrue(FileIO.validateFileLocation(DefaultLocations.getDefaultPrerequisitesLocation(), ".Csv"));
         // Test that files that should exist return false with the wrong extension
-        assertFalse(FileIO.validateFileLocation(Model.getDefaultCurriculumLocation(), ".gg"));
-        assertFalse(FileIO.validateFileLocation(Model.getDefaultOfferingsLocation(), ".WRONG"));
-        assertFalse(FileIO.validateFileLocation(Model.getDefaultPrerequisitesLocation(), ".Doc"));
+        assertFalse(FileIO.validateFileLocation(DefaultLocations.getDefaultCurriculumLocation(), ".gg"));
+        assertFalse(FileIO.validateFileLocation(DefaultLocations.getDefaultOfferingsLocation(), ".WRONG"));
+        assertFalse(FileIO.validateFileLocation(DefaultLocations.getDefaultPrerequisitesLocation(), ".Doc"));
         // Test that the overloaded method does not fatal with null or empty values
-        assertTrue(FileIO.validateFileLocation(Model.getDefaultCurriculumLocation(), ""));
-        assertFalse(FileIO.validateFileLocation(Model.getDefaultOfferingsLocation(), null));
+        assertTrue(FileIO.validateFileLocation(DefaultLocations.getDefaultCurriculumLocation(), ""));
+        assertFalse(FileIO.validateFileLocation(DefaultLocations.getDefaultOfferingsLocation(), null));
         assertFalse(FileIO.validateFileLocation("", ".Doc"));
         assertFalse(FileIO.validateFileLocation(null, ".gg"));
         assertFalse(FileIO.validateFileLocation("", ".csv"));
@@ -162,14 +163,14 @@ class FileIOTest {
     void getUserInputFileLocation() {
         // test that the user input location for a file that exists is returned correctly
         try {
-            String data = Model.getDefaultCurriculumLocation();
+            String data = DefaultLocations.getDefaultCurriculumLocation();
             assertEquals(data, FileIO.getUserInputFileLocation("Curriculum.csv", ".csv", new ByteArrayInputStream(data.getBytes()), System.out));
             //assertEquals(data, FileIO.getUserInputFileLocation("Curriculum.csv", new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
         } catch (CustomExceptions.InvalidInputException e) {
             fail();
         }
         // fail if file does not exist
-        String data = Model.getDefaultCurriculumLocation() + "TTTT";
+        String data = DefaultLocations.getDefaultCurriculumLocation() + "TTTT";
         assertThrows(CustomExceptions.InvalidInputException.class, () -> FileIO.getUserInputFileLocation("Curriculum.csv", ".csv", new ByteArrayInputStream(data.getBytes()), System.out));
         //assertThrows(Model.InvalidInputException.class, () -> FileIO.getUserInputFileLocation("Curriculum.csv", new ByteArrayInputStream(data.getBytes()), new PrintStream(new ByteArrayOutputStream())));
     }
