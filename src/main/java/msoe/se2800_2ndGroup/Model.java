@@ -13,6 +13,8 @@ import msoe.se2800_2ndGroup.models.Offering;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -164,7 +166,7 @@ public class Model {
      * @since : Thu, 15 Apr 2021
      */
     public static void storeUnofficialTranscript(String outputLocation) throws IOException {
-        String location = outputLocation + "/UnofficialTranscript.pdf";
+        String location = String.format("%s\\UnofficialTranscript-(%tF).pdf", outputLocation, System.currentTimeMillis());
         LOGGER.finer("Saving current transcript courses to unofficial transcript using a new unofficialTranscript object in the location: " + location);
         TranscriptIO.writeFile(Data.getTranscriptCourses(), location);
     }
