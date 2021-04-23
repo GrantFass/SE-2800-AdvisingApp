@@ -10,6 +10,7 @@ import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.FileIO.CourseDataIO;
 import msoe.se2800_2ndGroup.FileIO.FileIO;
+import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.File;
@@ -34,6 +35,7 @@ import java.util.Arrays;
  * * Added methods to link models and switch windows by Grant on Saturday, 20 March 2021
  * * Added methods to get file locations for GUI by Grant Fass on Mon, 19 Apr 2021
  * * Added FXML menu option methods by Grant Fass on Mon, 19 Apr 2021
+ * * Removed references to Model.java from App.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
  * Copyright (C): TBD
  *
  * @author : Grant
@@ -188,7 +190,7 @@ public abstract class Controller {
      */
     @FXML
     private void close() {
-        App.getModel().ensureFXThread(() -> App.getModel().exitProgram());
+        Model.ensureFXThread(Model::exitProgram);
     }
 
     /**
@@ -208,9 +210,9 @@ public abstract class Controller {
         boolean passedValidation = FileIO.validateFileLocation(transcriptLocation.getAbsolutePath(), ".pdf");
         if (!transcriptLocation.toString().equals("")) {
             if (passedValidation) {
-                App.getModel().ensureFXThread(() -> {
+                Model.ensureFXThread(() -> {
                     try {
-                        App.getModel().loadUnofficialTranscript(transcriptLocation);
+                        Model.loadUnofficialTranscript(transcriptLocation);
                         displayAlert(Alert.AlertType.INFORMATION, "Success", "File Load", "Successfully read in file from: " + transcriptLocation);
                         AdvisingLogger.getLogger().info("Successfully read in file from: " + transcriptLocation + "\n");
                     } catch (IOException e) {
@@ -238,9 +240,9 @@ public abstract class Controller {
     private void storeTranscript() {
         File outputLocation = getDirectoryLocation("Select Location to Store Transcript.PDF");
         if (!outputLocation.toString().equals("")) {
-            App.getModel().ensureFXThread(() -> {
+            Model.ensureFXThread(() -> {
                 try {
-                    App.getModel().storeUnofficialTranscript(outputLocation.getAbsolutePath());
+                    Model.storeUnofficialTranscript(outputLocation.getAbsolutePath());
                     displayAlert(Alert.AlertType.INFORMATION, "Success", "File Write", "Successfully wrote file to: " + outputLocation);
                     AdvisingLogger.getLogger().info("Successfully wrote file to: " + outputLocation + "\n");
                 } catch (IOException e) {
@@ -278,9 +280,9 @@ public abstract class Controller {
                 displayAlert(Alert.AlertType.WARNING, "Warning", "Failed Validation", message);
                 AdvisingLogger.getLogger().warning(message);
             } else {
-                App.getModel().ensureFXThread(() -> {
+                Model.ensureFXThread(() -> {
                     try {
-                        String message = CourseDataIO.loadCoursesFromSpecifiedLocations(curriculumLocation.getAbsolutePath(),
+                        String message = Model.loadCoursesFromSpecifiedLocations(curriculumLocation.getAbsolutePath(),
                                 offeringsLocation.getAbsolutePath(), prerequisitesLocation.getAbsolutePath());
 
                         displayAlert(Alert.AlertType.INFORMATION, "Success", "File Load", message);
@@ -313,7 +315,7 @@ public abstract class Controller {
     private void storeMajor() {
         String majorText = ((RadioMenuItem) majorToggleGroup.getSelectedToggle()).getText();
         if (majorText.startsWith("CS")) {
-            App.getModel().ensureFXThread(() -> {
+            Model.ensureFXThread(() -> {
                 try {
                     Data.storeMajor("CS");
                 } catch (CustomExceptions.InvalidInputException e) {
@@ -324,7 +326,7 @@ public abstract class Controller {
                 }
             });
         } else if (majorText.startsWith("SE")) {
-            App.getModel().ensureFXThread(() -> {
+            Model.ensureFXThread(() -> {
                 try {
                     Data.storeMajor("SE");
                 } catch (CustomExceptions.InvalidInputException e) {

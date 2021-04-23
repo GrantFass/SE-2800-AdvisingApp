@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import msoe.se2800_2ndGroup.App;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 /**
@@ -32,6 +33,7 @@ import msoe.se2800_2ndGroup.logger.AdvisingLogger;
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
  * * Added methods to manipulate data by Grant Fass on Wed, 21 Apr 2021
+ * * Removed references to Model.java from App.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
  *
  * @since : Saturday, 20 March 2021
  * @author : Grant
@@ -66,9 +68,9 @@ public class PrimaryController extends Controller {
      */
     @FXML
     public void viewCourseOfferings() {
-        App.getModel().ensureFXThread(() -> {
+        Model.ensureFXThread(() -> {
             try {
-                String[] offerings = App.getModel().getCourseOfferingsAsString(fallTermSelection.isSelected(),
+                String[] offerings = Model.getCourseOfferingsAsString(fallTermSelection.isSelected(),
                         winterTermSelection.isSelected(), springTermSelection.isSelected()).split("\n");
                 ObservableList<String> items = FXCollections.observableArrayList();
                 items.addAll(Arrays.asList(offerings));
@@ -98,9 +100,9 @@ public class PrimaryController extends Controller {
      */
     @FXML
     public void getCourseRecommendations() {
-        App.getModel().ensureFXThread(() -> {
+        Model.ensureFXThread(() -> {
             try {
-                String[] recommendations = App.getModel().getCourseRecommendation(fallTermSelection.isSelected(),
+                String[] recommendations = Model.getCourseRecommendation(fallTermSelection.isSelected(),
                         winterTermSelection.isSelected(), springTermSelection.isSelected()).split("\n");
                 ObservableList<String> items = FXCollections.observableArrayList();
                 items.addAll(Arrays.asList(recommendations));

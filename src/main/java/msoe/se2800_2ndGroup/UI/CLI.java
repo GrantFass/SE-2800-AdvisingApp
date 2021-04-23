@@ -39,6 +39,7 @@ import java.util.logging.Logger;
  * * Implement logger by Grant Fass on Thu, 15 Apr 2021
  * * Add CLI option to store unofficial transcripts
  * * code cleanup from group feedback by turcinh on Tuesday, 20 April 2021
+ * * Removed references to Model.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
  * <p>
  * Copyright (C): TBD
  * @author : Grant
@@ -49,24 +50,6 @@ public class CLI {
      * Logging system.
      */
     private static final Logger LOGGER = AdvisingLogger.getLogger();
-
-    /*
-     * Model used for execution of tasks
-     */
-    private final Model model;
-
-    /**
-     * Constructor for the class
-     * <p>
-     * This constructor links a model to this instance so that it operates with the same information as the GUI
-     *
-     * @param model the model to link
-     * @author : Grant Fass
-     * @since : Sat, 20 Mar 2021
-     */
-    public CLI(Model model) {
-        this.model = model;
-    }
 
     /**
      * This method runs all of the CLI operations for the project
@@ -102,7 +85,7 @@ public class CLI {
                 switch (input) {
                     case "exit", "quit" -> {
                         LOGGER.info("Shutting down program");
-                        model.exitProgram();
+                        Model.exitProgram();
                     }
                     case "store major" -> {
                         System.out.print("Enter Major Abbreviation: ");
@@ -115,34 +98,34 @@ public class CLI {
                     case "get course recommendation" -> {
                         HashMap<String, Boolean> terms = getTerms(in);
                         LOGGER.fine("Getting Course Recommendations");
-                        String output = model.getCourseRecommendation(terms.get("fall"), terms.get("winter"), terms.get("spring"));
+                        String output = Model.getCourseRecommendation(terms.get("fall"), terms.get("winter"), terms.get("spring"));
                         System.out.println(output);
                         LOGGER.log(Level.FINE, "Output Course Recommendations: \n" + output, output);
                     }
                     case "load course data" -> {
                         final int nanosecondsToMilliseconds = 1000000;
-                        String output = String.format("%s in %d milliseconds\n", model.loadCourseData(in), (System.nanoTime() - startTime) / nanosecondsToMilliseconds);
+                        String output = String.format("%s in %d milliseconds\n", Model.loadCourseData(in), (System.nanoTime() - startTime) / nanosecondsToMilliseconds);
                         LOGGER.log(Level.FINE, "Course data loaded utilizing standard scanner: \n" + output.replace("\n", "\\n"), output);
                     }
                     case "load pdf" -> {
                         LOGGER.fine("Loading unofficial transcript using standard scanner");
-                        model.loadUnofficialTranscript(in);
+                        Model.loadUnofficialTranscript(in);
                     }
                     case "view prerequisites" -> {
                         System.out.println("Enter course: ");
                         String course = in.nextLine();
-                        String prerequisites = model.viewPrerequisiteCourses(course);
+                        String prerequisites = Model.viewPrerequisiteCourses(course);
                         System.out.println(prerequisites);
                         LOGGER.fine(String.format("The prerequisites for the course of code: %s are: %s", course, prerequisites));
                     }
                     case "store pdf" -> {
                         LOGGER.fine("Storing unofficial transcript");
-                        model.storeUnofficialTranscript();
+                        Model.storeUnofficialTranscript();
                     }
                     case "view course offerings" -> {
                         HashMap<String, Boolean> terms = getTerms(in);
                         LOGGER.fine("Getting Course Offerings");
-                        String output = model.getCourseOfferingsAsString(terms.get("fall"), terms.get("winter"), terms.get("spring"));
+                        String output = Model.getCourseOfferingsAsString(terms.get("fall"), terms.get("winter"), terms.get("spring"));
                         System.out.println(output);
                         LOGGER.log(Level.FINE, "Output Course Offerings", output);
                     }
@@ -150,7 +133,7 @@ public class CLI {
                         System.out.print("Course code: ");
                         final var code = in.next().trim();
                         LOGGER.fine("Generating Prerequisite Graph For Course Code: " + code);
-                        final var graph = model.getCourseGraph(code);
+                        final var graph = Model.getCourseGraph(code);
                         System.out.println(graph);
                         LOGGER.log(Level.FINE, "Prerequisite Graph Generated: \n" + graph, graph);
                     }

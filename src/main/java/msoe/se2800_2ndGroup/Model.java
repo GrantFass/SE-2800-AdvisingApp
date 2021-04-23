@@ -261,6 +261,20 @@ public class Model {
         return CourseDataIO.loadCourseDataFromDefaults();
     }
 
+    /**
+     * Loads in course data from the specified locations by using CourseDataIO.java
+     * @param curriculumLocation the verified location to use for curriculum.csv
+     * @param offeringsLocation the verified location to use for offerings.csv
+     * @param prerequisitesLocation the verified location to use for prerequisites.csv
+     * @throws IOException when there are issues reading in the CSV files
+     * @return A formatted string containing the number of lines loaded into each file.
+     * @author : Grant Fass
+     * @since : Tue, 6 Apr 2021
+     */
+    public static String loadCoursesFromSpecifiedLocations(String curriculumLocation, String offeringsLocation, String prerequisitesLocation) throws IOException {
+        return CourseDataIO.loadCoursesFromSpecifiedLocations(curriculumLocation, offeringsLocation, prerequisitesLocation);
+    }
+
     //endregion
 
     /**

@@ -24,6 +24,7 @@ import msoe.se2800_2ndGroup.Model;
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
  * * Added methods to control text version of Prerequisite graphs by Grant Fass on Wed, 21 Apr 2021
+ * * Removed references to Model.java from App.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
  *
  * @since : Saturday, 20 March 2021
  * @author : Grant
@@ -67,10 +68,10 @@ public class SecondaryController extends Controller {
      */
     @FXML
     public void viewPrerequisiteGraph() {
-        App.getModel().ensureFXThread(() -> {
+        Model.ensureFXThread(() -> {
             mainLabel.setText("Viewing Prerequisite Graph:");
             String code = Model.standardizeCourse(mainSearchBar.getText());
-            mainTextArea.setText(App.getModel().getCourseGraph(code));
+            mainTextArea.setText(Model.getCourseGraph(code));
         });
     }
 
