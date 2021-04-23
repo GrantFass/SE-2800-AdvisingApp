@@ -6,19 +6,18 @@ import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.FileIO.CourseDataIO;
-import msoe.se2800_2ndGroup.FileIO.DefaultLocations;
 import msoe.se2800_2ndGroup.FileIO.TranscriptIO;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
-import msoe.se2800_2ndGroup.models.*;
+import msoe.se2800_2ndGroup.models.CurriculumItem;
+import msoe.se2800_2ndGroup.models.Offering;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static msoe.se2800_2ndGroup.FileIO.FileIO.getUserInputFileLocation;
-import static msoe.se2800_2ndGroup.FileIO.FileIO.useDefaultFilesQuery;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;

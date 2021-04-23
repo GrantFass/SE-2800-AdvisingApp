@@ -1,20 +1,15 @@
 package msoe.se2800_2ndGroup.loaders;
 
+import msoe.se2800_2ndGroup.models.*;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import msoe.se2800_2ndGroup.models.AndPrerequisite;
-import msoe.se2800_2ndGroup.models.Course;
-import msoe.se2800_2ndGroup.models.NullPrerequisite;
-import msoe.se2800_2ndGroup.models.OrPrerequisite;
-import msoe.se2800_2ndGroup.models.Prerequisite;
-import msoe.se2800_2ndGroup.models.SinglePrerequisite;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;

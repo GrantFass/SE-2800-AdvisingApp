@@ -14,14 +14,12 @@ import java.util.Objects;
  * Project Name: AdvisingApp
  * Class Name: DefaultLocations
  * Description:
- * * <class description here>
+ * * Stores methods to get default locations of files
  * The DefaultLocations class is responsible for:
- * * <...>
- * * <...>
- * * <...>
- * * <...>
+ * * storing methods to get default file locations
  * Modification Log:
  * * File Created by Grant on Thursday, 22 April 2021
+ * * Moved default location getters from Model.java by Grant Fass on Thu, 22 Apr 2021
  * <p>
  * Copyright (C): TBD
  *
