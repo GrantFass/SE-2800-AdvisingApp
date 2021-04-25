@@ -89,11 +89,6 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
      * @since : Sat, 10 Apr 2021
      */
     private String getStringNode() {
-        //TODO: Hunter
-        if (course == null) {
-            return "";
-        }
-        //TODO: Hunter
         return String.format("%s (%s)", course.code(), course.description());
     }
 }

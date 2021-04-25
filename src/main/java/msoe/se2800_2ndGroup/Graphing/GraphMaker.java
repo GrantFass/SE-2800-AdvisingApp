@@ -58,10 +58,7 @@ public class GraphMaker {
             return List.of();
         } else if (prerequisite instanceof SinglePrerequisite single) {
             final var course = getCourse(single.code(), courses);
-            //TODO: Hunter
-            final var children = course != null ? getNodes(course.prerequisite(), courses) : new ArrayList();
-            //TODO: Hunter
-//            final var children = getNodes(course.prerequisite(), courses);
+            final var children = getNodes(course.prerequisite(), courses);
             return List.of(new GraphNode(course, children));
         } else if (prerequisite instanceof CompositePrerequisite tree) {
             final var leftNodes = getNodes(tree.left(), courses);
