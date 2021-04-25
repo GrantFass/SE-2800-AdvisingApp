@@ -1,6 +1,6 @@
 package msoe.se2800_2ndGroup.Graphing;
 
-import msoe.se2800_2ndGroup.models.Course;
+import msoe.se2800_2ndGroup.models.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,6 +21,7 @@ import java.util.Collection;
  * Modification Log:
  * * File Created by turcinh on Sunday, 10 April 2021
  * * code cleanup from group feedback by turcinh on Monday, 19 April 2021
+ * * choose symbol based on prerequisite by turcinh on Sunday, 25 April 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -54,7 +55,7 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
      * @since : Sat, 10 Apr 2021
      */
     public String getStringGraph() {
-        return getStringGraph(0);
+        return getStringGraph(0, '+');
     }
 
     /**
@@ -63,19 +64,21 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
      * Each level of children has higher indentation.
      *
      * @param depth amount of indentation to have before printing
+     * @param symbol what symbol to use for graphing
      * @return string of graph
      * @author : Hunter Turcin
      * @since : Sat, 10 Apr 2021
      */
-    private String getStringGraph(int depth) {
+    private String getStringGraph(int depth, char symbol) {
         final var builder = new StringBuilder();
         builder.append(INDENTATION.repeat(depth));
-        builder.append("+ ");
+        builder.append(symbol);
+        builder.append(' ');
         builder.append(getStringNode());
 
         for (final var child : children) {
             builder.append("\n");
-            builder.append(child.getStringGraph(depth + 1));
+            builder.append(child.getStringGraph(depth + 1, getSymbol()));
         }
 
         return builder.toString();
@@ -90,5 +93,31 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
      */
     private String getStringNode() {
         return String.format("%s (%s)", course.code(), course.description());
+    }
+
+    /**
+     * Get the symbol for this node.
+     * 
+     * @return the symbol for this node
+     * @author : Hunter Turcin
+     * @since : Sun, 25 Apr 2021
+     */
+    private char getSymbol() {
+        final char symbol;
+        final var prerequisite = course.prerequisite();
+        
+        if (prerequisite instanceof SinglePrerequisite) {
+            symbol = '+';
+        } else if (prerequisite instanceof NullPrerequisite) {
+            symbol = '+';
+        } else if (prerequisite instanceof AndPrerequisite) {
+            symbol = '&';
+        } else if (prerequisite instanceof OrPrerequisite) {
+            symbol = '|';
+        } else {
+            throw new IllegalStateException("no symbol for: " + prerequisite.getClass());
+        }
+        
+        return symbol;
     }
 }
