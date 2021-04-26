@@ -1,6 +1,7 @@
 package msoe.se2800_2ndGroup.Data;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.Exceptions.CustomExceptions.InvalidInputException;
 import msoe.se2800_2ndGroup.Graphing.GraphMaker;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.*;
@@ -8,7 +9,6 @@ import msoe.se2800_2ndGroup.models.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -242,7 +242,7 @@ public class Compilers {
      * @return the course's prerequisite graph
      * @author Hunter T.
      */
-    public static String getCoursePrerequisiteGraph(String code) {
+    public static String getCoursePrerequisiteGraph(String code) throws InvalidInputException {
         LOGGER.finer("Generating Course Prerequisite Graph");
         Course course = null;
 
@@ -253,7 +253,11 @@ public class Compilers {
             }
         }
 
-        final var graph = GraphMaker.getGraph(Objects.requireNonNull(course), Data.getPrerequisiteCourses());
+        if (course == null) {
+            throw new CustomExceptions.InvalidInputException("no course exists for code: " + code);
+        }
+
+        final var graph = GraphMaker.getGraph(course, Data.getPrerequisiteCourses());
 
         return graph.getStringGraph();
     }
