@@ -1,10 +1,12 @@
 package msoe.se2800_2ndGroup.Graphing;
 
+import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -22,6 +24,7 @@ import java.util.List;
  * Modification Log:
  * * File Created by turcinh on Sunday, 10 April 2021
  * * code cleanup from group feedback by turcinh on Monday, 19 April 2021
+ * * improve error handling by turcinh on Monday, 26 April 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -29,6 +32,11 @@ import java.util.List;
  * @since : Sunday, 10 April 2021
  */
 public class GraphMaker {
+    /**
+     * Logging system.
+     */
+    private static final Logger LOGGER = AdvisingLogger.getLogger();
+
     /**
      * Get the graph for a course.
      * 
@@ -58,6 +66,10 @@ public class GraphMaker {
             return List.of();
         } else if (prerequisite instanceof SinglePrerequisite single) {
             final var course = getCourse(single.code(), courses);
+            if (course == null) {
+                LOGGER.warning("unknown course code: " + single.code());
+                return List.of(new GraphNode(new Course(single.code())));
+            }
             final var children = getNodes(course.prerequisite(), courses);
             return List.of(new GraphNode(course, children));
         } else if (prerequisite instanceof CompositePrerequisite tree) {
