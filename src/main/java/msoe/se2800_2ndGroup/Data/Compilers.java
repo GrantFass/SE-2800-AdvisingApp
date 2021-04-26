@@ -30,6 +30,7 @@ import java.util.logging.Logger;
  * * Moved compilation methods from Model.java to Compilers.java by Grant Fass on Thu, 22 Apr 2021
  * * Add method to only get courses with satisfied prerequisites by Grant Fass on Thu, 22 Apr 2021
  * * Fix output of duplicate course codes in course recommendations due to electives being satisfied by Grant Fass on Thu, 22 Apr 2021
+ * * Throw exception on bad prerequisite graph course code by Hunter Turcin on Mon, 26 Apr 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -240,6 +241,7 @@ public class Compilers {
      *
      * @param code the code of the course to analyze
      * @return the course's prerequisite graph
+     * @throws InvalidInputException no course exists for code
      * @author Hunter T.
      */
     public static String getCoursePrerequisiteGraph(String code) throws InvalidInputException {
