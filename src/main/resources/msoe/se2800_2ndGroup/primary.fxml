@@ -45,8 +45,7 @@
    </MenuBar>
 
    <Label VBox.vgrow="SOMETIMES" maxHeight="40" fx:id="mainLabel"/>
-   <ListView fx:id="mainListView" VBox.vgrow="ALWAYS" style="-fx-font-family: 'Courier New'"/>
-   <CourseTableView fx:id="courseTableView" visible="false" />
+   <CourseTableView fx:id="courseTableView" />
 
    <Button alignment="CENTER" VBox.vgrow="SOMETIMES" maxHeight="40" text="Switch to Graph Window" onAction="#switchToSecondary"/>
 </VBox>

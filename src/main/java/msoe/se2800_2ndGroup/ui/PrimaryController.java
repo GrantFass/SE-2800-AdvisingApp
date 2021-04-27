@@ -3,11 +3,9 @@ package msoe.se2800_2ndGroup.ui;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
@@ -48,8 +46,6 @@ public class PrimaryController extends Controller {
     @FXML
     Label mainLabel;
     @FXML
-    ListView<String> mainListView;
-    @FXML
     CourseTableView courseTableView;
     //endregion
 
@@ -83,12 +79,8 @@ public class PrimaryController extends Controller {
                     courses.add(offering.course());
                 }
 
-                mainListView.setVisible(false);
-                mainListView.setItems(FXCollections.emptyObservableList());
                 courseTableView.setItems(courses);
-                courseTableView.setVisible(true);
-
-                // mainListView.getSelectionModel().selectedItemProperty().addListener(getStringListener());
+                courseTableView.getSelectionModel().selectedItemProperty().addListener(getCourseListener());
             } catch (CustomExceptions.InvalidInputException e) {
                 String message = String.format(" Invalid Input Exception occurred while " +
                         "generating course offerings\n%s", e.getMessage());
@@ -127,12 +119,8 @@ public class PrimaryController extends Controller {
                     }
                 }
 
-                mainListView.setVisible(false);
-                mainListView.setItems(FXCollections.emptyObservableList());
                 courseTableView.setItems(courses);
-                courseTableView.setVisible(true);
-
-                // mainListView.getSelectionModel().selectedItemProperty().addListener(getStringListener());
+                courseTableView.getSelectionModel().selectedItemProperty().addListener(getCourseListener());
             } catch (CustomExceptions.InvalidInputException e) {
                 String message = String.format(" Invalid Input Exception occurred while " +
                         "generating course recommendations\n%s", e.getMessage());
@@ -143,22 +131,22 @@ public class PrimaryController extends Controller {
     }
 
     /**
-     * Method to generate and get the string listener to get course codes from the List View
+     * Method to generate and get the listener to get course codes from the List View
      *
-     * @return new ChangeListener of String that is formatted correctly
-     * @author : Grant Fass
+     * @return new ChangeListener that is formatted correctly
+     * @author : Grant Fass, Hunter Turcin
      * @since : Mon, 19 Apr 2021
      */
-    private ChangeListener<String> getStringListener() {
+    private ChangeListener<Course> getCourseListener() {
         return new ChangeListener<>() {
-            final int listViewStartSize = mainListView.getItems().size();
+            final int listViewStartSize = courseTableView.getItems().size();
 
             @Override
-            public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
-                if (listViewStartSize != mainListView.getItems().size()) {
-                    mainListView.getSelectionModel().selectedItemProperty().removeListener(this);
+            public void changed(ObservableValue<? extends Course> observableValue, Course oldValue, Course newValue) {
+                if (listViewStartSize != courseTableView.getItems().size()) {
+                    courseTableView.getSelectionModel().selectedItemProperty().removeListener(this);
                 } else if (newValue != null) {
-                    lastCourseCode = mainListView.getSelectionModel().getSelectedItem().substring(0, 10);
+                    lastCourseCode = courseTableView.getSelectionModel().getSelectedItem().code();
                 }
             }
         };
