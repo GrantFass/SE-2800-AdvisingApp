@@ -1,4 +1,4 @@
-package msoe.se2800_2ndGroup.UI;
+package msoe.se2800_2ndGroup.ui;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.ObservableList;

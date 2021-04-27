@@ -1,4 +1,4 @@
-package msoe.se2800_2ndGroup.UI;
+package msoe.se2800_2ndGroup.ui;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.Model;

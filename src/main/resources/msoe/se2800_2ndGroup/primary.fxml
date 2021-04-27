@@ -2,9 +2,9 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
-<?import msoe.se2800_2ndGroup.UI.CourseTableView?>
+<?import msoe.se2800_2ndGroup.ui.CourseTableView?>
 <VBox spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="msoe.se2800_2ndGroup.UI.PrimaryController">
+      fx:controller="msoe.se2800_2ndGroup.ui.PrimaryController">
 <!--   <padding>-->
 <!--      <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>-->
 <!--   </padding>-->

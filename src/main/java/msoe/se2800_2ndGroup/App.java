@@ -5,9 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import msoe.se2800_2ndGroup.UI.CLI;
-import msoe.se2800_2ndGroup.UI.PrimaryController;
-import msoe.se2800_2ndGroup.UI.SecondaryController;
+import msoe.se2800_2ndGroup.ui.CLI;
+import msoe.se2800_2ndGroup.ui.PrimaryController;
+import msoe.se2800_2ndGroup.ui.SecondaryController;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.IOException;

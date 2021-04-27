@@ -1,4 +1,4 @@
-package msoe.se2800_2ndGroup.UI;
+package msoe.se2800_2ndGroup.ui;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
