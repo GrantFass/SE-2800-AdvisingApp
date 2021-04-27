@@ -46,6 +46,8 @@ public class PrimaryController extends Controller {
     Label mainLabel;
     @FXML
     ListView<String> mainListView;
+    @FXML
+    CourseTableView courseTableView;
     //endregion
 
 

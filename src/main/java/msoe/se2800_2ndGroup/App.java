@@ -139,6 +139,7 @@ public class App extends Application {
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         LOGGER.log(Level.FINE, "Loading FXML", fxmlLoader);
+        fxmlLoader.setClassLoader(App.class.getClassLoader());
         return fxmlLoader.load();
     }
 

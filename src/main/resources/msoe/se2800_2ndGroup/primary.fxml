@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
+<?import msoe.se2800_2ndGroup.UI.CourseTableView?>
 <VBox spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="msoe.se2800_2ndGroup.UI.PrimaryController">
 <!--   <padding>-->
@@ -45,6 +46,7 @@
 
    <Label VBox.vgrow="SOMETIMES" maxHeight="40" fx:id="mainLabel"/>
    <ListView fx:id="mainListView" VBox.vgrow="ALWAYS" style="-fx-font-family: 'Courier New'"/>
+   <CourseTableView fx:id="courseTableView" visible="false" />
 
    <Button alignment="CENTER" VBox.vgrow="SOMETIMES" maxHeight="40" text="Switch to Graph Window" onAction="#switchToSecondary"/>
 </VBox>
