@@ -34,6 +34,7 @@ import java.util.Arrays;
  * * File Created by Grant on Saturday, 20 March 2021
  * * Added methods to manipulate data by Grant Fass on Wed, 21 Apr 2021
  * * Removed references to Model.java from App.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
+ * * Use CourseTableView instead of ListView to allow checking by Hunter Turcin on Tue, 27 Apr 2021
  *
  * @author : Grant
  * <p>
@@ -91,11 +92,9 @@ public class PrimaryController extends Controller {
     }
 
     /**
-     * method to generate the course recommendations
-     * <p>
-     * This method is always run on the FX thread and uses commands from Model.java
-     * This method first creates a String array by getting the course recommendations as string and splitting by '\n'
-     * Then this method adds all the recommended items in the array to the list view
+     * Display course recommendations.
+     *
+     * This method runs on the FX thread.
      *
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
