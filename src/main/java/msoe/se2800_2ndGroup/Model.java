@@ -199,12 +199,31 @@ public class Model {
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
-    public static String getCourseRecommendation(boolean getFall, boolean getWinter, boolean getSpring) throws CustomExceptions.InvalidInputException {
+    public static String getCourseRecommendationAsString(boolean getFall, boolean getWinter, boolean getSpring) throws CustomExceptions.InvalidInputException {
         if (!getFall && !getWinter && !getSpring) {
             return "No Terms Selected";
         }
         List<CurriculumItem> courseRecommendation = Compilers.getCourseRecommendation(getFall, getWinter, getSpring);
         return Manipulators.getCurriculumItemsAsString(courseRecommendation);
+    }
+
+    /**
+     * Get course recommendations for the specified terms.
+     *
+     * @param fall whether or not to include fall
+     * @param winter whether or not to include winter
+     * @param spring whether or not to include spring
+     * @return the requested recommendations
+     * @throws CustomExceptions.InvalidInputException bad major, bad data loaded, or no terms selected
+     * @author : Hunter Turcin
+     * @since : Tue, 27 Apr 2021
+     */
+    public static List<CurriculumItem> getCourseRecommendation(boolean fall, boolean winter, boolean spring) throws CustomExceptions.InvalidInputException {
+        if (!fall && !winter && !spring) {
+            throw new CustomExceptions.InvalidInputException("no terms selected");
+        }
+
+        return Compilers.getCourseRecommendation(fall, winter, spring);
     }
 
     /**

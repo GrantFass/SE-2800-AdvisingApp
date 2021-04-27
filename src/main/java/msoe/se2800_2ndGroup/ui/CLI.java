@@ -99,7 +99,7 @@ public class CLI {
                     case "get course recommendation" -> {
                         HashMap<String, Boolean> terms = getTerms(in);
                         LOGGER.fine("Getting Course Recommendations");
-                        String output = Model.getCourseRecommendation(terms.get("fall"), terms.get("winter"), terms.get("spring"));
+                        String output = Model.getCourseRecommendationAsString(terms.get("fall"), terms.get("winter"), terms.get("spring"));
                         System.out.println(output);
                         LOGGER.log(Level.FINE, "Output Course Recommendations: \n" + output, output);
                     }

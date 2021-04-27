@@ -12,6 +12,8 @@ import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
+import msoe.se2800_2ndGroup.models.Elective;
+import msoe.se2800_2ndGroup.models.NullPrerequisite;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -110,16 +112,27 @@ public class PrimaryController extends Controller {
     public void getCourseRecommendations() {
         Model.ensureFXThread(() -> {
             try {
-                String[] recommendations = Model.getCourseRecommendation(fallTermSelection.isSelected(),
-                        winterTermSelection.isSelected(), springTermSelection.isSelected()).split("\n");
-                ObservableList<String> items = FXCollections.observableArrayList();
-                items.addAll(Arrays.asList(recommendations));
-                mainListView.setItems(items);
-                mainLabel.setText(String.format("Course recommendations for: %s%s%s",
-                        fallTermSelection.isSelected() ? "Fall, " : "",
-                        winterTermSelection.isSelected() ? "Winter, " : "",
-                        springTermSelection.isSelected() ? "Spring, " : ""));
-                mainListView.getSelectionModel().selectedItemProperty().addListener(getStringListener());
+                final var fall = fallTermSelection.isSelected();
+                final var winter = winterTermSelection.isSelected();
+                final var spring = springTermSelection.isSelected();
+                final var recommendations = Model.getCourseRecommendation(fall, winter, spring);
+                final var courses = FXCollections.<Course>observableArrayList();
+
+                for (final var recommendation : recommendations) {
+                    if (recommendation instanceof final Course course) {
+                        courses.add(course);
+                    } else if (recommendation instanceof final Elective elective) {
+                        final var course = new Course(elective.getCode(), 0, new NullPrerequisite(), "Elective");
+                        courses.add(course);
+                    }
+                }
+
+                mainListView.setVisible(false);
+                mainListView.setItems(FXCollections.emptyObservableList());
+                courseTableView.setItems(courses);
+                courseTableView.setVisible(true);
+
+                // mainListView.getSelectionModel().selectedItemProperty().addListener(getStringListener());
             } catch (CustomExceptions.InvalidInputException e) {
                 String message = String.format(" Invalid Input Exception occurred while " +
                         "generating course recommendations\n%s", e.getMessage());
