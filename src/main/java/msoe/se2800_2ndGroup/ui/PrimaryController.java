@@ -11,6 +11,7 @@ import javafx.scene.control.ListView;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
+import msoe.se2800_2ndGroup.models.Course;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -59,29 +60,33 @@ public class PrimaryController extends Controller {
     //region FXML methods for Data Manipulation menu
 
     /**
-     * method to generate the course offerings
-     * <p>
-     * This method is always run on the FX thread and uses commands from Model.java
-     * This method first creates a String array by getting the course offerings as string and splitting by '\n'
-     * Then this method adds all the offering items in the array to the list view
+     * Display course offerings.
      *
-     * @author : Grant Fass
+     * This method runs on the FX thread.
+     *
+     * @author : Grant Fass, Hunter Turcin
      * @since : Mon, 19 Apr 2021
      */
     @FXML
     public void viewCourseOfferings() {
         Model.ensureFXThread(() -> {
             try {
-                String[] offerings = Model.getCourseOfferingsAsString(fallTermSelection.isSelected(),
-                        winterTermSelection.isSelected(), springTermSelection.isSelected()).split("\n");
-                ObservableList<String> items = FXCollections.observableArrayList();
-                items.addAll(Arrays.asList(offerings));
-                mainListView.setItems(items);
-                mainLabel.setText(String.format("Course offerings for: %s%s%s",
-                        fallTermSelection.isSelected() ? "Fall, " : "",
-                        winterTermSelection.isSelected() ? "Winter, " : "",
-                        springTermSelection.isSelected() ? "Spring, " : ""));
-                mainListView.getSelectionModel().selectedItemProperty().addListener(getStringListener());
+                final var fall = fallTermSelection.isSelected();
+                final var winter = winterTermSelection.isSelected();
+                final var spring = springTermSelection.isSelected();
+                final var offerings = Model.getCourseOfferings(fall, winter, spring);
+                final var courses = FXCollections.<Course>observableArrayList();
+
+                for (final var offering : offerings) {
+                    courses.add(offering.course());
+                }
+
+                mainListView.setVisible(false);
+                mainListView.setItems(FXCollections.emptyObservableList());
+                courseTableView.setItems(courses);
+                courseTableView.setVisible(true);
+
+                // mainListView.getSelectionModel().selectedItemProperty().addListener(getStringListener());
             } catch (CustomExceptions.InvalidInputException e) {
                 String message = String.format(" Invalid Input Exception occurred while " +
                         "generating course offerings\n%s", e.getMessage());

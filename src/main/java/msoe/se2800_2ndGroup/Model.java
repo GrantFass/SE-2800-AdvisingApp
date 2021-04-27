@@ -110,6 +110,22 @@ public class Model {
         return Manipulators.getCourseOfferingsAsString(courseOfferings);
     }
 
+    /**
+     * Get the offerings for the specified terms.
+     *
+     * @param fall whether or not to include fall offerings
+     * @param winter whether or not to include winter offerings
+     * @param spring whether or not to include spring offerings
+     * @return all desired offerings
+     * @throws CustomExceptions.InvalidInputException major not found
+     * @author : Hunter Turcin
+     * @since : Tue, 27 Apr 2021
+     */
+    public static List<Offering> getCourseOfferings(boolean fall, boolean winter, boolean spring)
+            throws CustomExceptions.InvalidInputException {
+        return Compilers.getCourseOfferings(fall, winter, spring);
+    }
+
 
     //region Transcript FileIO
 
