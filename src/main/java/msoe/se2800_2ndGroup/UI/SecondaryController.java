@@ -1,10 +1,13 @@
 package msoe.se2800_2ndGroup.UI;
 
+import static javafx.scene.control.Alert.AlertType.ERROR;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import msoe.se2800_2ndGroup.Data.Manipulators;
+import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.Model;
 
 import java.io.IOException;
@@ -72,7 +75,11 @@ public class SecondaryController extends Controller {
         Model.ensureFXThread(() -> {
             mainLabel.setText("Viewing Prerequisite Graph:");
             String code = Manipulators.standardizeCourse(mainSearchBar.getText());
-            mainTextArea.setText(Model.getCourseGraph(code));
+            try {
+                mainTextArea.setText(Model.getCourseGraph(code));
+            } catch (CustomExceptions.InvalidInputException e) {
+                displayAlert(ERROR, "Unknown course", "Unknown course", "There is no course for this code");
+            }
         });
     }
 

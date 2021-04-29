@@ -287,7 +287,7 @@ public class Model {
      * @param code the code of the course to analyze
      * @return the course's prerequisite graph
      */
-    public static String getCourseGraph(String code) {
+    public static String getCourseGraph(String code) throws CustomExceptions.InvalidInputException {
         return Compilers.getCoursePrerequisiteGraph(code);
     }
 
