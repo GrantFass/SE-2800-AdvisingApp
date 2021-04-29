@@ -147,7 +147,6 @@ public class CLI {
         }
     }
 
-
     /**
      * This method queries the user for which terms they would like to display data for
      *
