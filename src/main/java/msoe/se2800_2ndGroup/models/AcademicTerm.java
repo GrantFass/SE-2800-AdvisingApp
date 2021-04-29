@@ -110,6 +110,26 @@ public class AcademicTerm {
         return builder.toString();
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public Term getTerm(){
+        return term;
+    }
+
+    public int getNumberOfCourses(){
+        return numberOfCourses;
+    }
+
+    public int getAvgCreditsPerCourse(){
+        return avgCreditsPerCourse;
+    }
+
+    public int getNumberOfCredits(){
+        return numberOfCredits;
+    }
+
     private void updateAverageCredits(){
         int credits = 0;
         int numCourses = 0;
