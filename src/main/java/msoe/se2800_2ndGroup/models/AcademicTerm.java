@@ -13,12 +13,12 @@ import java.util.List;
  * Term: Spring 2020 - 2021
  * Instructor: Dr. Magaña
  * Affiliation: Milwaukee School of Engineering (MSOE)
- * Project Name: clean
+ * Project Name: AdvisingApp
  * Class Name: AcademicTerm
  * Description:
- * * <class description here>
+ * An Academic Term that holds a list of courses and their credits for a specific Term
  * The AcademicTerm class is responsible for:
- * * <...>
+ * * Holding and returning courses in a given term
  * * <...>
  * * <...>
  * * <...>
@@ -28,7 +28,7 @@ import java.util.List;
  * Copyright (C): TBD
  *
  * @author : poptilec
- * @since : Tuesday, 27 April 2021
+ * @since : Sunday, 25 April 2021
  */
 
 public class AcademicTerm {
@@ -39,27 +39,65 @@ public class AcademicTerm {
     private int avgCreditsPerCourse;
     private List<Course> courses = new ArrayList<>();
 
+    /**
+     * Method creates a new Academic Term.
+     *
+     * @@author : poptilec
+     * @since : Tue, 27 Apr 2021
+     * @param name name of academic term
+     * @param term term of academic term
+     */
     public AcademicTerm(String name, Term term){
         this.name = name;
         this.term = term;
     }
 
-    public boolean addCourse(Course course){
+    /**
+     * Method adds a course to the Academic Term
+     *
+     * Method adds a course to the courses List
+     * Method adds the credits of course to total credits
+     * Method updates the number of courses in Academic Term
+     * Method recomputes the average number of credits per course
+     *
+     * @@author : poptilec
+     * @since : Tue, 27 Apr 2021
+     * @param course course to be added
+     */
+    public void addCourse(Course course){
         courses.add(course);
         numberOfCredits+=course.credits();
         numberOfCourses++;
         updateAverageCredits();
-        return true;
     }
 
-    public boolean removeCourse(Course course){
+    /**
+     * Method removes a course to the Academic Term
+     *
+     * Method removes a course from the courses List
+     * Method removes the credits of course from total credits
+     * Method updates the number of courses in Academic Term
+     * Method recomputes the average number of credits per course
+     *
+     * @@author : poptilec
+     * @since : Tue, 27 Apr 2021
+     * @param course course to be added
+     */
+    public void removeCourse(Course course){
         courses.remove(course);
         numberOfCredits -= course.credits();
         numberOfCourses--;
         updateAverageCredits();
-        return true;
     }
 
+    /**
+     * Method returns the courses in an Academic Term
+     **
+     * @@author : poptilec
+     * @since : Tue, 27 Apr 2021
+     * @return String displaying courses in an Academic Term
+     * @throws CustomExceptions.InvalidInputException
+     */
     public String getCourses() throws CustomExceptions.InvalidInputException {
         StringBuilder builder = new StringBuilder();
         if (!courses.isEmpty()) {
