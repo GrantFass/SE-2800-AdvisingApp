@@ -75,6 +75,14 @@ public class CourseTableView extends TableView<Course> {
         descriptionColumn.setCellValueFactory(
                 cell -> new ReadOnlyObjectWrapper<>(cell.getValue().description()));
 
+        setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
+
+        // There doesn't seem to be a "fit to content" option for a column.
+        codeColumn.setMaxWidth(60.0);
+        codeColumn.setMinWidth(60.0);
+        creditsColumn.setMaxWidth(60.0);
+        creditsColumn.setMinWidth(60.0);
+
         getColumns().setAll(codeColumn, creditsColumn, prerequisiteColumn, descriptionColumn);
     }
 }
