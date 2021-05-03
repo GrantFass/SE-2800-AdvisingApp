@@ -15,7 +15,8 @@
          <MenuItem mnemonicParsing="false" onAction="#close" text="Exit Program"/>
          <MenuItem mnemonicParsing="false" onAction="#loadTranscript" text="Load Transcript"/>
          <MenuItem mnemonicParsing="false" onAction="#loadCourseData" text="Load Course Data"/>
-         <MenuItem mnemonicParsing="false" onAction="#storeTranscript" text="Store Transcript"/>
+         <MenuItem mnemonicParsing="false" onAction="#storeTranscript" text="Store Default Transcript"/>
+         <MenuItem mnemonicParsing="false" onAction="#storeCustomTranscript" text="Store Custom Transcript Of Selected Courses"/>
       </Menu>
       <!-- https://stackoverflow.com/questions/57911107/javafx-togglegroup-not-functioning-properly-with-accelerators-radiomenuitem -->
       <!-- Major Selection Radio Button Menu -->
@@ -37,6 +38,7 @@
       <Menu mnemonicParsing="false" text="Data Manipulation">
          <MenuItem mnemonicParsing="false" onAction="#viewCourseOfferings" text="View Course Offerings"/>
          <MenuItem mnemonicParsing="false" onAction="#getCourseRecommendations" text="Get Course Recommendations"/>
+         <MenuItem mnemonicParsing="false" onAction="#displayAllCourses" text="Display All Courses"/>
 <!--         <MenuItem mnemonicParsing="false" onAction="#viewPrerequisiteGraph" text="View Graph of Prerequisites"/>-->
       </Menu>
       <Menu mnemonicParsing="false" text="Help">

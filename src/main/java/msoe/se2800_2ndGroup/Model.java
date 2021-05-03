@@ -8,6 +8,7 @@ import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.FileIO.CourseDataIO;
 import msoe.se2800_2ndGroup.FileIO.TranscriptIO;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
+import msoe.se2800_2ndGroup.models.Course;
 import msoe.se2800_2ndGroup.models.CurriculumItem;
 import msoe.se2800_2ndGroup.models.Offering;
 
@@ -183,6 +184,21 @@ public class Model {
         String location = String.format("%s\\UnofficialTranscript-(%tF).pdf", outputLocation, System.currentTimeMillis());
         LOGGER.finer("Saving current transcript courses to unofficial transcript using a new unofficialTranscript object in the location: " + location);
         TranscriptIO.writeFile(Data.getTranscriptCourses(), location);
+    }
+
+    /**
+     * TODO: test me
+     * Method to store an the custom List of transcript courses to a new unofficial transcript pdf in the specified location
+     *
+     * @param outputLocation the directory to store the file in
+     * @throws IOException for issues creating the specified file or reading it
+     * @author : Grant Fass
+     * @since : Mon, 3 May 2021
+     */
+    public static void storeCustomUnofficialTranscript(String outputLocation, ArrayList<Course> courses) throws IOException {
+        String location = String.format("%s\\UnofficialTranscript-(%tF).pdf", outputLocation, System.currentTimeMillis());
+        LOGGER.finer("Saving current transcript courses to unofficial transcript using a new unofficialTranscript object in the location: " + location);
+        TranscriptIO.writeFile(courses, location);
     }
 
     //endregion

@@ -69,18 +69,17 @@ public class CourseTableView extends TableView<Course> {
         final var creditsColumn = new TableColumn<Course, Integer>("Credits");
         final var prerequisiteColumn = new TableColumn<Course, String>("Prerequisite");
         final var descriptionColumn = new TableColumn<Course, String>("Description");
-
         checkColumn.setCellValueFactory(
-                cell -> new SimpleBooleanProperty(false));
+                cell -> cell.getValue() != null ? new SimpleBooleanProperty(false) : null);
         checkColumn.setCellFactory(CheckBoxTableCell.forTableColumn(checkColumn));
         codeColumn.setCellValueFactory(
-                cell -> new ReadOnlyObjectWrapper<>(cell.getValue().code()));
+                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(cell.getValue().code()) : null);
         creditsColumn.setCellValueFactory(
-                cell -> new ReadOnlyObjectWrapper<>(cell.getValue().credits()));
+                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(cell.getValue().credits()) : null);
         prerequisiteColumn.setCellValueFactory(
-                cell -> new ReadOnlyObjectWrapper<>(cell.getValue().prerequisite().toString()));
+                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(cell.getValue().prerequisite().toString()) : null);
         descriptionColumn.setCellValueFactory(
-                cell -> new ReadOnlyObjectWrapper<>(cell.getValue().description()));
+                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(cell.getValue().description()) : null);
 
         setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
         setEditable(true); // only allows checking, not editing course
