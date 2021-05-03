@@ -83,6 +83,7 @@ public class CourseTableView extends TableView<Course> {
                 cell -> new ReadOnlyObjectWrapper<>(cell.getValue().description()));
 
         setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
+        setEditable(true); // only allows checking, not editing course
 
         // There doesn't seem to be a "fit to content" option for a column.
         checkColumn.setMaxWidth(30.0);
