@@ -1,9 +1,12 @@
 package msoe.se2800_2ndGroup.ui;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import msoe.se2800_2ndGroup.models.Course;
 
 /*
@@ -15,7 +18,7 @@ import msoe.se2800_2ndGroup.models.Course;
  * Affiliation: Milwaukee School of Engineering (MSOE)
  * Project Name: Advising App
  * Class Name: CourseTableView
- * Creation Date: Tuesday, 16 March 2021
+ * Creation Date: Tuesday, 27 April 2021
  * Original Author: Hunter Turcin
  * Description: A JavaFX TableView for displaying courses.
  * The CourseTableView class is responsible for:
@@ -61,11 +64,15 @@ public class CourseTableView extends TableView<Course> {
      * @since : Tue, 27 Apr 2021
      */
     private void setupColumns() {
+        final var checkColumn = new TableColumn<Course, Boolean>("✔");
         final var codeColumn = new TableColumn<Course, String>("Code");
         final var creditsColumn = new TableColumn<Course, Integer>("Credits");
         final var prerequisiteColumn = new TableColumn<Course, String>("Prerequisite");
         final var descriptionColumn = new TableColumn<Course, String>("Description");
 
+        checkColumn.setCellValueFactory(
+                cell -> new SimpleBooleanProperty(false));
+        checkColumn.setCellFactory(CheckBoxTableCell.forTableColumn(checkColumn));
         codeColumn.setCellValueFactory(
                 cell -> new ReadOnlyObjectWrapper<>(cell.getValue().code()));
         creditsColumn.setCellValueFactory(
@@ -78,11 +85,13 @@ public class CourseTableView extends TableView<Course> {
         setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
 
         // There doesn't seem to be a "fit to content" option for a column.
+        checkColumn.setMaxWidth(30.0);
+        checkColumn.setMinWidth(30.0);
         codeColumn.setMaxWidth(60.0);
         codeColumn.setMinWidth(60.0);
         creditsColumn.setMaxWidth(60.0);
         creditsColumn.setMinWidth(60.0);
 
-        getColumns().setAll(codeColumn, creditsColumn, prerequisiteColumn, descriptionColumn);
+        getColumns().setAll(checkColumn, codeColumn, creditsColumn, prerequisiteColumn, descriptionColumn);
     }
 }
