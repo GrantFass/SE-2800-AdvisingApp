@@ -1,6 +1,5 @@
 package msoe.se2800_2ndGroup.ui;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
@@ -71,7 +70,7 @@ public class CourseTableView extends TableView<Course> {
         final var descriptionColumn = new TableColumn<Course, String>("Description");
 
         checkColumn.setCellValueFactory(
-                cell -> new SimpleBooleanProperty(false));
+                cell -> new CourseCheckedBooleanProperty(cell.getValue()));
         checkColumn.setCellFactory(CheckBoxTableCell.forTableColumn(checkColumn));
         codeColumn.setCellValueFactory(
                 cell -> new ReadOnlyObjectWrapper<>(cell.getValue().code()));

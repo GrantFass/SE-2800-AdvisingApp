@@ -28,6 +28,7 @@ import java.util.logging.Logger;
  * * File Created by Grant on Thursday, 22 April 2021
  * * Moved variables, getters, and verification methods for datum objects from Model.java to Data.java by Grant Fass on Thu, 22 Apr 2021
  * * Moved store major method from Model.java to Data.java by Grant Fass on Thu, 22 Apr 2021
+ * * Add manual transcriptCourses manipulation methods by Hunter Turcin on Mon, 3 May 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -208,5 +209,31 @@ public class Data {
         }
     }
 
+    /**
+     * Determine if a course has been checked already by the user.
+     * 
+     * @param course course to get the status of
+     * @return true if checked, false if not
+     * @author : Hunter Turcin
+     * @since : Mon, 3 May 2021
+     */
+    public static boolean isCourseChecked(Course course) {
+        return getTranscriptCourses().contains(course);
+    }
 
+    /**
+     * Set the checked status of a course.
+     *
+     * @param course course to set the checked status of
+     * @param checked new checked status
+     * @author : Hunter Turcin
+     * @since : Mon, 3 May 2021
+     */
+    public static void setCourseChecked(Course course, boolean checked) {
+        if (checked) {
+            getTranscriptCourses().add(course);
+        } else {
+            getTranscriptCourses().remove(course);
+        }
+    }
 }
