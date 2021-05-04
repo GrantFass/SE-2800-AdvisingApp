@@ -5,6 +5,7 @@ import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
 import msoe.se2800_2ndGroup.models.Curriculum;
 import msoe.se2800_2ndGroup.models.Offering;
+import msoe.se2800_2ndGroup.ui.CourseCheckedBooleanProperty;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -48,8 +49,10 @@ public class Data {
     // Variables to store the course data
     public static Collection<Curriculum> curricula;
     public static Collection<Course> prerequisiteCourses;
-    public static ArrayList<Course> transcriptCourses;
+    public static ArrayList<Course> transcriptCourses = new ArrayList<>();
     public static Collection<Offering> offerings;
+    
+    private static Collection<CourseCheckedBooleanProperty> uiProperties = new ArrayList<>();
 
     //endregion
 
@@ -108,7 +111,25 @@ public class Data {
      * @since : Thu, 15 Apr 2021
      */
     public static ArrayList<Course> getTranscriptCourses() {
-        return Objects.requireNonNullElseGet(transcriptCourses, ArrayList::new);
+        return transcriptCourses;
+    }
+
+    /**
+     * Set the loaded transcript course list.
+     * 
+     * This also updates the checkboxes in the UI.
+     * 
+     * @param transcriptCourses new transcript courses
+     * @author : Hunter Turcin
+     * @since : Tue, 4 May 2021
+     */
+    public static void setTranscriptCourses(ArrayList<Course> transcriptCourses) {
+        Data.transcriptCourses = transcriptCourses;
+        
+        // Replace all checkbox data with the new transcript
+        for (final var property : uiProperties) {
+            property.set(isCourseChecked(property.getCourse()));
+        }
     }
     //endregion
 
@@ -235,5 +256,16 @@ public class Data {
         } else {
             getTranscriptCourses().remove(course);
         }
+    }
+
+    /**
+     * Register a UI checkbox for updating when the transcript changes.
+     * 
+     * @param property the property to track
+     * @author : Hunter Turcin
+     * @since : Tue, 4 May 2021
+     */
+    public static void registerProperty(CourseCheckedBooleanProperty property) {
+        uiProperties.add(property);
     }
 }

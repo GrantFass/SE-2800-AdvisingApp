@@ -60,4 +60,8 @@ public class CourseCheckedBooleanProperty extends BooleanPropertyBase {
     public String getName() {
         return "";
     }
+
+    public Course getCourse() {
+        return course;
+    }
 }
