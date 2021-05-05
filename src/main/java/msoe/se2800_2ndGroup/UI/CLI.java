@@ -1,5 +1,6 @@
 package msoe.se2800_2ndGroup.UI;
 
+import msoe.se2800_2ndGroup.Data.Compilers;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
@@ -137,6 +138,10 @@ public class CLI {
                         final var graph = Model.getCourseGraph(code);
                         System.out.println(graph);
                         LOGGER.log(Level.FINE, "Prerequisite Graph Generated: \n" + graph, graph);
+                    }
+                    case "gp" -> {
+                        //TODO remove later, this is for testing only rn
+                        Compilers.generateGraduationPlan(16, 2);
                     }
                 }
             } catch (CustomExceptions.InvalidInputException | IOException | NullPointerException e) {

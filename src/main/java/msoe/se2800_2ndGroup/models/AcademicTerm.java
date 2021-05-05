@@ -19,11 +19,9 @@ import java.util.List;
  * An Academic Term that holds a list of courses and their credits for a specific Term
  * The AcademicTerm class is responsible for:
  * * Holding and returning courses in a given term
- * * <...>
- * * <...>
- * * <...>
  * Modification Log:
  * * File Created by poptilec on Sunday, 25 April 2021
+ * * Refactor to use Curriculum Items instead of only Courses
  * <p>
  * Copyright (C): TBD
  *
@@ -32,20 +30,20 @@ import java.util.List;
  */
 
 public class AcademicTerm {
-    private String name;
-    private Term term;
+    private final String name;
+    private final Term term;
     private int numberOfCourses;
     private int numberOfCredits;
     private int avgCreditsPerCourse;
-    private List<Course> courses = new ArrayList<>();
+    private List<CurriculumItem> courses = new ArrayList<>();
 
     /**
      * Method creates a new Academic Term.
      *
      * @@author : poptilec
      * @since : Tue, 27 Apr 2021
-     * @param name name of academic term
-     * @param term term of academic term
+     * @param name name of academic term (EX: 'Winter 2020' or 'Winter Junior Year')
+     * @param term term of academic term (EX: 'Winter', 'Fall', 'Spring')
      */
     public AcademicTerm(String name, Term term){
         this.name = name;
@@ -64,9 +62,13 @@ public class AcademicTerm {
      * @since : Tue, 27 Apr 2021
      * @param course course to be added
      */
-    public void addCourse(Course course){
+    public void addItems(CurriculumItem course){
         courses.add(course);
-        numberOfCredits+=course.credits();
+        if (course instanceof Elective) {
+            numberOfCredits += 3;
+        } else if (course instanceof Course) {
+            numberOfCredits += ((Course) course).credits();
+        }
         numberOfCourses++;
         updateAverageCredits();
     }
@@ -83,9 +85,14 @@ public class AcademicTerm {
      * @since : Tue, 27 Apr 2021
      * @param course course to be added
      */
-    public void removeCourse(Course course){
+    public void removeCourse(CurriculumItem course){
         courses.remove(course);
-        numberOfCredits -= course.credits();
+        if (course instanceof Elective) {
+            numberOfCredits -= 3;
+        } else if (course instanceof Course) {
+            numberOfCredits -= ((Course) course).credits();
+        }
+
         numberOfCourses--;
         updateAverageCredits();
     }
@@ -101,8 +108,13 @@ public class AcademicTerm {
     public String getCourses() throws CustomExceptions.InvalidInputException {
         StringBuilder builder = new StringBuilder();
         if (!courses.isEmpty()) {
-            for (Course course : courses) {
-                builder.append(Manipulators.getCourseAsString(course));
+            for (CurriculumItem course : courses) {
+                if (course instanceof Elective) {
+                    builder.append(Manipulators.getElectiveAsString((Elective) course));
+                } else if (course instanceof Course) {
+                    builder.append(Manipulators.getCourseAsString((Course) course));
+                }
+
             }
         } else {
             return "No courses found for Academic Term: " + name;
@@ -133,8 +145,12 @@ public class AcademicTerm {
     private void updateAverageCredits(){
         int credits = 0;
         int numCourses = 0;
-        for (Course course: courses){
-            credits += course.credits();
+        for (CurriculumItem course: courses){
+            if (course instanceof Elective) {
+                credits += 3;
+            } else if (course instanceof Course) {
+                credits += ((Course) course).credits();
+            }
             numCourses++;
         }
         avgCreditsPerCourse = credits/numCourses;

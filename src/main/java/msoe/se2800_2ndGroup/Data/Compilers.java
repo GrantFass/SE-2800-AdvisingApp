@@ -31,6 +31,7 @@ import java.util.logging.Logger;
  * * Add method to only get courses with satisfied prerequisites by Grant Fass on Thu, 22 Apr 2021
  * * Fix output of duplicate course codes in course recommendations due to electives being satisfied by Grant Fass on Thu, 22 Apr 2021
  * * Throw exception on bad prerequisite graph course code by Hunter Turcin on Mon, 26 Apr 2021
+ * * Began implementation to compile graduation plans by Grant Fass on Wed, 5 May 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -262,5 +263,43 @@ public class Compilers {
         final var graph = GraphMaker.getGraph(course, Data.getPrerequisiteCourses());
 
         return graph.getStringGraph();
+    }
+
+    public static List<AcademicTerm> generateGraduationPlan(int averageCreditsPerTerm, int creditTolerance) throws InvalidInputException {
+        final int minCredits = Math.max(averageCreditsPerTerm - creditTolerance, 12);
+        final int maxCredits = Math.min(averageCreditsPerTerm + creditTolerance, 19);
+        List<AcademicTerm> graduationPlan = new ArrayList<>();
+        List<CurriculumItem> fullCurriculum = getCurriculaExcludingCompletedCourses(new ArrayList<>());
+        List<CurriculumItem> fallCourses = getUnsatisfiedCurriculumItemsForSpecifiedTerm(getCourseOfferings(true, false, false), fullCurriculum);
+        List<CurriculumItem> winterCourses = getUnsatisfiedCurriculumItemsForSpecifiedTerm(getCourseOfferings(false, true, false), fullCurriculum);
+        List<CurriculumItem> springCourses = getUnsatisfiedCurriculumItemsForSpecifiedTerm(getCourseOfferings(false, false, true), fullCurriculum);
+
+        //TODO: do this for each of the 3 terms
+        //TODO: move this to a method
+        int termCount = 1;
+        AcademicTerm temp = new AcademicTerm("Fall " + termCount, Term.FALL);
+        while (!fallCourses.isEmpty()) {
+            //pop course off top
+            CurriculumItem item = fallCourses.remove(0);
+
+            //add the popped course to the current term. //TODO: check if this should be done first, also check that the final course term is added
+            temp.addItems(item);
+            //create new term based on if full or not EX: fall 1
+            if (temp.getNumberOfCredits() <= maxCredits && temp.getNumberOfCredits() >= minCredits) {
+                //if within full range then add current term to graduation plan and create the next term to add courses to
+                graduationPlan.add(temp);
+                termCount++;
+                temp = new AcademicTerm("Fall " + termCount, Term.FALL);
+            }
+        }
+
+        //TODO: sort terms by fall, winter, spring and number so ordered correctly.
+
+        /*
+        can probably do something like pop each item off top of the items list, verify what term its in, add it to that term till full then move to following year
+         */
+
+
+        return graduationPlan;
     }
 }
