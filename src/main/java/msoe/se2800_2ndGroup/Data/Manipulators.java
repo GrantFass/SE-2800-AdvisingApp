@@ -2,10 +2,7 @@ package msoe.se2800_2ndGroup.Data;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
-import msoe.se2800_2ndGroup.models.Course;
-import msoe.se2800_2ndGroup.models.CurriculumItem;
-import msoe.se2800_2ndGroup.models.Elective;
-import msoe.se2800_2ndGroup.models.Offering;
+import msoe.se2800_2ndGroup.models.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,6 +25,8 @@ import java.util.logging.Logger;
  * Modification Log:
  * * File Created by Grant on Thursday, 22 April 2021
  * * Moved static data manipulation methods from Model.java to Manipulators.java by Grant Fass on Thu, 22 Apr 2021
+ * * Add methods to output short versions of courses, electives, and curriculum items as strings by Grant Fass on Wed, 5 May 2021
+ * * Add method to output entire list of Academic Terms as a string by Grant Fass on Wed, 5 May 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -61,6 +60,23 @@ public class Manipulators {
     }
 
     /**
+     * this method automatically determines if the curriculum item is a course or an elective and returns the proper
+     * short string based on that.
+     * @param item the item to convert to a string
+     * @return the item as a short string of the code and number of credits
+     * @throws CustomExceptions.InvalidInputException if the item was null
+     * @author : Grant Fass
+     * @since : Wed, 5 May 2021
+     */
+    public static String getCurriculumItemAsShortString(CurriculumItem item) throws CustomExceptions.InvalidInputException {
+        if (item instanceof Elective) {
+            return getElectiveAsShortString((Elective) item);
+        } else {
+            return getCourseAsShortString((Course) item);
+        }
+    }
+
+    /**
      * this method extracts the important information from a given course and returns a string containing the values
      * <p>
      * this method uses string formatting to display a passed course in a readable format.
@@ -83,6 +99,28 @@ public class Manipulators {
     }
 
     /**
+     * this method extracts the important information from a given course and returns a string containing the values
+     * <p>
+     * this method uses string formatting to display a passed course in a readable format.
+     * The format is CODE | CREDITS
+     *
+     * @param course the course to extract information from
+     * @return a courses information in string format
+     * @throws CustomExceptions.InvalidInputException if the course was null
+     * @author : Grant Fass
+     * @since : Tue, 13 Apr 2021
+     */
+    public static String getCourseAsShortString(Course course) throws CustomExceptions.InvalidInputException {
+        if (course == null) {
+            LOGGER.warning("The input course to convert to string was null");
+            throw new CustomExceptions.InvalidInputException("The input course was null");
+        }
+        String output = String.format("%10s | %3s", course.code(), course.credits());
+        LOGGER.finest("Converting Course: " + output);
+        return output + "\n";
+    }
+
+    /**
      * this method extracts the important information from a given elective and returns a string containing the values
      * <p>
      * This method outputs the values for an elective in a readable format using the same formatting specifications
@@ -100,6 +138,28 @@ public class Manipulators {
             throw new CustomExceptions.InvalidInputException("The input elective was null");
         }
         String output = String.format("%10s %3s | %50s : %s", elective.getCode(), "?", "Elective Course Choice", "See Academic Catalog");
+        LOGGER.finest("Converting Elective: " + output);
+        return output + "\n";
+    }
+
+    /**
+     * this method extracts the important information from a given elective and returns a string containing the values
+     * <p>
+     * This method outputs the values for an elective in a readable format using the same formatting specifications
+     * as the getCourseAsShortString method. Only returns the course code and the number of credits
+     *
+     * @param elective the elective to extract information from
+     * @return an electives information in string format
+     * @throws CustomExceptions.InvalidInputException if the elective was null
+     * @author : Grant Fass
+     * @since : Wed, 5 May 2021
+     */
+    public static String getElectiveAsShortString(Elective elective) throws CustomExceptions.InvalidInputException {
+        if (elective == null) {
+            LOGGER.warning("The input elective to convert to string was null");
+            throw new CustomExceptions.InvalidInputException("The input elective was null");
+        }
+        String output = String.format("%10s | %3s", elective.getCode(), "3-4");
         LOGGER.finest("Converting Elective: " + output);
         return output + "\n";
     }
@@ -197,5 +257,20 @@ public class Manipulators {
      */
     public static String standardizeCourse(String course) {
         return course.toUpperCase().replaceAll("[^a-zA-Z0-9]", "").trim();
+    }
+
+    /**
+     * method used to convert the graduation plan list to a string
+     * @param graduationPlan the plan to convert
+     * @return the plan as a string
+     * @author : Grant Fass
+     * @since : Wed, 5 May 2021
+     */
+    public static String getGraduationPlanAsString(List<AcademicTerm> graduationPlan) {
+        StringBuilder builder = new StringBuilder();
+        for (AcademicTerm term: graduationPlan) {
+            builder.append(term).append("\n");
+        }
+        return builder.toString();
     }
 }

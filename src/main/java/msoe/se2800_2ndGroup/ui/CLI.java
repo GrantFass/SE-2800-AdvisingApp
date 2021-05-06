@@ -1,16 +1,17 @@
 package msoe.se2800_2ndGroup.ui;
 
-import msoe.se2800_2ndGroup.Data.Data;
+import msoe.se2800_2ndGroup.Data.Compilers;
 import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
-import msoe.se2800_2ndGroup.FileIO.CourseDataIO;
 import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
+import msoe.se2800_2ndGroup.models.AcademicTerm;
 import msoe.se2800_2ndGroup.models.Course;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -133,7 +134,7 @@ public class CLI {
                         System.out.println("Enter course codes to output separated by spaces (EX: BA1220 BA3444 SE2800): ");
                         String[] strings = in.nextLine().split("\\W");
                         ArrayList<Course> output = new ArrayList<>();
-                        for(String s: strings) {
+                        for (String s : strings) {
                             output.add(new Course(Manipulators.standardizeCourse(s)));
                         }
                         Model.storeCustomUnofficialTranscript("./out", output);
@@ -153,6 +154,13 @@ public class CLI {
                         final var graph = Model.getCourseGraph(code);
                         System.out.println(graph);
                         LOGGER.log(Level.FINE, "Prerequisite Graph Generated: \n" + graph, graph);
+                    }
+                    case "view graduation plan" -> {
+                        LOGGER.fine("Generating graduation plan for 16 +-2 credits");
+                        List<AcademicTerm> graduationPlan = Compilers.generateGraduationPlan(16, 2);
+                        System.out.format("Graduation Plan for %d - %d credit target per term:\n", 14, 18);
+                        System.out.println(Manipulators.getGraduationPlanAsString(graduationPlan));
+                        LOGGER.info("Graduation plan generated");
                     }
                 }
             } catch (CustomExceptions.InvalidInputException | IOException | NullPointerException e) {
