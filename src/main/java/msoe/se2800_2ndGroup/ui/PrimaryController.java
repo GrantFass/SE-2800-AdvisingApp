@@ -206,22 +206,22 @@ public class PrimaryController extends Controller {
      */
     public void storeCustomTranscript() {
         //gather courses
-        ArrayList<Course> output = new ArrayList<>();
-        int size = courseTableView.getItems().size();
-        TableColumn<Course, ?> columnZero = courseTableView.getColumns().get(0);
-        for (int i = 0; i < size; i++) {
-            Course course = courseTableView.getItems().get(i);//gets the course at the index
-            if ( course != null && ((SimpleBooleanProperty) columnZero.getCellObservableValue(i)).getValue()) {
-                output.add(course);
-            }
-        }
+//        ArrayList<Course> output = new ArrayList<>();
+//        int size = courseTableView.getItems().size();
+//        TableColumn<Course, ?> columnZero = courseTableView.getColumns().get(0);
+//        for (int i = 0; i < size; i++) {
+//            Course course = courseTableView.getItems().get(i);//gets the course at the index
+//            if ( course != null && ((SimpleBooleanProperty) columnZero.getCellObservableValue(i)).getValue()) {
+//                output.add(course);
+//            }
+//        }
 
         //outputCourses
         File outputLocation = getDirectoryLocation("Select Location to Store Custom Transcript.PDF");
         if (!outputLocation.toString().equals("")) {
             Model.ensureFXThread(() -> {
                 try {
-                    Model.storeCustomUnofficialTranscript(outputLocation.getAbsolutePath(), output);
+                    Model.storeCustomUnofficialTranscript(outputLocation.getAbsolutePath(), Data.getCheckedCourses());
                     displayAlert(Alert.AlertType.INFORMATION, "Success", "File Write", "Successfully wrote file to: " + outputLocation);
                     AdvisingLogger.getLogger().info("Successfully wrote file to: " + outputLocation + "\n");
                 } catch (IOException e) {

@@ -50,6 +50,7 @@ public class Data {
     public static Collection<Curriculum> curricula;
     public static Collection<Course> prerequisiteCourses;
     public static ArrayList<Course> transcriptCourses = new ArrayList<>();
+    public static ArrayList<Course> checkedCourses = new ArrayList<>();
     public static Collection<Offering> offerings;
     
     private static Collection<CourseCheckedBooleanProperty> uiProperties = new ArrayList<>();
@@ -113,6 +114,14 @@ public class Data {
     public static ArrayList<Course> getTranscriptCourses() {
         return transcriptCourses;
     }
+
+    /**
+     * this method returns the list of all checked courses when called.
+     * @return the checked courses
+     * @author : Grant Fass
+     * @since : Thu, 6 May 2021
+     */
+    public static ArrayList<Course> getCheckedCourses() { return checkedCourses; }
 
     /**
      * Set the loaded transcript course list.
@@ -239,7 +248,7 @@ public class Data {
      * @since : Mon, 3 May 2021
      */
     public static boolean isCourseChecked(Course course) {
-        return getTranscriptCourses().contains(course);
+        return getCheckedCourses().contains(course);
     }
 
     /**
@@ -252,9 +261,9 @@ public class Data {
      */
     public static void setCourseChecked(Course course, boolean checked) {
         if (checked) {
-            getTranscriptCourses().add(course);
+            getCheckedCourses().add(course);
         } else {
-            getTranscriptCourses().remove(course);
+            getCheckedCourses().remove(course);
         }
     }
 
