@@ -2,6 +2,7 @@ package msoe.se2800_2ndGroup;
 
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import msoe.se2800_2ndGroup.UI.Controller;
 import msoe.se2800_2ndGroup.models.Course;
 import msoe.se2800_2ndGroup.models.Term;
 
@@ -10,6 +11,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -36,25 +38,6 @@ import java.util.HashSet;
  * @since : Wednesday, 28 April 2021
  */
 public class FutureCourseEnrollment {
-    //Best to moved elsewhere, but unsure where at the moment
-    //Will ask team tomorrow
-
-    /**
-     * This method allows the user to select multiple
-     * PDF transcript files for upload
-     * @author : Teresa Toohill
-     * @since : Wed, 28 Apr 2021
-     */
-    public void readInMultipleFiles(){
-        //get all .pdf files in a directory
-        System.out.println("Please select multiple transcripts for" +
-                "Future Course Enrollment:");
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select All Files Desired");
-        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("All Files", "*"));
-        //load all of the pdf files and put their courses into one big arraylist
-        //ArrayList<File> files = fileChooser.showOpenMultipleDialog(stage);
-    }
 
     /**
      * Sorts arraylist alphabetically
@@ -79,55 +62,35 @@ public class FutureCourseEnrollment {
         return newCourseList;
     }
 
+
+    /**
+     * Builds a Hashset
+     * @author : Teresa Toohill
+     * @since : Wed, 5 May 2021
+     */
     private HashSet<Course> oneForEachCourse(ArrayList<Course> courses){
         //Create a HashSet based on the arraylist (only contains one of each course)
         HashSet<Course> hashSet = new HashSet<>();
-        courses.forEach(course ->
-        {
-            hashSet.add(course);
-        });
+        for(int i = 0; i < courses.size(); i++){
+            hashSet.add(courses.get(i));
+        }
         return hashSet;
     }
 
     /**
-     * This method gets the projected
-     * enrollment for one course for one term
+     * Gets the number of occurrences
      * @author : Teresa Toohill
-     * @since : Wed, 28 Apr 2021
+     * @since : Wed, 5 May 2021
      */
-    public Course getOneTermEnrollmentForOneCourse(){
-        Course course = new Course("MA 000");
-        return course;
+    public HashSet<String> sumOccurences(HashSet<Course> courses){
+        //tack on the values to the courses in the hashset or do
+        // the hash set as strings and append String.format("\n Occurances: number")
+        HashSet<String> occurences = new HashSet<String>();
+        for(Course course : courses){
+            int num = -1;
+            num += Collections.frequency(courses, course);
+            occurences.add("\n Occurances: " + num);
+        }
+        return occurences;
     }
-
-    /**
-     * This method gets the projected
-     * enrollment for one course for multiple terms
-     * @author : Teresa Toohill
-     * @since : Wed, 28 Apr 2021
-     */
-    public ArrayList<Course> getOneTermEnrollment(){
-        ArrayList<Course> courses = new ArrayList<>();
-        return courses;
-    }
-
-    /**
-     * Get term preference
-     * @author : Teresa Toohill
-     * @since : Wed, 28 Apr 2021
-     */
-    public ArrayList<Term> getTermPreference(){
-        ArrayList<Term> terms = new ArrayList<>();
-        return terms;
-    }
-
-    /**
-     * Enrollment counts
-     * @author : Teresa Toohill
-     * @since : Wed, 28 Apr 2021
-     */
-    public int getEnrollmentCounts(ArrayList<Course> courses){
-        return courses.size();
-    }
-
 }
