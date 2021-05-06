@@ -1,19 +1,27 @@
 package msoe.se2800_2ndGroup.ui;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
 import msoe.se2800_2ndGroup.models.Elective;
 import msoe.se2800_2ndGroup.models.NullPrerequisite;
+import msoe.se2800_2ndGroup.models.Offering;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -170,4 +178,57 @@ public class PrimaryController extends Controller {
         super.switchTo("secondary");
     }
 
+    /**
+     * method used to display all of the courses in the program to the course table view.
+     * This is most commonly used for selecting which courses to export as a custom transcript
+     * @author : Grant Fass
+     * @since : Mon, 3 May 2021
+     */
+    @FXML
+    public void displayAllCourses() {
+        try {
+            Data.verifyOfferings();
+            final ObservableList<Course> courses = FXCollections.<Course>observableArrayList();
+            for (Offering o: Data.getOfferings()) {
+                courses.add(o.course());
+            }
+            AdvisingLogger.getLogger().info("displaying all courses to table.");
+            courseTableView.setItems(courses);
+        } catch (CustomExceptions.InvalidInputException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method will store all of the courses that are selected in the table view to a transcript output
+     * @author : Grant Fass
+     * @since : Mon, 3 May 2021
+     */
+    public void storeCustomTranscript() {
+        //gather courses
+        ArrayList<Course> output = new ArrayList<>();
+        int size = courseTableView.getItems().size();
+        TableColumn<Course, ?> columnZero = courseTableView.getColumns().get(0);
+        for (int i = 0; i < size; i++) {
+            Course course = courseTableView.getItems().get(i);//gets the course at the index
+            if ( course != null && ((SimpleBooleanProperty) columnZero.getCellObservableValue(i)).getValue()) {
+                output.add(course);
+            }
+        }
+
+        //outputCourses
+        File outputLocation = getDirectoryLocation("Select Location to Store Custom Transcript.PDF");
+        if (!outputLocation.toString().equals("")) {
+            Model.ensureFXThread(() -> {
+                try {
+                    Model.storeCustomUnofficialTranscript(outputLocation.getAbsolutePath(), output);
+                    displayAlert(Alert.AlertType.INFORMATION, "Success", "File Write", "Successfully wrote file to: " + outputLocation);
+                    AdvisingLogger.getLogger().info("Successfully wrote file to: " + outputLocation + "\n");
+                } catch (IOException e) {
+                    displayAlert(Alert.AlertType.ERROR, "IOException", "Exception", "IOException occurred writing file to: " + outputLocation);
+                    AdvisingLogger.getLogger().warning("IOException occurred reading writing file to: " + outputLocation + "\n" + Arrays.toString(e.getStackTrace()));
+                }
+            });
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package msoe.se2800_2ndGroup.ui;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -55,7 +54,7 @@ public class CourseTableView extends TableView<Course> {
 
     /**
      * Setup the columns for the course table view.
-     *
+     * <p>
      * This allows Course to be displayed as a TableView despite not being made
      * using JavaFX properties.
      *
@@ -68,18 +67,17 @@ public class CourseTableView extends TableView<Course> {
         final var creditsColumn = new TableColumn<Course, Integer>("Credits");
         final var prerequisiteColumn = new TableColumn<Course, String>("Prerequisite");
         final var descriptionColumn = new TableColumn<Course, String>("Description");
-
         checkColumn.setCellValueFactory(
                 cell -> new CourseCheckedBooleanProperty(cell.getValue()));
         checkColumn.setCellFactory(CheckBoxTableCell.forTableColumn(checkColumn));
         codeColumn.setCellValueFactory(
-                cell -> new ReadOnlyObjectWrapper<>(cell.getValue().code()));
+                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(cell.getValue().code()) : null);
         creditsColumn.setCellValueFactory(
-                cell -> new ReadOnlyObjectWrapper<>(cell.getValue().credits()));
+                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(cell.getValue().credits()) : null);
         prerequisiteColumn.setCellValueFactory(
-                cell -> new ReadOnlyObjectWrapper<>(cell.getValue().prerequisite().toString()));
+                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(cell.getValue().prerequisite().toString()) : null);
         descriptionColumn.setCellValueFactory(
-                cell -> new ReadOnlyObjectWrapper<>(cell.getValue().description()));
+                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(cell.getValue().description()) : null);
 
         setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
         setEditable(true); // only allows checking, not editing course
