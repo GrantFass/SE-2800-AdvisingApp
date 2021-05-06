@@ -2,8 +2,9 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
+<?import msoe.se2800_2ndGroup.ui.CourseTableView?>
 <VBox spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="msoe.se2800_2ndGroup.UI.PrimaryController">
+      fx:controller="msoe.se2800_2ndGroup.ui.PrimaryController">
 <!--   <padding>-->
 <!--      <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>-->
 <!--   </padding>-->
@@ -14,7 +15,8 @@
          <MenuItem mnemonicParsing="false" onAction="#close" text="Exit Program"/>
          <MenuItem mnemonicParsing="false" onAction="#loadTranscript" text="Load Transcript"/>
          <MenuItem mnemonicParsing="false" onAction="#loadCourseData" text="Load Course Data"/>
-         <MenuItem mnemonicParsing="false" onAction="#storeTranscript" text="Store Transcript"/>
+         <MenuItem mnemonicParsing="false" onAction="#storeTranscript" text="Store Default Transcript"/>
+         <MenuItem mnemonicParsing="false" onAction="#storeCustomTranscript" text="Store Custom Transcript Of Selected Courses"/>
       </Menu>
       <!-- https://stackoverflow.com/questions/57911107/javafx-togglegroup-not-functioning-properly-with-accelerators-radiomenuitem -->
       <!-- Major Selection Radio Button Menu -->
@@ -36,6 +38,7 @@
       <Menu mnemonicParsing="false" text="Data Manipulation">
          <MenuItem mnemonicParsing="false" onAction="#viewCourseOfferings" text="View Course Offerings"/>
          <MenuItem mnemonicParsing="false" onAction="#getCourseRecommendations" text="Get Course Recommendations"/>
+         <MenuItem mnemonicParsing="false" onAction="#displayAllCourses" text="Display All Courses"/>
 <!--         <MenuItem mnemonicParsing="false" onAction="#viewPrerequisiteGraph" text="View Graph of Prerequisites"/>-->
       </Menu>
       <Menu mnemonicParsing="false" text="Help">
@@ -44,7 +47,7 @@
    </MenuBar>
 
    <Label VBox.vgrow="SOMETIMES" maxHeight="40" fx:id="mainLabel"/>
-   <ListView fx:id="mainListView" VBox.vgrow="ALWAYS" style="-fx-font-family: 'Courier New'"/>
+   <CourseTableView fx:id="courseTableView" />
 
    <Button alignment="CENTER" VBox.vgrow="SOMETIMES" maxHeight="40" text="Switch to Graph Window" onAction="#switchToSecondary"/>
 </VBox>

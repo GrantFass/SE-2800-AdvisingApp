@@ -1,4 +1,4 @@
-package msoe.se2800_2ndGroup.UI;
+package msoe.se2800_2ndGroup.ui;
 
 import msoe.se2800_2ndGroup.Data.Compilers;
 import msoe.se2800_2ndGroup.Data.Manipulators;
@@ -6,8 +6,10 @@ import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.AcademicTerm;
+import msoe.se2800_2ndGroup.models.Course;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -103,7 +105,7 @@ public class CLI {
                     case "get course recommendation" -> {
                         HashMap<String, Boolean> terms = getTerms(in);
                         LOGGER.fine("Getting Course Recommendations");
-                        String output = Model.getCourseRecommendation(terms.get("fall"), terms.get("winter"), terms.get("spring"));
+                        String output = Model.getCourseRecommendationAsString(terms.get("fall"), terms.get("winter"), terms.get("spring"));
                         System.out.println(output);
                         LOGGER.log(Level.FINE, "Output Course Recommendations: \n" + output, output);
                     }
@@ -124,8 +126,19 @@ public class CLI {
                         LOGGER.fine(String.format("The prerequisites for the course of code: %s are: %s", course, prerequisites));
                     }
                     case "store pdf" -> {
-                        LOGGER.fine("Storing unofficial transcript");
+                        LOGGER.fine("Storing unofficial transcript to application output directory");
                         Model.storeUnofficialTranscript();
+                    }
+                    case "store custom pdf" -> {
+                        LOGGER.fine("Storing custom unofficial transcript");
+                        System.out.println("Enter course codes to output separated by spaces (EX: BA1220 BA3444 SE2800): ");
+                        String[] strings = in.nextLine().split("\\W");
+                        ArrayList<Course> output = new ArrayList<>();
+                        for (String s : strings) {
+                            output.add(new Course(Manipulators.standardizeCourse(s)));
+                        }
+                        Model.storeCustomUnofficialTranscript("./out", output);
+                        LOGGER.fine("Stored custom unofficial transcript of " + output.size() + " courses to application output directory");
                     }
                     case "view course offerings" -> {
                         HashMap<String, Boolean> terms = getTerms(in);

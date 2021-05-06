@@ -1,4 +1,4 @@
-package msoe.se2800_2ndGroup.UI;
+package msoe.se2800_2ndGroup.ui;
 
 import static javafx.scene.control.Alert.AlertType.ERROR;
 
@@ -76,7 +76,13 @@ public class SecondaryController extends Controller {
             mainLabel.setText("Viewing Prerequisite Graph:");
             String code = Manipulators.standardizeCourse(mainSearchBar.getText());
             try {
-                mainTextArea.setText(Model.getCourseGraph(code));
+                final var graph = Model.getCourseGraph(code);
+                final var text = graph + "\n\n"
+                                 + "A course depends on the indented courses underneath it.\n"
+                                 + "All & courses must be taken to take the parent course.\n"
+                                 + "Only one | course must be taken to take the parent course.\n"
+                                 + "There is nothing special about + courses.";
+                mainTextArea.setText(text);
             } catch (CustomExceptions.InvalidInputException e) {
                 displayAlert(ERROR, "Unknown course", "Unknown course", "There is no course for this code");
             }
