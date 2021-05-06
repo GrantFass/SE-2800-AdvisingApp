@@ -22,6 +22,8 @@ import java.util.List;
  * Modification Log:
  * * File Created by poptilec on Sunday, 25 April 2021
  * * Refactor to use Curriculum Items instead of only Courses
+ * * fix division by zero in credit averaging and fix to_string to no longer use octal values by Grant Fass on Wed, 5 May 2021
+ * * Update the listing of courses as strings by Grant Fass on Wed, 5 May 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -34,7 +36,7 @@ public class AcademicTerm {
     private final Term term;
     private int numberOfCourses;
     private int numberOfCredits;
-    private int avgCreditsPerCourse;
+    private double avgCreditsPerCourse;
     private List<CurriculumItem> courses = new ArrayList<>();
 
     /**
@@ -109,12 +111,7 @@ public class AcademicTerm {
         StringBuilder builder = new StringBuilder();
         if (!courses.isEmpty()) {
             for (CurriculumItem course : courses) {
-                if (course instanceof Elective) {
-                    builder.append(Manipulators.getElectiveAsString((Elective) course));
-                } else if (course instanceof Course) {
-                    builder.append(Manipulators.getCourseAsString((Course) course));
-                }
-
+                builder.append(Manipulators.getCurriculumItemAsShortString(course));
             }
         } else {
             return "No courses found for Academic Term: " + name;
@@ -134,7 +131,7 @@ public class AcademicTerm {
         return numberOfCourses;
     }
 
-    public int getAvgCreditsPerCourse(){
+    public double getAvgCreditsPerCourse(){
         return avgCreditsPerCourse;
     }
 
@@ -153,13 +150,18 @@ public class AcademicTerm {
             }
             numCourses++;
         }
-        avgCreditsPerCourse = credits/numCourses;
+        if (numCourses == 0) {
+            avgCreditsPerCourse = 0;
+        } else {
+            avgCreditsPerCourse = credits/(double)numCourses;
+        }
+
     }
 
     @Override
     public String toString() {
         try {
-            return String.format("Name %s \n Term %s \n Number of Courses: %o \n Number of Credits: %o \n Average Credits per Course: %o \n List of Course: \n %s",
+            return String.format("Name %s\nTerm %s\nNumber of Courses: %d\nNumber of Credits: %d\nAverage Credits per Course: %.2f\nList of Courses:\n%s",
                     name, term.season(), numberOfCourses, numberOfCredits, avgCreditsPerCourse, getCourses());
         } catch (CustomExceptions.InvalidInputException e) {
             e.printStackTrace();
