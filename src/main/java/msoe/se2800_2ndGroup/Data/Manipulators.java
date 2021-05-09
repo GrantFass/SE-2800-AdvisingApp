@@ -117,7 +117,7 @@ public class Manipulators {
         }
         String output = String.format("%10s | %3s", course.code(), course.credits());
         LOGGER.finest("Converting Course: " + output);
-        return output + "\n";
+        return output;
     }
 
     /**
@@ -161,7 +161,7 @@ public class Manipulators {
         }
         String output = String.format("%10s | %3s", elective.getCode(), "3-4");
         LOGGER.finest("Converting Elective: " + output);
-        return output + "\n";
+        return output;
     }
 
     /**

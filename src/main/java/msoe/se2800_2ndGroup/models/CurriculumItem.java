@@ -17,12 +17,14 @@ package msoe.se2800_2ndGroup.models;
  * Modification Log:
  *     - File Created by Hunter Turcin on 2021-03-16
  *     - code cleanup from group feedback by Hunter Turcin on 2021-04-18
+ *     - Changed to extend the comparable interface so that default comparison can be overridden
+ * by Grant Fass on Sun, 9 May 2021
  * Copyright (C): 2021
  *
  * @author : Hunter Turcin
  * @since : Tue, 16 Mar 2021
  */
-public interface CurriculumItem {
+public interface CurriculumItem extends Comparable<CurriculumItem> {
     /**
      * Determine if a singular course satisfies this item in the curriculum.
      *

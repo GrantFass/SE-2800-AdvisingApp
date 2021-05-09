@@ -19,6 +19,7 @@ package msoe.se2800_2ndGroup.models;
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  *     - code cleanup from group feedback by Hunter Turcin on 2021-04-18
+ *     - Override comparison by Grant Fass on Sun, 9 May 2021
  * Copyright (C): 2021
  *
  * @author : Hunter Turcin
@@ -45,5 +46,38 @@ public record Course(String code, int credits, Prerequisite prerequisite, String
     @Override
     public boolean satisfiedBy(Course course) {
         return code.equals(course.code);
+    }
+
+    /**
+     * Compares this object with the specified object for order.  Returns a
+     * negative integer, zero, or a positive integer as this object is less
+     * than, equal to, or greater than the specified object.
+     *
+     * This method overrides the default comparison. if the item being compared is an elective
+     * than it is automatically lesser, otherwise the value fo the comparison of the codes is
+     * returned.
+     *
+     * Sources:
+     *      *  <a href="#{@link}">{@link "https://www.geeksforgeeks
+     *      *  .org/how-to-override-compareto-method-in-java/"}</a>: Help overriding comparison
+     *      *
+     *
+     * @param o the object to be compared.
+     * @return a negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     * @throws NullPointerException if the specified object is null
+     * @throws ClassCastException   if the specified object's type prevents it
+     *                              from being compared to this object.
+     * @author : Grant Fass
+     * @since : Sun, 9 May 2021
+     */
+    @Override
+    public int compareTo(CurriculumItem o) {
+        if (o instanceof Elective) {
+            //o is Lesser
+            return -1;
+        } else {
+            return this.code.compareTo(((Course) o).code);
+        }
     }
 }
