@@ -178,12 +178,21 @@ public class CLI {
                         LOGGER.log(Level.FINE, "Prerequisite Graph Generated: \n" + graph, graph);
                     }
                     case "view graduation plan" -> {
-                        LOGGER.fine("Generating graduation plan for 16 +-2 credits");
+                        System.out.println("Enter the target number of credits and the tolerance " +
+                                           "to generate the graduation plan with. IE: '16 2' will" +
+                                           " generate a graduation plan for 14 to 18 credits per " +
+                                           "Academic term.");
+                        String[] s = in.nextLine().split(" ");
+                        int target = Integer.parseInt(s[0]);
+                        int tolerance = Integer.parseInt(s[1]);
+                        LOGGER.fine(String.format("Generating graduation plan for %d +-%d " +
+                                                  "credits", target, tolerance));
                         List<AcademicTerm> graduationPlan = GraduationPlanCompiler
-                                .generateGraduationPlanVersion2(16, 2);
+                                .generateGraduationPlanVersion2(target, tolerance);
                         System.out
-                                .format("Graduation Plan for %d - %d credit target per term:\n", 14,
-                                        18);
+                                .format("Graduation Plan for %d - %d credit target per term:\n",
+                                        target - tolerance,
+                                        target + tolerance);
                         System.out.println(Manipulators.getGraduationPlanAsString(graduationPlan));
                         LOGGER.info("Graduation plan generated");
                     }
