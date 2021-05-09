@@ -236,16 +236,19 @@ public class PrimaryController extends Controller {
     @FXML
     public void storeCourseRecommendations() {
         final var directory = getDirectoryLocation("Select Location to Store Course Recommendations");
+        final var fall = fallTermSelection.isSelected();
+        final var winter = winterTermSelection.isSelected();
+        final var spring = springTermSelection.isSelected();
 
         if (!directory.toString().isEmpty()) {
             Model.ensureFXThread(() -> {
                 try {
-                    Model.storeCourseRecommendations(directory.getAbsolutePath(), Data.getCheckedCourses());
+                    Model.storeCourseRecommendations(directory.getAbsolutePath(), fall, winter, spring);
                     displayAlert(Alert.AlertType.INFORMATION, "Success", "File Write", "Successfully wrote file to: " + directory);
                     AdvisingLogger.getLogger().info("Successfully wrote file to: " + directory + "\n");
-                } catch (IOException e) {
-                    displayAlert(Alert.AlertType.ERROR, "IOException", "Exception", "IOException occurred writing file to: " + directory);
-                    AdvisingLogger.getLogger().warning("IOException occurred reading writing file to: " + directory + "\n" + Arrays.toString(e.getStackTrace()));
+                } catch (IOException | CustomExceptions.InvalidInputException e) {
+                    displayAlert(Alert.AlertType.ERROR, "Exception", "Exception", "Exception occurred writing file to: " + directory);
+                    AdvisingLogger.getLogger().warning("Exception occurred reading writing file to: " + directory + "\n" + Arrays.toString(e.getStackTrace()));
                 }
             });
         }

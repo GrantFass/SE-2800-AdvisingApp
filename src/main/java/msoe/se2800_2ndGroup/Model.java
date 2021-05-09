@@ -6,6 +6,7 @@ import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.FileIO.CourseDataIO;
+import msoe.se2800_2ndGroup.FileIO.RecommendationsIO;
 import msoe.se2800_2ndGroup.FileIO.TranscriptIO;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
@@ -204,10 +205,11 @@ public class Model {
 
     //endregion
 
-    public static void storeCourseRecommendations(String directory, ArrayList<Course> courses) throws IOException {
+    public static void storeCourseRecommendations(String directory, boolean fall, boolean winter, boolean spring) throws IOException, CustomExceptions.InvalidInputException {
         final var location = String.format("%s\\CourseRecommendations-(%tF).pdf", directory, System.currentTimeMillis());
         LOGGER.finer("Saving current course recommendations at: " + location);
-        LOGGER.warning("TODO: implement me");
+        final var recommendations = getCourseRecommendation(fall, winter, spring);
+        RecommendationsIO.write(recommendations, location);
     }
 
     /**
