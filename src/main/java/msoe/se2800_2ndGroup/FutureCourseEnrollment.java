@@ -44,11 +44,12 @@ public class FutureCourseEnrollment {
      * @author : Teresa Toohill
      * @since : Wed, 28 Apr 2021
      */
-    private ArrayList<Course> sort(ArrayList<Course> courses){
+    public ArrayList<Course> sort(ArrayList<Course> courses){
         //Converts passed in array to a string array for sorting alphabetically
-        ArrayList<String> courseSort = new ArrayList<>();
+        ArrayList<String> courseSort = new ArrayList<String>();
+        ArrayList<Integer> numberSort = new ArrayList<Integer>();
         for(int i = 0; i < courses.size(); i++){
-            courseSort.add(courses.get(i).toString());
+            courseSort.add(courses.get(i).code());
         }
 
         ArrayList<Course> newCourseList = new ArrayList<>();
@@ -68,7 +69,7 @@ public class FutureCourseEnrollment {
      * @author : Teresa Toohill
      * @since : Wed, 5 May 2021
      */
-    private HashSet<Course> oneForEachCourse(ArrayList<Course> courses){
+    public HashSet<Course> oneForEachCourse(ArrayList<Course> courses){
         //Create a HashSet based on the arraylist (only contains one of each course)
         HashSet<Course> hashSet = new HashSet<>();
         for(int i = 0; i < courses.size(); i++){
@@ -87,9 +88,11 @@ public class FutureCourseEnrollment {
         // the hash set as strings and append String.format("\n Occurances: number")
         HashSet<String> occurences = new HashSet<String>();
         for(Course course : courses){
-            int num = -1;
-            num += Collections.frequency(courses, course);
-            occurences.add("\n Occurances: " + num);
+            if(occurences.contains(course)) {
+                int num = -1;
+                num += Collections.frequency(courses, course);
+                occurences.add("\n Occurances of " + course + ": " + num);
+            }
         }
         return occurences;
     }

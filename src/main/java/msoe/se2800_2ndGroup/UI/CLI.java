@@ -1,11 +1,13 @@
 package msoe.se2800_2ndGroup.UI;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.FileIO.TranscriptIO;
 import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -137,6 +139,19 @@ public class CLI {
                         final var graph = Model.getCourseGraph(code);
                         System.out.println(graph);
                         LOGGER.log(Level.FINE, "Prerequisite Graph Generated: \n" + graph, graph);
+                    }
+                    case "future course enrollment" -> {
+                        System.out.println("Enter a directory location: ");
+                        final var directory = in.next().trim();
+                        LOGGER.fine("Loading all transcripts using standard scanner");
+                        TranscriptIO transcriptIO = new TranscriptIO();
+                        HashSet<String> enrollment = transcriptIO.readMultiplePDFs(directory);
+                        System.out.println(enrollment.size());
+                        for(String strings : enrollment){
+                            System.out.println("work");
+                            System.out.println(strings);
+                        }
+                        LOGGER.fine("Enrollment Display Done!");
                     }
                 }
             } catch (CustomExceptions.InvalidInputException | IOException | NullPointerException e) {

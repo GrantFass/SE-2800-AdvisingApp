@@ -1,6 +1,7 @@
 package msoe.se2800_2ndGroup.FileIO;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.FutureCourseEnrollment;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -309,6 +310,26 @@ public class TranscriptIO {
         String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner, System.out);
         File file = new File(pathName);
         return readInFile(file);
+    }
+
+
+    public static HashSet<String> readMultiplePDFs(String dirLocation) throws IOException {
+        //query the user
+        File directory = new File(dirLocation);
+        File[] files = directory.listFiles();
+        HashSet<String> enrollment = new HashSet<String>();
+        FutureCourseEnrollment futureCourseEnrollment = new FutureCourseEnrollment();
+        ArrayList<Course> courses = new ArrayList<>();
+        for(File file : files){
+            ArrayList<Course> coursesToAdd = readInFile(file);
+            for(int i = 0; i < coursesToAdd.size(); i++){
+                courses.add(coursesToAdd.get(i));
+            }
+        }
+        courses = futureCourseEnrollment.sort(courses);
+        HashSet<Course> hashSet = futureCourseEnrollment.oneForEachCourse(courses);
+        enrollment = futureCourseEnrollment.sumOccurences(hashSet);
+        return enrollment;
     }
 
     //endregion
