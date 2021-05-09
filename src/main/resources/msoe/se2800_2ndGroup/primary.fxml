@@ -17,6 +17,7 @@
          <MenuItem mnemonicParsing="false" onAction="#loadCourseData" text="Load Course Data"/>
          <MenuItem mnemonicParsing="false" onAction="#storeTranscript" text="Store Default Transcript"/>
          <MenuItem mnemonicParsing="false" onAction="#storeCustomTranscript" text="Store Custom Transcript Of Selected Courses"/>
+         <MenuItem mnemonicParsing="false" onAction="#storeCourseRecommendations" text="Store Course Recommendations"/>
       </Menu>
       <!-- https://stackoverflow.com/questions/57911107/javafx-togglegroup-not-functioning-properly-with-accelerators-radiomenuitem -->
       <!-- Major Selection Radio Button Menu -->
