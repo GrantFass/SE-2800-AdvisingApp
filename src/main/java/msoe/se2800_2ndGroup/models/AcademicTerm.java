@@ -1,9 +1,12 @@
 package msoe.se2800_2ndGroup.models;
 
+import msoe.se2800_2ndGroup.Data.Compilers;
+import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,6 +30,11 @@ import java.util.List;
  * * Update the listing of courses as strings by Grant Fass on Wed, 5 May 2021
  * * Add term index by Grant Fass on Sun, 9 May 2021
  * * Override default comparison by Grant Fass on Sun, 9 May 2021
+ * * Remove irrelevant name parameter by Grant Fass on Sun, 9 May 2021
+ * * Update toString conversion override and remove methods related to irrelevant parameters
+ * by Grant Fass on Sun, 9 May 2021
+ * * add method to sort the course output by Grant Fass on Sun, 9 May 2021
+ * * add method to show course completion status in output by Grant Fass on Sun, 9 May 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -35,33 +43,31 @@ import java.util.List;
  */
 
 public class AcademicTerm implements Comparable<AcademicTerm> {
-    private final String name;
     private final Term term;
+    private final int termIndex;
+    private final String name = "Temporary";
     private int numberOfCourses;
     private int numberOfCredits;
-    private double avgCreditsPerCourse;
-    private int termIndex;
     private List<CurriculumItem> courses = new ArrayList<>();
 
     /**
      * Method creates a new Academic Term.
      *
-     * @param name name of academic term (EX: 'Winter 2020' or 'Winter Junior Year')
-     * @param term term of academic term (EX: 'Winter', 'Fall', 'Spring')
+     * @param term      term of academic term (EX: 'Term.FALL')
      * @param termIndex the index of which year the term occurs in. EX: the first spring term
      *                  would have an index of 1, the year 2 spring term would be index 2, etc...
      * @Modified by Grant Fass on Sun, 9 May 2021
      * @author : poptilec
      * @since : Tue, 27 Apr 2021
      */
-    public AcademicTerm(String name, int termIndex, Term term) {
-        this.name = name;
+    public AcademicTerm(int termIndex, Term term) {
         this.termIndex = termIndex;
         this.term = term;
     }
 
     /**
      * method to return the term index which is commonly used for sorting the order of terms
+     *
      * @return the value of the term index
      * @author : Grant Fass
      * @since : Sun, 9 May 2021
@@ -88,7 +94,6 @@ public class AcademicTerm implements Comparable<AcademicTerm> {
             numberOfCredits += ((Course) course).credits();
         }
         numberOfCourses++;
-        updateAverageCredits();
     }
 
     /**
@@ -112,7 +117,6 @@ public class AcademicTerm implements Comparable<AcademicTerm> {
         }
 
         numberOfCourses--;
-        updateAverageCredits();
     }
 
     /**
@@ -120,20 +124,52 @@ public class AcademicTerm implements Comparable<AcademicTerm> {
      * *
      *
      * @return String displaying courses in an Academic Term
-     * @throws CustomExceptions.InvalidInputException
+     * @throws CustomExceptions.InvalidInputException if there is an issue parsing a course
      * @author : poptilec
      * @since : Tue, 27 Apr 2021
      */
     public String getCourses() throws CustomExceptions.InvalidInputException {
+        Collections.sort(courses);
         StringBuilder builder = new StringBuilder();
         if (!courses.isEmpty()) {
             for (CurriculumItem course : courses) {
-                builder.append(Manipulators.getCurriculumItemAsShortString(course));
+                builder.append(String.format("|--[%1s] %13s -----|\n",
+                                             getCurriculumItemCompletionStatus(course),
+                                             Manipulators.getCurriculumItemAsShortString(course)));
             }
         } else {
             return "No courses found for Academic Term: " + name;
         }
         return builder.toString();
+    }
+
+    /**
+     * Method used to calculate the completion status of a given curriculum item.
+     *
+     * This method uses calls to Compilers.java and Data.java and thus needs to verify that
+     * there is a major stored in the program and that there is transcript data stored in the
+     * program.
+     *
+     * @param curriculumItem the course to generate completion status for
+     * @return the following values:
+     *              ✓ for completed courses
+     *              X for incomplete courses
+     *              ? for electives
+     * @throws CustomExceptions.InvalidInputException if the major or transcript is missing
+     * @author : Grant Fass
+     * @since : Sun, 9 May 2021
+     */
+    private static String getCurriculumItemCompletionStatus(CurriculumItem curriculumItem)
+    throws CustomExceptions.InvalidInputException {
+        if (curriculumItem instanceof Course course) {
+            return Compilers
+                           .getCurriculaExcludingCompletedCourses(
+                                   Data.getTranscriptCourses())
+                           .contains(course)
+                   ? "X" : "✓";
+        } else {
+            return "?";
+        }
     }
 
     public String getName() {
@@ -148,44 +184,32 @@ public class AcademicTerm implements Comparable<AcademicTerm> {
         return numberOfCourses;
     }
 
-    public double getAvgCreditsPerCourse() {
-        return avgCreditsPerCourse;
-    }
-
     public int getNumberOfCredits() {
         return numberOfCredits;
     }
 
-    private void updateAverageCredits() {
-        int credits = 0;
-        int numCourses = 0;
-        for (CurriculumItem course : courses) {
-            if (course instanceof Elective) {
-                credits += 3;
-            } else if (course instanceof Course) {
-                credits += ((Course) course).credits();
-            }
-            numCourses++;
-        }
-        if (numCourses == 0) {
-            avgCreditsPerCourse = 0;
-        } else {
-            avgCreditsPerCourse = credits / (double) numCourses;
-        }
 
-    }
-
+    /**
+     * Method to output the term as a string that has been properly formatted
+     *
+     * @return the term in a constant format
+     * @author : Grant Fass
+     * @since : Sun, 9 May 2021
+     */
     @Override
     public String toString() {
         try {
-            return String
-                    .format("Name %s\nTerm %s\nNumber of Courses: %d\nNumber of Credits: " +
-                            "%d\nAverage Credits per Course: %.2f\nList of Courses:\n%s",
-                            name, term.season(), numberOfCourses, numberOfCredits,
-                            avgCreditsPerCourse, getCourses());
+            return String.format("""
+                                 +----------------------------+
+                                 |-    %9s Year %3d    -|
+                                 |- %2d Courses @ %3d Credits -|
+                                 +----------------------------+
+                                 %s+----------------------------+
+                                 """, term.season(), getTermIndex(), getNumberOfCourses(),
+                                 getNumberOfCredits(), getCourses());
         } catch (CustomExceptions.InvalidInputException e) {
             e.printStackTrace();
-            return "error message?";
+            return e.getMessage();
         }
     }
 
@@ -194,15 +218,14 @@ public class AcademicTerm implements Comparable<AcademicTerm> {
      * Compares this object with the specified object for order.  Returns a
      * negative integer, zero, or a positive integer as this object is less
      * than, equal to, or greater than the specified object.
-     *
+     * <p>
      * this method overrides the default comparison of classes. It will first compare the term
      * index which represents which year an academic term occurs in. If the year is the same then
      * it will compare based on which catalog term the academic term occurs in
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://www.geeksforgeeks
-     *  .org/how-to-override-compareto-method-in-java/"}</a>: Help overriding comparison
-     *
+     * <a href="#{@link}">{@link "https://www.geeksforgeeks
+     * .org/how-to-override-compareto-method-in-java/"}</a>: Help overriding comparison
      *
      * @param o the object to be compared.
      * @return a negative integer, zero, or a positive integer as this object

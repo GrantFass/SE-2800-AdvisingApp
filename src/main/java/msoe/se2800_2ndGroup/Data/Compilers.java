@@ -112,7 +112,7 @@ public class Compilers {
     public static List<CurriculumItem> getCurriculaExcludingCompletedCourses(
             ArrayList<Course> completedCourses) throws CustomExceptions.InvalidInputException {
         Data.verifyMajor();
-        LOGGER.fine("Searching For Curricula");
+        LOGGER.finer("Searching For Curricula");
         for (Curriculum curriculum : Data.getCurricula()) {
             LOGGER.finest("Searching if specified curricula matches: " + curriculum.major());
             if (curriculum.major().equalsIgnoreCase(Data.getMajor())) {

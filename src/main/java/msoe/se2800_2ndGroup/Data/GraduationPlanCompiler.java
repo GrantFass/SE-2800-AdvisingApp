@@ -5,7 +5,6 @@ import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -32,6 +31,8 @@ import java.util.logging.Logger;
  * * Rewrote all code so that the ordering of courses in terms is more consistent and the
  * electives are not all stacked at the end by Grant Fass on Sun, 9 May 2021
  * * Add logger by Grant Fass on Sun, 9 May 2021
+ * * Remove names from generating AcademicTerms and refactor comparisons to use built in
+ * comparison override in the AcademicTerm class by Grant Fass on Sun, 9 May 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -46,26 +47,26 @@ public class GraduationPlanCompiler {
     private static final Logger LOGGER = AdvisingLogger.getLogger();
 
     /**
-          * This method is used to generate the entire sorted graduation plan
-          * <p>
-          * This method generates the graduation plan based on the number of credits per term and the
-          * tolerance for the credits.
-          * This method first computes the max and min credit values. This method then retrieves the
-          * full curriculum for the
-          * specified major stored in the program. Following that the program splits the courses by
-          * each term they occur in.
-          * Then the Academic terms are generated for each of the credit terms before they are sorted
-          * and returned
-          *
-          * @param averageCreditsPerTerm the average target number of credits per term
-          * @param creditTolerance       the number of credits to accept above or below the target.
-          *                              note that if this value is too low then the plan will be
-          *                              inaccurate
-          * @return the sorted graduation plan as a list of Academic terms
-          * @throws CustomExceptions.InvalidInputException if there is an issue retrieving the curriculum
-          * @author : Grant Fass
-          * @since : Wed, 5 May 2021
-          */
+     * This method is used to generate the entire sorted graduation plan
+     * <p>
+     * This method generates the graduation plan based on the number of credits per term and the
+     * tolerance for the credits.
+     * This method first computes the max and min credit values. This method then retrieves the
+     * full curriculum for the
+     * specified major stored in the program. Following that the program splits the courses by
+     * each term they occur in.
+     * Then the Academic terms are generated for each of the credit terms before they are sorted
+     * and returned
+     *
+     * @param averageCreditsPerTerm the average target number of credits per term
+     * @param creditTolerance       the number of credits to accept above or below the target.
+     *                              note that if this value is too low then the plan will be
+     *                              inaccurate
+     * @return the sorted graduation plan as a list of Academic terms
+     * @throws CustomExceptions.InvalidInputException if there is an issue retrieving the curriculum
+     * @author : Grant Fass
+     * @since : Wed, 5 May 2021
+     */
     public static List<AcademicTerm> generateGraduationPlanVersion2(int averageCreditsPerTerm,
                                                                     int creditTolerance)
     throws CustomExceptions.InvalidInputException {
@@ -90,17 +91,17 @@ public class GraduationPlanCompiler {
         int numberOfFallTerms = 1;
         int numberOfWinterTerms = 1;
         int numberOfSpringTerms = 1;
-        AcademicTerm temporaryFallTerm = new AcademicTerm("Temporary Fall", numberOfFallTerms,
-                                                          Term.FALL);
-        AcademicTerm temporaryWinterTerm = new AcademicTerm("Temporary Winter",
-                                                            numberOfWinterTerms, Term.WINTER);
-        AcademicTerm temporarySpringTerm = new AcademicTerm("Temporary Spring",
-                                                            numberOfSpringTerms, Term.SPRING);
+        AcademicTerm temporaryFallTerm =
+                new AcademicTerm(numberOfFallTerms, Term.FALL);
+        AcademicTerm temporaryWinterTerm =
+                new AcademicTerm(numberOfWinterTerms, Term.WINTER);
+        AcademicTerm temporarySpringTerm =
+                new AcademicTerm(numberOfSpringTerms, Term.SPRING);
 
         for (CurriculumItem item : fullCurriculum) {
             if (item instanceof Course temporaryCourse) {
                 if (fallCourses.contains(temporaryCourse)) {
-                    LOGGER.fine("Adding " + temporaryCourse.code() + " to FALL term.");
+                    LOGGER.finer("Adding " + temporaryCourse.code() + " to FALL term.");
                     temporaryFallTerm.addItems(temporaryCourse);
                     if (temporaryFallTerm.getNumberOfCredits() <= maxCredits &&
                         temporaryFallTerm.getNumberOfCredits() >= minCredits) {
@@ -108,11 +109,11 @@ public class GraduationPlanCompiler {
                         // the next term to add courses to
                         graduationPlan.add(temporaryFallTerm);
                         ++numberOfFallTerms;
-                        temporaryFallTerm = new AcademicTerm("Temporary Fall",
-                                                             numberOfFallTerms, Term.FALL);
+                        temporaryFallTerm =
+                                new AcademicTerm(numberOfFallTerms, Term.FALL);
                     }
                 } else if (winterCourses.contains(temporaryCourse)) {
-                    LOGGER.fine("Adding " + temporaryCourse.code() + " to WINTER term.");
+                    LOGGER.finer("Adding " + temporaryCourse.code() + " to WINTER term.");
                     temporaryWinterTerm.addItems(temporaryCourse);
                     if (temporaryWinterTerm.getNumberOfCredits() <= maxCredits &&
                         temporaryWinterTerm.getNumberOfCredits() >= minCredits) {
@@ -120,11 +121,12 @@ public class GraduationPlanCompiler {
                         // the next term to add courses to
                         graduationPlan.add(temporaryWinterTerm);
                         ++numberOfWinterTerms;
-                        temporaryWinterTerm = new AcademicTerm("Temporary Winter",
-                                                               numberOfWinterTerms, Term.WINTER);
+                        temporaryWinterTerm =
+                                new AcademicTerm(numberOfWinterTerms,
+                                                 Term.WINTER);
                     }
                 } else if (springCourses.contains(temporaryCourse)) {
-                    LOGGER.fine("Adding " + temporaryCourse.code() + " to SPRING term.");
+                    LOGGER.finer("Adding " + temporaryCourse.code() + " to SPRING term.");
                     temporarySpringTerm.addItems(temporaryCourse);
                     if (temporarySpringTerm.getNumberOfCredits() <= maxCredits &&
                         temporarySpringTerm.getNumberOfCredits() >= minCredits) {
@@ -132,11 +134,12 @@ public class GraduationPlanCompiler {
                         // the next term to add courses to
                         graduationPlan.add(temporarySpringTerm);
                         ++numberOfSpringTerms;
-                        temporarySpringTerm = new AcademicTerm("Temporary Spring",
-                                                               numberOfSpringTerms, Term.SPRING);
+                        temporarySpringTerm =
+                                new AcademicTerm(numberOfSpringTerms,
+                                                 Term.SPRING);
                     }
                 } else {
-                    LOGGER.fine("COURSE NOT FOUND: Defaulting to add " + temporaryCourse.code() +
+                    LOGGER.finer("COURSE NOT FOUND: Defaulting to add " + temporaryCourse.code() +
                                 " to FALL term.");
                     temporaryFallTerm.addItems(temporaryCourse);
                     if (temporaryFallTerm.getNumberOfCredits() <= maxCredits &&
@@ -145,16 +148,17 @@ public class GraduationPlanCompiler {
                         // the next term to add courses to
                         graduationPlan.add(temporaryFallTerm);
                         ++numberOfFallTerms;
-                        temporaryFallTerm = new AcademicTerm("Temporary Fall",
-                                                             numberOfFallTerms, Term.FALL);
+                        temporaryFallTerm =
+                                new AcademicTerm(numberOfFallTerms, Term.FALL);
                     }
                 }
 
             } else if (item instanceof Elective temporaryElective) {
                 //Set up following a 3 variable binary truth table.
-                if (temporaryFallTerm.getTermIndex() <= temporaryWinterTerm.getTermIndex()
-                    && temporaryFallTerm.getTermIndex() <= temporarySpringTerm.getTermIndex()) {
-                    LOGGER.fine("Adding " + temporaryElective.getCode() + " to FALL term.");
+//                if (temporaryFallTerm.compareTo(temporaryWinterTerm) <= 0 && temporaryFallTerm.compareTo(temporarySpringTerm) <= 0) {
+                if (temporaryFallTerm.getTermIndex() <= temporaryWinterTerm.getTermIndex() &&
+                    temporaryFallTerm.getTermIndex() <= temporarySpringTerm.getTermIndex()) {
+                    LOGGER.finer("Adding " + temporaryElective.getCode() + " to FALL term.");
                     temporaryFallTerm.addItems(temporaryElective);
                     if (temporaryFallTerm.getNumberOfCredits() <= maxCredits &&
                         temporaryFallTerm.getNumberOfCredits() >= minCredits) {
@@ -162,12 +166,15 @@ public class GraduationPlanCompiler {
                         // the next term to add courses to
                         graduationPlan.add(temporaryFallTerm);
                         ++numberOfFallTerms;
-                        temporaryFallTerm = new AcademicTerm("Temporary Fall",
-                                                             numberOfFallTerms, Term.FALL);
+                        temporaryFallTerm =
+                                new AcademicTerm(numberOfFallTerms, Term.FALL);
                     }
-                } else if (temporaryWinterTerm.getTermIndex() < temporaryFallTerm.getTermIndex()
-                    && temporaryWinterTerm.getTermIndex() <= temporarySpringTerm.getTermIndex()) {
-                    LOGGER.fine("Adding " + temporaryElective.getCode() + " to WINTER term.");
+                }
+//                else if (temporaryWinterTerm.compareTo(temporaryFallTerm) < 0 && temporaryWinterTerm.compareTo(temporarySpringTerm) <= 0) {
+                else if (temporaryWinterTerm.getTermIndex() < temporaryFallTerm.getTermIndex() &&
+                           temporaryWinterTerm.getTermIndex() <=
+                           temporarySpringTerm.getTermIndex()) {
+                    LOGGER.finer("Adding " + temporaryElective.getCode() + " to WINTER term.");
                     temporaryWinterTerm.addItems(temporaryElective);
                     if (temporaryWinterTerm.getNumberOfCredits() <= maxCredits &&
                         temporaryWinterTerm.getNumberOfCredits() >= minCredits) {
@@ -175,12 +182,16 @@ public class GraduationPlanCompiler {
                         // the next term to add courses to
                         graduationPlan.add(temporaryWinterTerm);
                         ++numberOfWinterTerms;
-                        temporaryWinterTerm = new AcademicTerm("Temporary Winter",
-                                                               numberOfWinterTerms, Term.WINTER);
+                        temporaryWinterTerm =
+                                new AcademicTerm(numberOfWinterTerms,
+                                                 Term.WINTER);
                     }
-                } else if (temporarySpringTerm.getTermIndex() < temporaryFallTerm.getTermIndex()
-                           && temporarySpringTerm.getTermIndex() < temporaryWinterTerm.getTermIndex()) {
-                    LOGGER.fine("Adding " + temporaryElective.getCode() + " to SPRING term.");
+                }
+//                else if (temporarySpringTerm.compareTo(temporaryFallTerm) < 0 && temporarySpringTerm.compareTo(temporaryWinterTerm) < 0) {
+                else if (temporarySpringTerm.getTermIndex() < temporaryFallTerm.getTermIndex() &&
+                           temporarySpringTerm.getTermIndex() <
+                           temporaryWinterTerm.getTermIndex()) {
+                    LOGGER.finer("Adding " + temporaryElective.getCode() + " to SPRING term.");
                     temporarySpringTerm.addItems(temporaryElective);
                     if (temporarySpringTerm.getNumberOfCredits() <= maxCredits &&
                         temporarySpringTerm.getNumberOfCredits() >= minCredits) {
@@ -188,12 +199,14 @@ public class GraduationPlanCompiler {
                         // the next term to add courses to
                         graduationPlan.add(temporarySpringTerm);
                         ++numberOfSpringTerms;
-                        temporarySpringTerm = new AcademicTerm("Temporary Spring",
-                                                               numberOfSpringTerms, Term.SPRING);
+                        temporarySpringTerm =
+                                new AcademicTerm(numberOfSpringTerms,
+                                                 Term.SPRING);
                     }
                 } else {
-                    LOGGER.fine("ELECTIVE NOT FOUND: Defaulting to add " + temporaryElective.getCode() + " to " +
-                                "FALL term.");
+                    LOGGER.fine(
+                            "ELECTIVE NOT FOUND: Defaulting to add " + temporaryElective.getCode() +
+                            " to " + "FALL term.");
                     temporaryFallTerm.addItems(temporaryElective);
                     if (temporaryFallTerm.getNumberOfCredits() <= maxCredits &&
                         temporaryFallTerm.getNumberOfCredits() >= minCredits) {
@@ -201,8 +214,8 @@ public class GraduationPlanCompiler {
                         // the next term to add courses to
                         graduationPlan.add(temporaryFallTerm);
                         ++numberOfFallTerms;
-                        temporaryFallTerm = new AcademicTerm("Temporary Fall",
-                                                             numberOfFallTerms, Term.FALL);
+                        temporaryFallTerm =
+                                new AcademicTerm(numberOfFallTerms, Term.FALL);
                     }
                 }
             }
