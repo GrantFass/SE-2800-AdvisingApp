@@ -281,7 +281,7 @@ public class TranscriptIO {
                 if (courseCode != null) {
                     Course course = new Course(courseCode);
                     courses.add(course);
-                    System.out.format("Adding Course: %s\n", course.code());
+                    LOGGER.finer(String.format("Adding Course: %s\n", course.code()));
                 }
             }
         }
