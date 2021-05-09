@@ -3,6 +3,7 @@ package msoe.se2800_2ndGroup.FileIO;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
 import msoe.se2800_2ndGroup.models.CurriculumItem;
+import msoe.se2800_2ndGroup.models.Elective;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -111,7 +112,7 @@ public class RecommendationsIO {
      */
     private static void writeBody(PDPageContentStream content, List<CurriculumItem> items) throws IOException {
         for (final var item : items) {
-            content.showText(item.toString());
+            content.showText(getRecommendationLine(item));
             content.newLineAtOffset(0, -15);
         }
     }
@@ -131,5 +132,27 @@ public class RecommendationsIO {
         content.close();
         document.save(location);
         document.close();
+    }
+
+    /**
+     * Generate a human-friendly line for this recommendation.
+     * 
+     * @param recommendation recommendation to make line of
+     * @return line for recommendation
+     * @author : Hunter Turcin
+     * @since : Sun, 9 May 2021
+     */
+    private static String getRecommendationLine(CurriculumItem recommendation) {
+        final String line;
+
+        if (recommendation instanceof final Course course) {
+            line = String.format("%s - %s", course.code(), course.description());
+        } else if (recommendation instanceof final Elective elective) {
+            line = String.format("%s - %s", elective.getCode(), elective.getDescription());
+        } else {
+            throw new IllegalStateException("unknown subclass: " + recommendation.getClass());
+        }
+
+        return line;
     }
 }
