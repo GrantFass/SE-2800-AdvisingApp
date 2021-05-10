@@ -351,7 +351,7 @@ public class TranscriptIO {
             //Ensures only one course with Future Course Enrollment
             HashSet<String> hashSet = futureCourseEnrollment.oneForEachCourse(newCourses);
             //gets the enrollment Future Course Enrollment
-            enrollment = futureCourseEnrollment.sumOccurences(hashSet, newCourses);
+            enrollment = futureCourseEnrollment.sumOccurrences(hashSet, newCourses);
         } else {
             System.out.println("There are no files in this directory!");
         }

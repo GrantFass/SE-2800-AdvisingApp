@@ -71,9 +71,7 @@ public class FutureCourseEnrollment {
      */
     public HashSet<String> oneForEachCourse(ArrayList<String> courses){
         //Create a HashSet based on the arraylist (only contains one of each course)
-        HashSet<String> hashSet = new HashSet<>();
-        hashSet.addAll(courses);
-        return hashSet;
+        return new HashSet<>(courses);
     }
 
     /**
@@ -84,13 +82,14 @@ public class FutureCourseEnrollment {
      * @author : Teresa Toohill
      * @since : Wed, 5 May 2021
      */
-    public HashSet<String> sumOccurences(HashSet<String> courses, ArrayList<String> allCourses){
+    public HashSet<String> sumOccurrences(HashSet<String> courses, ArrayList<String> allCourses){
         //tack on the values to the courses in the hashset or do
         // the hash set as strings and append String.format("\n Occurances: number")
-        HashSet<String> occurences = new HashSet<String>();
+        HashSet<String> occurrences = new HashSet<String>();
         for(String course : allCourses){
-            occurences.add("\n Occurances of " + course + ": " + Collections.frequency(allCourses, course));
+            occurrences.add(String.format("\tOccurrences of %7s: %3d\n", course,
+                                         Collections.frequency(allCourses, course)));
         }
-        return occurences;
+        return occurrences;
     }
 }

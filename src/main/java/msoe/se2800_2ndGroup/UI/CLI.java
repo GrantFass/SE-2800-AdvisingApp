@@ -142,12 +142,12 @@ public class CLI {
                     }
                     case "future course enrollment" -> {
                         System.out.println("Enter a directory location: ");
-                        final var directory = in.next
-                                ().trim();
+                        final var directory = in.nextLine().trim();
                         LOGGER.fine("Loading all transcripts using standard scanner");
                         HashSet<String> enrollment = TranscriptIO.readMultiplePDFs(directory);
+                        outputHyphenLine();
                         for(String strings : enrollment) {
-                            System.out.println(strings);
+                            System.out.print(strings);
                         }
                         LOGGER.fine("Enrollment Display Done!");
                     }
