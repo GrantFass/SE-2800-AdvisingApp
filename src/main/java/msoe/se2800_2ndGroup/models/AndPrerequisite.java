@@ -23,11 +23,12 @@ import java.util.Collection;
  *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  *     - code cleanup from group feedback by Hunter Turcin on 2021-04-18
  * Copyright (C): 2021
- * 
+ *
  * @author : Hunter Turcin
  * @since : Tue, 16 Mar 2021
  */
-public record AndPrerequisite(Prerequisite left, Prerequisite right) implements CompositePrerequisite {
+public record AndPrerequisite(Prerequisite left, Prerequisite right)
+        implements CompositePrerequisite {
     /**
      * Check if both dependant prerequisites are satisfied.
      *

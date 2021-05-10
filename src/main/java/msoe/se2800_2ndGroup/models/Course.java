@@ -25,7 +25,8 @@ package msoe.se2800_2ndGroup.models;
  * @author : Hunter Turcin
  * @since : Tue, 16 Mar 2021
  */
-public record Course(String code, int credits, Prerequisite prerequisite, String description) implements CurriculumItem {
+public record Course(String code, int credits, Prerequisite prerequisite, String description)
+        implements CurriculumItem {
     /**
      * Create a course where only the code is known.
      *
@@ -52,15 +53,15 @@ public record Course(String code, int credits, Prerequisite prerequisite, String
      * Compares this object with the specified object for order.  Returns a
      * negative integer, zero, or a positive integer as this object is less
      * than, equal to, or greater than the specified object.
-     *
+     * <p>
      * This method overrides the default comparison. if the item being compared is an elective
      * than it is automatically lesser, otherwise the value fo the comparison of the codes is
      * returned.
-     *
+     * <p>
      * Sources:
-     *      *  <a href="#{@link}">{@link "https://www.geeksforgeeks
-     *      *  .org/how-to-override-compareto-method-in-java/"}</a>: Help overriding comparison
-     *      *
+     * *  <a href="#{@link}">{@link "https://www.geeksforgeeks
+     * *  .org/how-to-override-compareto-method-in-java/"}</a>: Help overriding comparison
+     * *
      *
      * @param o the object to be compared.
      * @return a negative integer, zero, or a positive integer as this object

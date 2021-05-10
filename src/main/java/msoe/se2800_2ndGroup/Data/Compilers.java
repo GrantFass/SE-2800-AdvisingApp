@@ -66,9 +66,8 @@ public class Compilers {
      */
     public static List<CurriculumItem> getUnsatisfiedCurriculumItemsForSpecifiedTerm(
             List<Offering> offeringsInTerm, List<CurriculumItem> unsatisfiedCourses) {
-        LOGGER.finer(
-                "Getting unsatisfied terms that match between offeringsInTerm and " +
-                "unsatisfiedCourses");
+        LOGGER.finer("Getting unsatisfied terms that match between offeringsInTerm and " +
+                     "unsatisfiedCourses");
         ArrayList<CurriculumItem> outputCourses = new ArrayList<>();
         ArrayList<CurriculumItem> outputElectives = new ArrayList<>();
         for (CurriculumItem curriculumItem : unsatisfiedCourses) {
@@ -104,7 +103,7 @@ public class Compilers {
      *                         unofficial transcript
      * @return the list of CurriculumItems that have not yet been satisfied
      * @throws CustomExceptions.InvalidCurriculaException if the curriculum was not found for the
-     * stored major
+     *                                                    stored major
      * @throws CustomExceptions.InvalidMajorException     if there is an issue with the stored major
      * @author : Grant Fass
      * @since : Tue, 13 Apr 2021
@@ -216,7 +215,7 @@ public class Compilers {
      * @param getSpring boolean value of if recommendations should be generated for the spring term
      * @return a List of CurriculumItem containing the course recommendations for the passed terms
      * @throws CustomExceptions.InvalidInputException for various reasons like not having a major
-     * stored, failing to validate major,
+     *                                                stored, failing to validate major,
      *                                                failing to validate offerings, failing to
      *                                                validate transcript, or not having a
      *                                                curriculum for the major.

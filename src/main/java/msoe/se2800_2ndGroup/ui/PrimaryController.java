@@ -37,7 +37,8 @@ import java.util.Arrays;
  * Modification Log:
  * * File Created by Grant on Saturday, 20 March 2021
  * * Added methods to manipulate data by Grant Fass on Wed, 21 Apr 2021
- * * Removed references to Model.java from App.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
+ * * Removed references to Model.java from App.java as it is now a utility class by Grant Fass on
+ * Thu, 22 Apr 2021
  * * Use CourseTableView instead of ListView to allow checking by Hunter Turcin on Tue, 27 Apr 2021
  * * Add storing course recommendations by Hunter Turcin on Sun, 9 May 2021
  *
@@ -65,7 +66,7 @@ public class PrimaryController extends Controller {
 
     /**
      * Display course offerings.
-     *
+     * <p>
      * This method runs on the FX thread.
      *
      * @author : Grant Fass, Hunter Turcin
@@ -86,10 +87,11 @@ public class PrimaryController extends Controller {
                 }
 
                 courseTableView.setItems(courses);
-                courseTableView.getSelectionModel().selectedItemProperty().addListener(getCourseListener());
+                courseTableView.getSelectionModel().selectedItemProperty()
+                        .addListener(getCourseListener());
             } catch (CustomExceptions.InvalidInputException e) {
                 String message = String.format(" Invalid Input Exception occurred while " +
-                        "generating course offerings\n%s", e.getMessage());
+                                               "generating course offerings\n%s", e.getMessage());
                 displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception", message);
                 AdvisingLogger.getLogger().warning(message + Arrays.toString(e.getStackTrace()));
             }
@@ -98,7 +100,7 @@ public class PrimaryController extends Controller {
 
     /**
      * Display course recommendations.
-     *
+     * <p>
      * This method runs on the FX thread.
      *
      * @author : Grant Fass
@@ -118,16 +120,19 @@ public class PrimaryController extends Controller {
                     if (recommendation instanceof final Course course) {
                         courses.add(course);
                     } else if (recommendation instanceof final Elective elective) {
-                        final var course = new Course(elective.getCode(), 0, new NullPrerequisite(), "Elective");
+                        final var course = new Course(elective.getCode(), 0, new NullPrerequisite(),
+                                                      "Elective");
                         courses.add(course);
                     }
                 }
 
                 courseTableView.setItems(courses);
-                courseTableView.getSelectionModel().selectedItemProperty().addListener(getCourseListener());
+                courseTableView.getSelectionModel().selectedItemProperty()
+                        .addListener(getCourseListener());
             } catch (CustomExceptions.InvalidInputException e) {
                 String message = String.format(" Invalid Input Exception occurred while " +
-                        "generating course recommendations\n%s", e.getMessage());
+                                               "generating course recommendations\n%s",
+                                               e.getMessage());
                 displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception", message);
                 AdvisingLogger.getLogger().warning(message + Arrays.toString(e.getStackTrace()));
             }
@@ -146,7 +151,8 @@ public class PrimaryController extends Controller {
             final int listViewStartSize = courseTableView.getItems().size();
 
             @Override
-            public void changed(ObservableValue<? extends Course> observableValue, Course oldValue, Course newValue) {
+            public void changed(ObservableValue<? extends Course> observableValue, Course oldValue,
+                                Course newValue) {
                 if (listViewStartSize != courseTableView.getItems().size()) {
                     courseTableView.getSelectionModel().selectedItemProperty().removeListener(this);
                 } else if (newValue != null) {
@@ -161,10 +167,12 @@ public class PrimaryController extends Controller {
      * TODO: Clean this up later when FXML is updated. Want to better use superclass
      * Method used to switch what controller and FXML resource is displayed in the GUI
      * <p>
-     * Method switches the displayed controller and FXML by calling App.setRoot with the associated FXML resource of the window to switch to.
+     * Method switches the displayed controller and FXML by calling App.setRoot with the
+     * associated FXML resource of the window to switch to.
      * <p>
      * Sources:
-     * <a href="#{@link}">{@link "https://openjfx.io/openjfx-docs/#maven"}</a> Help setting up FXML loading with Maven
+     * <a href="#{@link}">{@link "https://openjfx.io/openjfx-docs/#maven"}</a> Help setting up
+     * FXML loading with Maven
      *
      * @throws IOException this is thrown when there is an issue in loading the fxml resource
      * @author : Grant Fass
@@ -178,6 +186,7 @@ public class PrimaryController extends Controller {
     /**
      * method used to display all of the courses in the program to the course table view.
      * This is most commonly used for selecting which courses to export as a custom transcript
+     *
      * @author : Grant Fass
      * @since : Mon, 3 May 2021
      */
@@ -186,7 +195,7 @@ public class PrimaryController extends Controller {
         try {
             Data.verifyOfferings();
             final ObservableList<Course> courses = FXCollections.<Course>observableArrayList();
-            for (Offering o: Data.getOfferings()) {
+            for (Offering o : Data.getOfferings()) {
                 courses.add(o.course());
             }
             AdvisingLogger.getLogger().info("displaying all courses to table.");
@@ -197,33 +206,44 @@ public class PrimaryController extends Controller {
     }
 
     /**
-     * This method will store all of the courses that are selected in the table view to a transcript output
+     * This method will store all of the courses that are selected in the table view to a
+     * transcript output
+     *
      * @author : Grant Fass
      * @since : Mon, 3 May 2021
      */
     public void storeCustomTranscript() {
         //gather courses
-//        ArrayList<Course> output = new ArrayList<>();
-//        int size = courseTableView.getItems().size();
-//        TableColumn<Course, ?> columnZero = courseTableView.getColumns().get(0);
-//        for (int i = 0; i < size; i++) {
-//            Course course = courseTableView.getItems().get(i);//gets the course at the index
-//            if ( course != null && ((SimpleBooleanProperty) columnZero.getCellObservableValue(i)).getValue()) {
-//                output.add(course);
-//            }
-//        }
+        //        ArrayList<Course> output = new ArrayList<>();
+        //        int size = courseTableView.getItems().size();
+        //        TableColumn<Course, ?> columnZero = courseTableView.getColumns().get(0);
+        //        for (int i = 0; i < size; i++) {
+        //            Course course = courseTableView.getItems().get(i);//gets the course at the
+        //            index
+        //            if ( course != null && ((SimpleBooleanProperty) columnZero
+        //            .getCellObservableValue(i)).getValue()) {
+        //                output.add(course);
+        //            }
+        //        }
 
         //outputCourses
-        File outputLocation = getDirectoryLocation("Select Location to Store Custom Transcript.PDF");
+        File outputLocation =
+                getDirectoryLocation("Select Location to Store Custom Transcript.PDF");
         if (!outputLocation.toString().equals("")) {
             Model.ensureFXThread(() -> {
                 try {
-                    Model.storeCustomUnofficialTranscript(outputLocation.getAbsolutePath(), Data.getCheckedCourses());
-                    displayAlert(Alert.AlertType.INFORMATION, "Success", "File Write", "Successfully wrote file to: " + outputLocation);
-                    AdvisingLogger.getLogger().info("Successfully wrote file to: " + outputLocation + "\n");
+                    Model.storeCustomUnofficialTranscript(outputLocation.getAbsolutePath(),
+                                                          Data.getCheckedCourses());
+                    displayAlert(Alert.AlertType.INFORMATION, "Success", "File Write",
+                                 "Successfully wrote file to: " + outputLocation);
+                    AdvisingLogger.getLogger()
+                            .info("Successfully wrote file to: " + outputLocation + "\n");
                 } catch (IOException e) {
-                    displayAlert(Alert.AlertType.ERROR, "IOException", "Exception", "IOException occurred writing file to: " + outputLocation);
-                    AdvisingLogger.getLogger().warning("IOException occurred reading writing file to: " + outputLocation + "\n" + Arrays.toString(e.getStackTrace()));
+                    displayAlert(Alert.AlertType.ERROR, "IOException", "Exception",
+                                 "IOException occurred writing file to: " + outputLocation);
+                    AdvisingLogger.getLogger().warning(
+                            "IOException occurred reading writing file to: " + outputLocation +
+                            "\n" + Arrays.toString(e.getStackTrace()));
                 }
             });
         }
@@ -231,7 +251,8 @@ public class PrimaryController extends Controller {
 
     @FXML
     public void storeCourseRecommendations() {
-        final var directory = getDirectoryLocation("Select Location to Store Course Recommendations");
+        final var directory =
+                getDirectoryLocation("Select Location to Store Course Recommendations");
         final var fall = fallTermSelection.isSelected();
         final var winter = winterTermSelection.isSelected();
         final var spring = springTermSelection.isSelected();
@@ -239,12 +260,18 @@ public class PrimaryController extends Controller {
         if (!directory.toString().isEmpty()) {
             Model.ensureFXThread(() -> {
                 try {
-                    Model.storeCourseRecommendations(directory.getAbsolutePath(), fall, winter, spring);
-                    displayAlert(Alert.AlertType.INFORMATION, "Success", "File Write", "Successfully wrote file to: " + directory);
-                    AdvisingLogger.getLogger().info("Successfully wrote file to: " + directory + "\n");
+                    Model.storeCourseRecommendations(directory.getAbsolutePath(), fall, winter,
+                                                     spring);
+                    displayAlert(Alert.AlertType.INFORMATION, "Success", "File Write",
+                                 "Successfully wrote file to: " + directory);
+                    AdvisingLogger.getLogger()
+                            .info("Successfully wrote file to: " + directory + "\n");
                 } catch (IOException | CustomExceptions.InvalidInputException e) {
-                    displayAlert(Alert.AlertType.ERROR, "Exception", "Exception", "Exception occurred writing file to: " + directory);
-                    AdvisingLogger.getLogger().warning("Exception occurred reading writing file to: " + directory + "\n" + Arrays.toString(e.getStackTrace()));
+                    displayAlert(Alert.AlertType.ERROR, "Exception", "Exception",
+                                 "Exception occurred writing file to: " + directory);
+                    AdvisingLogger.getLogger().warning(
+                            "Exception occurred reading writing file to: " + directory + "\n" +
+                            Arrays.toString(e.getStackTrace()));
                 }
             });
         }

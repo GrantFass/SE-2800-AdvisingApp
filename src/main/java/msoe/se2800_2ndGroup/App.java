@@ -5,10 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.ui.CLI;
 import msoe.se2800_2ndGroup.ui.PrimaryController;
 import msoe.se2800_2ndGroup.ui.SecondaryController;
-import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -40,41 +40,99 @@ import java.util.logging.Logger;
  * * Make Controllers static by Grant Fass on Wed, 21 Apr 2021
  * * Code cleanup by Hunter T on Tue, 20 Apr 2021
  * * Removed references to Model.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
- * @since : Saturday, 20 March 2021
- * @author : Grant
  *
+ * @author : Grant
+ * <p>
  * Copyright (C): TBD
+ * @since : Saturday, 20 March 2021
  */
 public class App extends Application {
     /**
      * Logging system.
      */
     private static final Logger LOGGER = AdvisingLogger.getLogger();
-
-    /**
-     * Scene linked to the Stage during startup for displaying content and switching windows dynamically
-     */
-    public static Scene scene;
-
     /*
      * The primary window controller. controller for the data manipulation window
      */
     private static final PrimaryController primaryController = new PrimaryController();
-
     /*
      * The secondary window controller. controller for the graph manipulation window
      */
     private static final SecondaryController secondaryController = new SecondaryController();
+    /**
+     * Scene linked to the Stage during startup for displaying content and switching windows
+     * dynamically
+     */
+    public static Scene scene;
+
+    /**
+     * This method switches the displayed FXML page
+     * <p>
+     * This method operates by switching the scene root to a different parent.
+     * This is called from the controllers themselves
+     * <p>
+     * Sources:
+     * <a href="#{@link}">{@link "https://openjfx.io/openjfx-docs/#maven"}</a> Help setting up
+     * FXML loading with Maven
+     *
+     * @param fxml the name of the resource excluding .fxml
+     * @throws IOException this is thrown when there is an issue in loading the fxml resource
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
+     */
+    public static void setRoot(String fxml) throws IOException {
+        LOGGER.finer("setting scene root");
+        scene.setRoot(loadFXML(fxml));
+    }
+
+    /**
+     * This method loads the given FXML resource to return the associated Parent
+     * <p>
+     * This method operates by loading the given FXML resource. It then creates and returns the
+     * associated Parent
+     * <p>
+     * Sources:
+     * <a href="#{@link}">{@link "https://openjfx.io/openjfx-docs/#maven"}</a> Help setting up
+     * FXML loading with Maven
+     *
+     * @param fxml the name of the resource excluding .fxml
+     * @return the Parent associated with the input fxml resouce name
+     * @throws IOException this is thrown when there is an issue in loading the fxml resource
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
+     */
+    private static Parent loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        LOGGER.log(Level.FINE, "Loading FXML: " + fxml, fxmlLoader);
+        fxmlLoader.setClassLoader(App.class.getClassLoader());
+        return fxmlLoader.load();
+    }
+
+    /**
+     * the main method of the program
+     * <p>
+     * calls the launch() method from FXML
+     *
+     * @param args the argument passed in for mains
+     * @author : Grant Fass
+     * @since : Sat, 20 Mar 2021
+     */
+    public static void main(String[] args) {
+        AdvisingLogger.setupLogger();
+        LOGGER.info("Launching Program");
+        launch();
+    }
 
     /**
      * This method starts the FX program window and the program GUI
-     *
+     * <p>
      * This method operates by creating controllers and linking the models to them.
      * It then creates the initial scene and the primary CLI thread.
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://stackoverflow.com/a/49676738"}</a> Help setting up CLI
-     *  <a href="#{@link}">{@link "https://openjfx.io/openjfx-docs/#maven"}</a> Help setting up FXML loading with Maven
+     * <a href="#{@link}">{@link "https://stackoverflow.com/a/49676738"}</a> Help setting up CLI
+     * <a href="#{@link}">{@link "https://openjfx.io/openjfx-docs/#maven"}</a> Help setting up
+     * FXML loading with Maven
      *
      * @param stage the stage displayed
      * @throws IOException this is thrown when there is an issue in loading the fxml resource
@@ -101,61 +159,6 @@ public class App extends Application {
         Thread cliThread = new Thread(cli::processCommandLine);
         cliThread.setDaemon(true);
         cliThread.start();
-    }
-
-    /**
-     * This method switches the displayed FXML page
-     *
-     * This method operates by switching the scene root to a different parent.
-     * This is called from the controllers themselves
-     *
-     * Sources:
-     *  <a href="#{@link}">{@link "https://openjfx.io/openjfx-docs/#maven"}</a> Help setting up FXML loading with Maven
-     *
-     * @param fxml the name of the resource excluding .fxml
-     * @throws IOException this is thrown when there is an issue in loading the fxml resource
-     * @author : Grant Fass
-     * @since : Sat, 20 Mar 2021
-     */
-    public static void setRoot(String fxml) throws IOException {
-        LOGGER.finer("setting scene root");
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    /**
-     * This method loads the given FXML resource to return the associated Parent
-     *
-     * This method operates by loading the given FXML resource. It then creates and returns the associated Parent
-     *
-     * Sources:
-     *  <a href="#{@link}">{@link "https://openjfx.io/openjfx-docs/#maven"}</a> Help setting up FXML loading with Maven
-     *
-     * @param fxml the name of the resource excluding .fxml
-     * @throws IOException this is thrown when there is an issue in loading the fxml resource
-     * @return the Parent associated with the input fxml resouce name
-     * @author : Grant Fass
-     * @since : Sat, 20 Mar 2021
-     */
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        LOGGER.log(Level.FINE, "Loading FXML: " + fxml, fxmlLoader);
-        fxmlLoader.setClassLoader(App.class.getClassLoader());
-        return fxmlLoader.load();
-    }
-
-    /**
-     * the main method of the program
-     *
-     * calls the launch() method from FXML
-     *
-     * @param args the argument passed in for mains
-     * @author : Grant Fass
-     * @since : Sat, 20 Mar 2021
-     */
-    public static void main(String[] args) {
-        AdvisingLogger.setupLogger();
-        LOGGER.info("Launching Program");
-        launch();
     }
 
 }

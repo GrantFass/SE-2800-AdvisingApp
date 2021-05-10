@@ -45,7 +45,7 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
 
     /**
      * Get the string representation of this graph.
-     *
+     * <p>
      * This node's course's code and description are printed, followed by
      * all its children, using spaces to show the current level of depth
      * for a node in the graph.
@@ -60,10 +60,10 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
 
     /**
      * Print the graph for this node and its children.
-     *
+     * <p>
      * Each level of children has higher indentation.
      *
-     * @param depth amount of indentation to have before printing
+     * @param depth  amount of indentation to have before printing
      * @param symbol what symbol to use for graphing
      * @return string of graph
      * @author : Hunter Turcin
@@ -97,7 +97,7 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
 
     /**
      * Get the symbol for this node.
-     * 
+     *
      * @return the symbol for this node
      * @author : Hunter Turcin
      * @since : Sun, 25 Apr 2021
@@ -105,7 +105,7 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
     private char getSymbol() {
         final char symbol;
         final var prerequisite = course.prerequisite();
-        
+
         if (prerequisite instanceof SinglePrerequisite) {
             symbol = '+';
         } else if (prerequisite instanceof NullPrerequisite) {
@@ -117,7 +117,7 @@ public record GraphNode(Course course, Collection<GraphNode> children) {
         } else {
             throw new IllegalStateException("no symbol for: " + prerequisite.getClass());
         }
-        
+
         return symbol;
     }
 }

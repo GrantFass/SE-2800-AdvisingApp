@@ -10,7 +10,8 @@
             <MenuItem mnemonicParsing="false" onAction="#close" text="Exit Program"/>
             <MenuItem mnemonicParsing="false" onAction="#loadTranscript" text="Load Transcript"/>
             <MenuItem mnemonicParsing="false" onAction="#loadCourseData" text="Load Course Data"/>
-            <MenuItem mnemonicParsing="false" onAction="#storeTranscript" text="Store Default Transcript"/>
+            <MenuItem mnemonicParsing="false" onAction="#storeTranscript"
+                      text="Store Default Transcript"/>
         </Menu>
         <!-- https://stackoverflow.com/questions/57911107/javafx-togglegroup-not-functioning-properly-with-accelerators-radiomenuitem -->
         <!-- Major Selection Radio Button Menu -->
@@ -20,7 +21,8 @@
                     <ToggleGroup fx:id="majorToggleGroup"/>
                 </toggleGroup>
             </RadioMenuItem>
-            <RadioMenuItem text="SE - Software Engineering" onAction="#storeMajor" toggleGroup="$majorToggleGroup"/>
+            <RadioMenuItem text="SE - Software Engineering" onAction="#storeMajor"
+                           toggleGroup="$majorToggleGroup"/>
         </Menu>
         <!-- Term Selection Radio Button Menu -->
         <Menu mnemonicParsing="false" text="Term Selection">
@@ -30,7 +32,8 @@
         </Menu>
         <!-- Graph Manipulation Menu -->
         <Menu mnemonicParsing="false" text="Graph Manipulation">
-            <MenuItem mnemonicParsing="false" onAction="#viewPrerequisiteGraph" text="View Graph of Prerequisites"/>
+            <MenuItem mnemonicParsing="false" onAction="#viewPrerequisiteGraph"
+                      text="View Graph of Prerequisites"/>
             <MenuItem mnemonicParsing="false" onAction="#viewProjectedCourseEnrollment"
                       text="View Projected Course Enrollment"/>
             <MenuItem mnemonicParsing="false" onAction="#viewGraduationPlan"

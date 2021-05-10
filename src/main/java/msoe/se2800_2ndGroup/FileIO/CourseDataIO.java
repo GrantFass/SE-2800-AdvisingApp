@@ -48,9 +48,12 @@ public class CourseDataIO {
     private static final Logger LOGGER = AdvisingLogger.getLogger();
 
     /**
-     * Loads in the prerequisites, curriculum, and offerings csv files from the locations that are specified.
-     * These locations do not have any checks or verification on them. Thus this method is meant to be called from
-     * other locations after verification has occurred such as in loadDefaultCourseData() and loadCourseData().
+     * Loads in the prerequisites, curriculum, and offerings csv files from the locations that
+     * are specified.
+     * These locations do not have any checks or verification on them. Thus this method is meant
+     * to be called from
+     * other locations after verification has occurred such as in loadDefaultCourseData() and
+     * loadCourseData().
      * Assumes that all files have already been validated
      *
      * @param curriculumLocation    the verified location to use for curriculum.csv

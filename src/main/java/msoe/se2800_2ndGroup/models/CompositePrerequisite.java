@@ -24,7 +24,7 @@ package msoe.se2800_2ndGroup.models;
 public interface CompositePrerequisite extends Prerequisite {
     /**
      * Get the left prerequisite.
-     * 
+     *
      * @return the left prerequisite
      * @author : Hunter Turcin
      * @since : Mon, 19 Apr 2021
@@ -33,7 +33,7 @@ public interface CompositePrerequisite extends Prerequisite {
 
     /**
      * Get the right prerequisite.
-     * 
+     *
      * @return the right prerequisite
      * @author : Hunter Turcin
      * @since : Mon, 19 Apr 2021

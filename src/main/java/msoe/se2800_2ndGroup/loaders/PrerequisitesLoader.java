@@ -45,7 +45,8 @@ public class PrerequisitesLoader {
     /**
      * Create a new prerequisites CSV document loader.
      *
-     * @param reader The Reader object created with a FileReader containing the path to the file to be read.
+     * @param reader The Reader object created with a FileReader containing the path to the file
+     *               to be read.
      * @throws IOException could not read the CSV file
      * @author : Hunter Turcin
      * @since : Sun, 21 Mar 2021
@@ -56,7 +57,7 @@ public class PrerequisitesLoader {
 
     /**
      * Load courses from the CSV document.
-     *
+     * <p>
      * Each record corresponds to one course object.
      *
      * @return loaded courses
@@ -112,10 +113,10 @@ public class PrerequisitesLoader {
 
     /**
      * Convert a serialized prerequisite to an object.
-     *
+     * <p>
      * Serialized prerequisites are a list of codes separated by pipe characters (OR)
      * or spaces (AND).
-     *
+     * <p>
      * Deserialization is done in such a way that the resulting prerequisite is easy
      * to graph. For example, constructs like And(Null, Simple) are never created.
      *
@@ -134,13 +135,13 @@ public class PrerequisitesLoader {
             if (orCodes.length > 1) {
                 final var inner = getInnerPrerequisite(orCodes);
 
-                outer = outer instanceof NullPrerequisite
-                        ? inner
-                        : new AndPrerequisite(outer, inner);
+                outer = outer instanceof NullPrerequisite ? inner
+                                                          : new AndPrerequisite(outer, inner);
             } else if (!orCodes[0].isEmpty()) {
-                outer = outer instanceof NullPrerequisite
-                        ? new SinglePrerequisite(orCodes[0])
-                        : new AndPrerequisite(outer, new SinglePrerequisite(orCodes[0]));
+                outer = outer instanceof NullPrerequisite ? new SinglePrerequisite(orCodes[0])
+                                                          : new AndPrerequisite(outer,
+                                                                                new SinglePrerequisite(
+                                                                                        orCodes[0]));
             }
         }
 
@@ -156,7 +157,8 @@ public class PrerequisitesLoader {
      * @since : Mon, 19 Apr 2021
      */
     private Prerequisite getInnerPrerequisite(String[] orCodes) {
-        var inner = new OrPrerequisite(new SinglePrerequisite(orCodes[0]), new SinglePrerequisite(orCodes[1]));
+        var inner = new OrPrerequisite(new SinglePrerequisite(orCodes[0]),
+                                       new SinglePrerequisite(orCodes[1]));
 
         for (var i = 2; i < orCodes.length; i++) {
             final var orCode = orCodes[i];

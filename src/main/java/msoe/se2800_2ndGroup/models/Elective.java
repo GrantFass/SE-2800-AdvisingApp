@@ -34,7 +34,8 @@ import java.util.function.Predicate;
 public class Elective implements CurriculumItem {
     // Information based on https://csse.msoe.us/se/se35/
     private static final Collection<String> sciencePrefixes = Set.of("BI", "CH", "PH");
-    private static final Collection<String> mathSciencePrefixes = Set.of("BI", "CH", "EB", "MA", "PH", "SC");
+    private static final Collection<String> mathSciencePrefixes =
+            Set.of("BI", "CH", "EB", "MA", "PH", "SC");
     private static final Collection<String> humanitiesSocialSciencePrefixes = Set.of("HU", "SS");
 
     private final String code;
@@ -42,7 +43,7 @@ public class Elective implements CurriculumItem {
 
     /**
      * Create a new elective.
-     *
+     * <p>
      * The elective code determines which course code prefixes are considered
      * to satisfy this elective (e.g. FREE is satisfied by all courses).
      *
@@ -55,9 +56,13 @@ public class Elective implements CurriculumItem {
         this.code = code;
         this.predicate = switch (code) {
             case "FREE" -> course -> true;
-            case "SCIEL" -> course -> sciencePrefixes.stream().anyMatch(prefix -> course.code().startsWith(prefix)) && course.credits() == 4;
-            case "MASCIEL" -> course -> mathSciencePrefixes.stream().anyMatch(prefix -> course.code().startsWith(prefix));
-            case "HUSS" -> course -> humanitiesSocialSciencePrefixes.stream().anyMatch(prefix -> course.code().startsWith(prefix));
+            case "SCIEL" -> course ->
+                    sciencePrefixes.stream().anyMatch(prefix -> course.code().startsWith(prefix)) &&
+                    course.credits() == 4;
+            case "MASCIEL" -> course -> mathSciencePrefixes.stream()
+                    .anyMatch(prefix -> course.code().startsWith(prefix));
+            case "HUSS" -> course -> humanitiesSocialSciencePrefixes.stream()
+                    .anyMatch(prefix -> course.code().startsWith(prefix));
             case "TECHEL" -> course -> course.code().startsWith("TC");
             case "BUSEL" -> course -> course.code().startsWith("BA");
             default -> throw new IllegalArgumentException("unknown elective code: " + code);
@@ -125,14 +130,14 @@ public class Elective implements CurriculumItem {
      * Compares this object with the specified object for order.  Returns a
      * negative integer, zero, or a positive integer as this object is less
      * than, equal to, or greater than the specified object.
-     *
+     * <p>
      * This method overrides the default comparison. if the item being compared is a course then
      * it is automatically greater, otherwise the value of the comparison of the codes is returned
-     *
+     * <p>
      * Sources:
-     *      *  <a href="#{@link}">{@link "https://www.geeksforgeeks
-     *      *  .org/how-to-override-compareto-method-in-java/"}</a>: Help overriding comparison
-     *      *
+     * *  <a href="#{@link}">{@link "https://www.geeksforgeeks
+     * *  .org/how-to-override-compareto-method-in-java/"}</a>: Help overriding comparison
+     * *
      *
      * @param o the object to be compared.
      * @return a negative integer, zero, or a positive integer as this object
