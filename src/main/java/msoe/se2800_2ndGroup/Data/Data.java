@@ -183,9 +183,9 @@ public class Data {
     }
 
     /**
-     * This method will verify that the user transcript has been loaded
+     * This method will verify that some transcript data is available
      *
-     * This method checks to see if the transcriptCourses collection is null or empty
+     * This method checks to see if at least transcript or checked courses exist
      *
      * @throws CustomExceptions.InvalidTranscriptException when there is no data stored for the transcript courses
      * @author : Grant Fass
@@ -193,7 +193,14 @@ public class Data {
      */
     public static void verifyTranscript() throws CustomExceptions.InvalidInputException {
         LOGGER.finer("Verifying Transcript has been loaded");
-        if (getTranscriptCourses() == null || getTranscriptCourses().isEmpty()) {
+        final var courses = new HashSet<Course>();
+        if (getTranscriptCourses() != null) {
+            courses.addAll(getTranscriptCourses());
+        }
+        if (getCheckedCourses() != null) {
+            courses.addAll(getCheckedCourses());
+        }
+        if (courses.isEmpty()) {
             LOGGER.warning("Transcript course data is not yet loaded");
             throw new CustomExceptions.InvalidTranscriptException("Transcript course data is not yet loaded");
         }

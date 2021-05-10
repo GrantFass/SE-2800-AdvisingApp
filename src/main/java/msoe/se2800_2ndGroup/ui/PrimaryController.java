@@ -43,6 +43,7 @@ import java.util.Arrays;
  * * Added methods to manipulate data by Grant Fass on Wed, 21 Apr 2021
  * * Removed references to Model.java from App.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
  * * Use CourseTableView instead of ListView to allow checking by Hunter Turcin on Tue, 27 Apr 2021
+ * * Add storing course recommendations by Hunter Turcin on Sun, 9 May 2021
  *
  * @author : Grant
  * <p>
@@ -227,6 +228,27 @@ public class PrimaryController extends Controller {
                 } catch (IOException e) {
                     displayAlert(Alert.AlertType.ERROR, "IOException", "Exception", "IOException occurred writing file to: " + outputLocation);
                     AdvisingLogger.getLogger().warning("IOException occurred reading writing file to: " + outputLocation + "\n" + Arrays.toString(e.getStackTrace()));
+                }
+            });
+        }
+    }
+
+    @FXML
+    public void storeCourseRecommendations() {
+        final var directory = getDirectoryLocation("Select Location to Store Course Recommendations");
+        final var fall = fallTermSelection.isSelected();
+        final var winter = winterTermSelection.isSelected();
+        final var spring = springTermSelection.isSelected();
+
+        if (!directory.toString().isEmpty()) {
+            Model.ensureFXThread(() -> {
+                try {
+                    Model.storeCourseRecommendations(directory.getAbsolutePath(), fall, winter, spring);
+                    displayAlert(Alert.AlertType.INFORMATION, "Success", "File Write", "Successfully wrote file to: " + directory);
+                    AdvisingLogger.getLogger().info("Successfully wrote file to: " + directory + "\n");
+                } catch (IOException | CustomExceptions.InvalidInputException e) {
+                    displayAlert(Alert.AlertType.ERROR, "Exception", "Exception", "Exception occurred writing file to: " + directory);
+                    AdvisingLogger.getLogger().warning("Exception occurred reading writing file to: " + directory + "\n" + Arrays.toString(e.getStackTrace()));
                 }
             });
         }

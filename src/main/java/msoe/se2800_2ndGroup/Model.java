@@ -6,6 +6,7 @@ import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.FileIO.CourseDataIO;
+import msoe.se2800_2ndGroup.FileIO.RecommendationsIO;
 import msoe.se2800_2ndGroup.FileIO.TranscriptIO;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
@@ -58,6 +59,7 @@ import java.util.logging.Logger;
  * * Moved compilation methods from Model.java to Compilers.java by Grant Fass on Thu, 22 Apr 2021
  * * Moved course data loading methods from Model.java to CourseDataIO.java by Grant Fass on Thu, 22 Apr 2021
  * * Moved store major method from Model.java to Data.java by Grant Fass on Thu, 22 Apr 2021
+ * * Add storing course recommendations by Hunter Turcin on Sun, 9 May 2021
  *
  * @author : Grant
  * Copyright (C): TBD
@@ -202,6 +204,13 @@ public class Model {
     }
 
     //endregion
+
+    public static void storeCourseRecommendations(String directory, boolean fall, boolean winter, boolean spring) throws IOException, CustomExceptions.InvalidInputException {
+        final var location = String.format("%s\\CourseRecommendations-(%tF).pdf", directory, System.currentTimeMillis());
+        LOGGER.finer("Saving current course recommendations at: " + location);
+        final var recommendations = getCourseRecommendation(fall, winter, spring);
+        RecommendationsIO.write(recommendations, location);
+    }
 
     /**
      * TODO: test me

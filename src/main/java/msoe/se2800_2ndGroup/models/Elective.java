@@ -24,7 +24,8 @@ import java.util.function.Predicate;
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  *     - code cleanup from group feedback by Hunter Turcin on 2021-04-18
- *     - Override comparison by Grant Fass on Sun, 9 May 2021
+ *     - override comparison by Grant Fass on 2021-05-09
+ *     - add elective descriptions by Hunter Turcin on 2021-05-09
  * Copyright (C): 2021
  *
  * @author : Hunter Turcin
@@ -99,6 +100,25 @@ public class Elective implements CurriculumItem {
 
     public String getCode() {
         return code;
+    }
+
+    /**
+     * Get the description for this elective.
+     *
+     * @return the description for this elective
+     * @author : Hunter Turcin
+     * @since : Sun, 9 May 2021
+     */
+    public String getDescription() {
+        return switch (code) {
+            case "FREE" -> "Free Elective";
+            case "SCIEL" -> "Science Elective";
+            case "MASCIEL" -> "Math/Science Elective";
+            case "HUSS" -> "Humanities/Social Science Elective";
+            case "TECHEL" -> "Technical Elective";
+            case "BUSEL" -> "Business Elective";
+            default -> throw new IllegalStateException("bad code: " + code);
+        };
     }
 
     /**
