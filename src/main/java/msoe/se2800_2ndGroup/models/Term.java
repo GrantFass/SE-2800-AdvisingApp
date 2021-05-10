@@ -48,7 +48,7 @@ public record Term(String id, String season) implements Comparable<Term> {
 
     /**
      * Get a term from its id.
-     *
+     * <p>
      * The instances from this method should be treated like singletons.
      *
      * @param id the id of the term
@@ -70,12 +70,12 @@ public record Term(String id, String season) implements Comparable<Term> {
      * Compares this object with the specified object for order.  Returns a
      * negative integer, zero, or a positive integer as this object is less
      * than, equal to, or greater than the specified object.
-     *
+     * <p>
      * This method overrides the default comparison and will compare based on the ID for each term
-     *
+     * <p>
      * Sources:
-     *  <a href="#{@link}">{@link "https://www.geeksforgeeks
-     *  .org/how-to-override-compareto-method-in-java/"}</a>: Help overriding comparison
+     * <a href="#{@link}">{@link "https://www.geeksforgeeks
+     * .org/how-to-override-compareto-method-in-java/"}</a>: Help overriding comparison
      *
      * @param o the object to be compared.
      * @return a negative integer, zero, or a positive integer as this object

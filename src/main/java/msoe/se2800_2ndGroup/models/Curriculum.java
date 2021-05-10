@@ -32,7 +32,7 @@ import java.util.Map;
 public record Curriculum(String major, List<CurriculumItem> items) {
     /**
      * Determine which curriculum items are not yet satisfied.
-     *
+     * <p>
      * For every course that has been taken, check each curriculum item
      * for if the course satisfies it. This is done in a way such that a
      * single course cannot satisfy multiple curriculum items.
@@ -55,17 +55,15 @@ public record Curriculum(String major, List<CurriculumItem> items) {
         }
 
         // return the unsatisfied items in curriculum order
-        return items.stream()
-                    .filter(item -> !completed.get(item))
-                    .toList();
+        return items.stream().filter(item -> !completed.get(item)).toList();
     }
 
     /**
      * Update the next curriculum item's completion status for this course,
      * if there is a remaining item that can be satisfied.
-     * 
+     *
      * @param completed map of curriculum item to completion status
-     * @param course current course
+     * @param course    current course
      * @author : Hunter Turcin
      * @since : Mon, 19 Apr 2021
      */

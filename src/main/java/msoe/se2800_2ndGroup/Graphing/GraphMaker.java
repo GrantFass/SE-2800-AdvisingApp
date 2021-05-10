@@ -39,8 +39,8 @@ public class GraphMaker {
 
     /**
      * Get the graph for a course.
-     * 
-     * @param root the course at the root of the graph
+     *
+     * @param root    the course at the root of the graph
      * @param courses all loaded courses, with descriptions present
      * @return the graph for the course
      * @author : Hunter Turcin
@@ -52,16 +52,17 @@ public class GraphMaker {
 
     /**
      * Map the prerequisites of a course for a graph of courses.
-     *
+     * <p>
      * This is called recursively for OrPrerequisites and AndPrerequisites.
      *
      * @param prerequisite prerequisite to get the graph of
-     * @param courses courses to turn into from codes
+     * @param courses      courses to turn into from codes
      * @return the child nodes for this graph
      * @author : Hunter Turcin
      * @since : Sat, 10 Apr 2021
      */
-    private static Collection<GraphNode> getNodes(Prerequisite prerequisite, Collection<Course> courses) {
+    private static Collection<GraphNode> getNodes(Prerequisite prerequisite,
+                                                  Collection<Course> courses) {
         if (prerequisite instanceof NullPrerequisite) {
             return List.of();
         } else if (prerequisite instanceof SinglePrerequisite single) {
@@ -86,7 +87,7 @@ public class GraphMaker {
     /**
      * Get a course from its course code.
      *
-     * @param code code for searching
+     * @param code    code for searching
      * @param courses courses to search
      * @return course or null if not found
      * @author : Hunter Turcin

@@ -183,7 +183,8 @@ public class CLI {
                         final var directory = in.nextLine().trim();
                         LOGGER.fine("Loading all transcripts using standard scanner");
                         outputHyphenLine();
-                        System.out.print(Manipulators.outputHashSet(TranscriptIO.readMultiplePDFs(directory)));
+                        System.out.print(Manipulators.outputHashSet(
+                                TranscriptIO.readMultiplePDFs(directory)));
                         LOGGER.fine("Enrollment Display Done!");
                     }
                     case "view graduation plan" -> {
@@ -194,14 +195,13 @@ public class CLI {
                         String[] s = in.nextLine().split(" ");
                         int target = Integer.parseInt(s[0]);
                         int tolerance = Integer.parseInt(s[1]);
-                        LOGGER.fine(String.format("Generating graduation plan for %d +-%d " +
-                                                  "credits", target, tolerance));
+                        LOGGER.fine(
+                                String.format("Generating graduation plan for %d +-%d " + "credits",
+                                              target, tolerance));
                         List<AcademicTerm> graduationPlan = GraduationPlanCompiler
                                 .generateGraduationPlanVersion2(target, tolerance);
-                        System.out
-                                .format("Graduation Plan for %d - %d credit target per term:\n",
-                                        target - tolerance,
-                                        target + tolerance);
+                        System.out.format("Graduation Plan for %d - %d credit target per term:\n",
+                                          target - tolerance, target + tolerance);
                         System.out.println(Manipulators.getGraduationPlanAsString(graduationPlan));
                         LOGGER.info("Graduation plan generated");
                     }

@@ -67,17 +67,20 @@ public class CourseTableView extends TableView<Course> {
         final var creditsColumn = new TableColumn<Course, Integer>("Credits");
         final var prerequisiteColumn = new TableColumn<Course, String>("Prerequisite");
         final var descriptionColumn = new TableColumn<Course, String>("Description");
-        checkColumn.setCellValueFactory(
-                cell -> new CourseCheckedBooleanProperty(cell.getValue()));
+        checkColumn.setCellValueFactory(cell -> new CourseCheckedBooleanProperty(cell.getValue()));
         checkColumn.setCellFactory(CheckBoxTableCell.forTableColumn(checkColumn));
         codeColumn.setCellValueFactory(
-                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(cell.getValue().code()) : null);
+                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(
+                        cell.getValue().code()) : null);
         creditsColumn.setCellValueFactory(
-                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(cell.getValue().credits()) : null);
+                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(
+                        cell.getValue().credits()) : null);
         prerequisiteColumn.setCellValueFactory(
-                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(cell.getValue().prerequisite().toString()) : null);
+                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(
+                        cell.getValue().prerequisite().toString()) : null);
         descriptionColumn.setCellValueFactory(
-                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(cell.getValue().description()) : null);
+                cell -> cell.getValue() != null ? new ReadOnlyObjectWrapper<>(
+                        cell.getValue().description()) : null);
 
         setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
         setEditable(true); // only allows checking, not editing course
@@ -90,6 +93,7 @@ public class CourseTableView extends TableView<Course> {
         creditsColumn.setMaxWidth(60.0);
         creditsColumn.setMinWidth(60.0);
 
-        getColumns().setAll(checkColumn, codeColumn, creditsColumn, prerequisiteColumn, descriptionColumn);
+        getColumns().setAll(checkColumn, codeColumn, creditsColumn, prerequisiteColumn,
+                            descriptionColumn);
     }
 }

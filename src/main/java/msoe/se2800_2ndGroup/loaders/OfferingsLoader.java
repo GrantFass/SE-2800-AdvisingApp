@@ -45,10 +45,11 @@ public class OfferingsLoader {
 
     /**
      * Create a new offerings CSV loader.
-     *
+     * <p>
      * Courses must be loaded first with {@see PrerequisitesLoader}.
      *
-     * @param reader The Reader object created with a FileReader containing the path to the file to be read.
+     * @param reader  The Reader object created with a FileReader containing the path to the file
+     *               to be read.
      * @param courses courses to use
      * @throws IOException could not read data
      * @author : Hunter Turcin

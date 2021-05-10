@@ -66,6 +66,32 @@ public class AcademicTerm implements Comparable<AcademicTerm> {
     }
 
     /**
+     * Method used to calculate the completion status of a given curriculum item.
+     * <p>
+     * This method uses calls to Compilers.java and Data.java and thus needs to verify that
+     * there is a major stored in the program and that there is transcript data stored in the
+     * program.
+     *
+     * @param curriculumItem the course to generate completion status for
+     * @return the following values:
+     * ✓ for completed courses
+     * X for incomplete courses
+     * ? for electives
+     * @throws CustomExceptions.InvalidInputException if the major or transcript is missing
+     * @author : Grant Fass
+     * @since : Sun, 9 May 2021
+     */
+    private static String getCurriculumItemCompletionStatus(CurriculumItem curriculumItem)
+    throws CustomExceptions.InvalidInputException {
+        if (curriculumItem instanceof Course course) {
+            return Compilers.getCurriculaExcludingCompletedCourses(Data.getTranscriptCourses())
+                           .contains(course) ? "X" : "✓";
+        } else {
+            return "?";
+        }
+    }
+
+    /**
      * method to return the term index which is commonly used for sorting the order of terms
      *
      * @return the value of the term index
@@ -141,35 +167,6 @@ public class AcademicTerm implements Comparable<AcademicTerm> {
             return "No courses found for Academic Term: " + name;
         }
         return builder.toString();
-    }
-
-    /**
-     * Method used to calculate the completion status of a given curriculum item.
-     *
-     * This method uses calls to Compilers.java and Data.java and thus needs to verify that
-     * there is a major stored in the program and that there is transcript data stored in the
-     * program.
-     *
-     * @param curriculumItem the course to generate completion status for
-     * @return the following values:
-     *              ✓ for completed courses
-     *              X for incomplete courses
-     *              ? for electives
-     * @throws CustomExceptions.InvalidInputException if the major or transcript is missing
-     * @author : Grant Fass
-     * @since : Sun, 9 May 2021
-     */
-    private static String getCurriculumItemCompletionStatus(CurriculumItem curriculumItem)
-    throws CustomExceptions.InvalidInputException {
-        if (curriculumItem instanceof Course course) {
-            return Compilers
-                           .getCurriculaExcludingCompletedCourses(
-                                   Data.getTranscriptCourses())
-                           .contains(course)
-                   ? "X" : "✓";
-        } else {
-            return "?";
-        }
     }
 
     public String getName() {

@@ -10,7 +10,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -44,8 +43,8 @@ public class RecommendationsIO {
 
     /**
      * Write recommendations to a PDF.
-     * 
-     * @param items recommendation items to write
+     *
+     * @param items    recommendation items to write
      * @param location location to write
      * @throws IOException could not write PDF
      * @author : Hunter Turcin
@@ -68,7 +67,7 @@ public class RecommendationsIO {
 
     /**
      * Begin writing the PDF.
-     * 
+     *
      * @param content stream to write to
      * @throws IOException could not write PDF
      * @author : Hunter Turcin
@@ -83,7 +82,7 @@ public class RecommendationsIO {
 
     /**
      * Write the PDF header.
-     * 
+     *
      * @param content stream to write to
      * @throws IOException could not write PDF
      * @author : Hunter Turcin
@@ -96,21 +95,23 @@ public class RecommendationsIO {
         content.newLineAtOffset(0, -15);
         content.showText("--Degree Sought--");
         content.newLineAtOffset(0, -15);
-        content.showText(String.format("--Generated On Date: %tc", new Date(System.currentTimeMillis())));
+        content.showText(
+                String.format("--Generated On Date: %tc", new Date(System.currentTimeMillis())));
         content.newLineAtOffset(0, -15);
         content.newLineAtOffset(0, -15);
     }
 
     /**
      * Write the PDF body.
-     * 
+     *
      * @param content stream to write to
-     * @param items recommendations to write
+     * @param items   recommendations to write
      * @throws IOException could not write PDF
      * @author : Hunter Turcin
      * @since : Sun, 9 May 2021
      */
-    private static void writeBody(PDPageContentStream content, List<CurriculumItem> items) throws IOException {
+    private static void writeBody(PDPageContentStream content, List<CurriculumItem> items)
+    throws IOException {
         for (final var item : items) {
             content.showText(getRecommendationLine(item));
             content.newLineAtOffset(0, -15);
@@ -119,15 +120,16 @@ public class RecommendationsIO {
 
     /**
      * Finish writing the PDF.
-     * 
+     *
      * @param document document to save
-     * @param content stream to write to
+     * @param content  stream to write to
      * @param location location to write to
      * @throws IOException could not write PDF
      * @author : Hunter Turcin
      * @since : Sun, 9 May 2021
      */
-    private static void close(PDDocument document, PDPageContentStream content, String location) throws IOException {
+    private static void close(PDDocument document, PDPageContentStream content, String location)
+    throws IOException {
         content.endText();
         content.close();
         document.save(location);
@@ -136,7 +138,7 @@ public class RecommendationsIO {
 
     /**
      * Generate a human-friendly line for this recommendation.
-     * 
+     *
      * @param recommendation recommendation to make line of
      * @return line for recommendation
      * @author : Hunter Turcin

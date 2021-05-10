@@ -45,10 +45,11 @@ public class CurriculumLoader {
 
     /**
      * Create a new curriculum CSV loader.
-     *
+     * <p>
      * Courses must be loaded from {@see PrerequisitesLoader} first.
      *
-     * @param reader The Reader object created with a FileReader containing the path to the file to be read.
+     * @param reader  The Reader object created with a FileReader containing the path to the file
+     *               to be read.
      * @param courses courses to use
      * @author : Hunter Turcin
      * @since : Mon, 29 Mar 2021
@@ -94,7 +95,7 @@ public class CurriculumLoader {
      * Use a record to update curriculum item lists.
      *
      * @param record current record
-     * @param map map of major code to curriculum items
+     * @param map    map of major code to curriculum items
      * @author : Hunter Turcin
      * @since : Mon, 19 Apr 2021
      */

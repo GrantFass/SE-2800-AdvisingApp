@@ -37,7 +37,8 @@ import java.util.Arrays;
  * * Added methods to link models and switch windows by Grant on Saturday, 20 March 2021
  * * Added methods to get file locations for GUI by Grant Fass on Mon, 19 Apr 2021
  * * Added FXML menu option methods by Grant Fass on Mon, 19 Apr 2021
- * * Removed references to Model.java from App.java as it is now a utility class by Grant Fass on Thu, 22 Apr 2021
+ * * Removed references to Model.java from App.java as it is now a utility class by Grant Fass on
+ * Thu, 22 Apr 2021
  * Copyright (C): TBD
  *
  * @author : Grant
@@ -78,7 +79,8 @@ public abstract class Controller {
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
      */
-    public static void displayAlert(Alert.AlertType alertType, String title, String header, String content) {
+    public static void displayAlert(Alert.AlertType alertType, String title, String header,
+                                    String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -106,7 +108,8 @@ public abstract class Controller {
     /**
      * This method is used to get the location of a directory by using a DirectoryChooser
      * <p>
-     * This method opens up a directory chooser on the stored stage with the specified title at a default location based
+     * This method opens up a directory chooser on the stored stage with the specified title at a
+     * default location based
      * on the user's OS.
      *
      * @param directoryChooserTitle the title of the window to open
@@ -125,22 +128,28 @@ public abstract class Controller {
     /**
      * This method is used to get the location of a file by using a FileChooser
      * <p>
-     * This method is used to query the user for file locations by using a FileChooser that is opened from the main stage.
-     * The file chooser uses the passed in extension filters in order to determine what files to accept
+     * This method is used to query the user for file locations by using a FileChooser that is
+     * opened from the main stage.
+     * The file chooser uses the passed in extension filters in order to determine what files to
+     * accept
      * The file chooser also sets the initial directory based on the OS of the user
      *
      * @param fileChooserTitle           the title to use in the FileChooser popup
-     * @param extensionFilterDescription the description for the file chooser extension filter to use. EX: "TXT"
+     * @param extensionFilterDescription the description for the file chooser extension filter to
+     *                                  use. EX: "TXT"
      * @param extensionFilterExtension   the actual extension to filter files for. EX: ".txt"
      * @return a File location of the selected file
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
      */
-    protected File getFileLocation(String fileChooserTitle, String extensionFilterDescription, String extensionFilterExtension) {
+    protected File getFileLocation(String fileChooserTitle, String extensionFilterDescription,
+                                   String extensionFilterExtension) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter(extensionFilterDescription, "*" + extensionFilterExtension.toLowerCase()),
-                new FileChooser.ExtensionFilter("ALL FILES", "*.*"));
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter(extensionFilterDescription, "*" +
+                                                                                    extensionFilterExtension
+                                                                                            .toLowerCase()),
+                        new FileChooser.ExtensionFilter("ALL FILES", "*.*"));
         fileChooser.setTitle(fileChooserTitle);
         fileChooser.setInitialDirectory(new File(getInitialDirectoryBasedOnOS()));
         File out = fileChooser.showOpenDialog(stage);
@@ -151,10 +160,12 @@ public abstract class Controller {
     /**
      * This method is used to get the default file location
      * <p>
-     * This method calculates the default file location based on what OS the system is currently using
+     * This method calculates the default file location based on what OS the system is currently
+     * using
      * <p>
      * Sources:
-     * <a href="#{@link}">{@link "https://mkyong.com/java/how-to-detect-os-in-java-systemgetpropertyosname/"}</a> Help detecting OS
+     * <a href="#{@link}">{@link "https://mkyong.com/java/how-to-detect-os-in-java
+     * -systemgetpropertyosname/"}</a> Help detecting OS
      *
      * @return a string containing the initial directory
      * @author : Grant Fass
@@ -184,22 +195,22 @@ public abstract class Controller {
     @FXML
     private void displayHelp() {
         String message = """
-                1.) To load a transcript, go to File -> Load Transcript.
-                Choose the PDF file from the File Chooser window.
-                2.) To save a course data files, go to File -> Load Course Data.
-                Choose the CSV file from the File Chooser window.
-                3.) To save a copy of the transcript, got to File -> Store Transcript.
-                Chose a folder to store the filer in in the File Chooser window.
-                4.) To select your major, go to Major Selection -> Choose Between Software Engineering
-                and Computer Science.
-                5.) To choose a term, go to Term Selection -> Select Either Fall, Winter, or Sprint.
-                6.) To view course offerings, go to Data Manipulation -> View Course Offerings.
-                7.) To get course recommendations, go to Data Manipulation -> View Course Recommendations.
-                8.) To enter course code and view graph version of the course offerings,
-                go to Switch to Graph Window.
-                9.) To exit view graph version of the course offerings, go to Switch to Data Window.
-                10.) To exit the application, go to File -> Exit.
-                """;
+                         1.) To load a transcript, go to File -> Load Transcript.
+                         Choose the PDF file from the File Chooser window.
+                         2.) To save a course data files, go to File -> Load Course Data.
+                         Choose the CSV file from the File Chooser window.
+                         3.) To save a copy of the transcript, got to File -> Store Transcript.
+                         Chose a folder to store the filer in in the File Chooser window.
+                         4.) To select your major, go to Major Selection -> Choose Between Software Engineering
+                         and Computer Science.
+                         5.) To choose a term, go to Term Selection -> Select Either Fall, Winter, or Sprint.
+                         6.) To view course offerings, go to Data Manipulation -> View Course Offerings.
+                         7.) To get course recommendations, go to Data Manipulation -> View Course Recommendations.
+                         8.) To enter course code and view graph version of the course offerings,
+                         go to Switch to Graph Window.
+                         9.) To exit view graph version of the course offerings, go to Switch to Data Window.
+                         10.) To exit the application, go to File -> Exit.
+                         """;
         displayAlert(Alert.AlertType.INFORMATION, "Program Help", null, message);
         AdvisingLogger.getLogger().info("displaying help alert");
     }
@@ -232,22 +243,32 @@ public abstract class Controller {
     @FXML
     private void loadTranscript() {
         File transcriptLocation = getFileLocation("Select Transcript.PDF", "PDF", ".pdf");
-        boolean passedValidation = FileIO.validateFileLocation(transcriptLocation.getAbsolutePath(), ".pdf");
+        boolean passedValidation =
+                FileIO.validateFileLocation(transcriptLocation.getAbsolutePath(), ".pdf");
         if (!transcriptLocation.toString().equals("")) {
             if (passedValidation) {
                 Model.ensureFXThread(() -> {
                     try {
                         Model.loadUnofficialTranscript(transcriptLocation);
-                        displayAlert(Alert.AlertType.INFORMATION, "Success", "File Load", "Successfully read in file from: " + transcriptLocation);
-                        AdvisingLogger.getLogger().info("Successfully read in file from: " + transcriptLocation + "\n");
+                        displayAlert(Alert.AlertType.INFORMATION, "Success", "File Load",
+                                     "Successfully read in file from: " + transcriptLocation);
+                        AdvisingLogger.getLogger()
+                                .info("Successfully read in file from: " + transcriptLocation +
+                                      "\n");
                     } catch (IOException e) {
-                        displayAlert(Alert.AlertType.ERROR, "IOException", "Exception", "IOException occurred reading in file from: " + transcriptLocation);
-                        AdvisingLogger.getLogger().warning("IOException occurred reading in file from: " + transcriptLocation + "\n" + Arrays.toString(e.getStackTrace()));
+                        displayAlert(Alert.AlertType.ERROR, "IOException", "Exception",
+                                     "IOException occurred reading in file from: " +
+                                     transcriptLocation);
+                        AdvisingLogger.getLogger().warning(
+                                "IOException occurred reading in file from: " + transcriptLocation +
+                                "\n" + Arrays.toString(e.getStackTrace()));
                     }
                 });
             } else {
-                displayAlert(Alert.AlertType.WARNING, "Warning", "Failed Validation", "File " + transcriptLocation + " failed validation");
-                AdvisingLogger.getLogger().warning("File " + transcriptLocation + " failed validation");
+                displayAlert(Alert.AlertType.WARNING, "Warning", "Failed Validation",
+                             "File " + transcriptLocation + " failed validation");
+                AdvisingLogger.getLogger()
+                        .warning("File " + transcriptLocation + " failed validation");
             }
         }
     }
@@ -269,11 +290,16 @@ public abstract class Controller {
             Model.ensureFXThread(() -> {
                 try {
                     Model.storeUnofficialTranscript(outputLocation.getAbsolutePath());
-                    displayAlert(Alert.AlertType.INFORMATION, "Success", "File Write", "Successfully wrote file to: " + outputLocation);
-                    AdvisingLogger.getLogger().info("Successfully wrote file to: " + outputLocation + "\n");
+                    displayAlert(Alert.AlertType.INFORMATION, "Success", "File Write",
+                                 "Successfully wrote file to: " + outputLocation);
+                    AdvisingLogger.getLogger()
+                            .info("Successfully wrote file to: " + outputLocation + "\n");
                 } catch (IOException e) {
-                    displayAlert(Alert.AlertType.ERROR, "IOException", "Exception", "IOException occurred writing file to: " + outputLocation);
-                    AdvisingLogger.getLogger().warning("IOException occurred reading writing file to: " + outputLocation + "\n" + Arrays.toString(e.getStackTrace()));
+                    displayAlert(Alert.AlertType.ERROR, "IOException", "Exception",
+                                 "IOException occurred writing file to: " + outputLocation);
+                    AdvisingLogger.getLogger().warning(
+                            "IOException occurred reading writing file to: " + outputLocation +
+                            "\n" + Arrays.toString(e.getStackTrace()));
                 }
             });
         }
@@ -299,33 +325,44 @@ public abstract class Controller {
         File curriculumLocation = getFileLocation("Select Curriculum.CSV", "CSV", ".csv");
         File offeringsLocation = getFileLocation("Select Offerings.CSV", "CSV", ".csv");
         File prerequisitesLocation = getFileLocation("Select Prerequisites.CSV", "CSV", ".csv");
-        boolean curriculumPassedValidation = FileIO.validateFileLocation(curriculumLocation.getAbsolutePath(), ".csv");
-        boolean offeringsPassedValidation = FileIO.validateFileLocation(offeringsLocation.getAbsolutePath(), ".csv");
-        boolean prerequisitesPassedValidation = FileIO.validateFileLocation(prerequisitesLocation.getAbsolutePath(), ".csv");
-        if (!(curriculumLocation.toString().equals("") || offeringsLocation.toString().equals("") || prerequisitesLocation.toString().equals(""))) {
-            if (!curriculumPassedValidation || !offeringsPassedValidation || !prerequisitesPassedValidation) {
-                String message = String.format("One or more files has failed validation:\n%s: %s\n%s: %s\n%s: %s\n",
-                        curriculumLocation, curriculumPassedValidation, offeringsLocation, offeringsPassedValidation,
-                        prerequisitesLocation, prerequisitesPassedValidation);
+        boolean curriculumPassedValidation =
+                FileIO.validateFileLocation(curriculumLocation.getAbsolutePath(), ".csv");
+        boolean offeringsPassedValidation =
+                FileIO.validateFileLocation(offeringsLocation.getAbsolutePath(), ".csv");
+        boolean prerequisitesPassedValidation =
+                FileIO.validateFileLocation(prerequisitesLocation.getAbsolutePath(), ".csv");
+        if (!(curriculumLocation.toString().equals("") || offeringsLocation.toString().equals("") ||
+              prerequisitesLocation.toString().equals(""))) {
+            if (!curriculumPassedValidation || !offeringsPassedValidation ||
+                !prerequisitesPassedValidation) {
+                String message = String.format(
+                        "One or more files has failed validation:\n%s: %s\n%s: %s\n%s: %s\n",
+                        curriculumLocation, curriculumPassedValidation, offeringsLocation,
+                        offeringsPassedValidation, prerequisitesLocation,
+                        prerequisitesPassedValidation);
                 displayAlert(Alert.AlertType.WARNING, "Warning", "Failed Validation", message);
                 AdvisingLogger.getLogger().warning(message);
             } else {
                 Model.ensureFXThread(() -> {
                     try {
-                        String message = Model.loadCoursesFromSpecifiedLocations(curriculumLocation.getAbsolutePath(),
-                                offeringsLocation.getAbsolutePath(), prerequisitesLocation.getAbsolutePath());
+                        String message = Model.loadCoursesFromSpecifiedLocations(
+                                curriculumLocation.getAbsolutePath(),
+                                offeringsLocation.getAbsolutePath(),
+                                prerequisitesLocation.getAbsolutePath());
 
                         displayAlert(Alert.AlertType.INFORMATION, "Success", "File Load", message);
                         AdvisingLogger.getLogger().info(message);
                     } catch (IOException e) {
                         String message = String.format("""
-                                IOException occurred reading in course data files from:
-                                %s
-                                %s
-                                %s
-                                """, curriculumLocation, offeringsLocation, prerequisitesLocation);
+                                                       IOException occurred reading in course data files from:
+                                                       %s
+                                                       %s
+                                                       %s
+                                                       """, curriculumLocation, offeringsLocation,
+                                                       prerequisitesLocation);
                         displayAlert(Alert.AlertType.ERROR, "IOException", "Exception", message);
-                        AdvisingLogger.getLogger().warning(message + Arrays.toString(e.getStackTrace()));
+                        AdvisingLogger.getLogger()
+                                .warning(message + Arrays.toString(e.getStackTrace()));
                     }
                 });
             }
@@ -351,10 +388,13 @@ public abstract class Controller {
                 try {
                     Data.storeMajor("CS");
                 } catch (CustomExceptions.InvalidInputException e) {
-                    String message = String.format(" Invalid Input Exception occurred while " +
-                            "storing major: %s\n%s", majorText, e.getMessage());
-                    displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception", message);
-                    AdvisingLogger.getLogger().warning(message + Arrays.toString(e.getStackTrace()));
+                    String message = String.format(
+                            " Invalid Input Exception occurred while " + "storing major: %s\n%s",
+                            majorText, e.getMessage());
+                    displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception",
+                                 message);
+                    AdvisingLogger.getLogger()
+                            .warning(message + Arrays.toString(e.getStackTrace()));
                 }
             });
         } else if (majorText.startsWith("SE")) {
@@ -362,10 +402,13 @@ public abstract class Controller {
                 try {
                     Data.storeMajor("SE");
                 } catch (CustomExceptions.InvalidInputException e) {
-                    String message = String.format(" Invalid Input Exception occurred while " +
-                            "storing major: %s\n%s", majorText, e.getMessage());
-                    displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception", message);
-                    AdvisingLogger.getLogger().warning(message + Arrays.toString(e.getStackTrace()));
+                    String message = String.format(
+                            " Invalid Input Exception occurred while " + "storing major: %s\n%s",
+                            majorText, e.getMessage());
+                    displayAlert(Alert.AlertType.ERROR, "InvalidInputException", "Exception",
+                                 message);
+                    AdvisingLogger.getLogger()
+                            .warning(message + Arrays.toString(e.getStackTrace()));
                 }
             });
         }

@@ -98,28 +98,30 @@ public class GraduationPlanCompiler {
         for (CurriculumItem item : fullCurriculum) {
             if (item instanceof Course temporaryCourse) {
                 if (fallCourses.contains(temporaryCourse)) {
-                    temporaryFallTerm = addCurriculumItemToTerm(temporaryFallTerm, Term.FALL,
-                                                                temporaryCourse,
-                                                                numberOfFallTerms, maxCredits, minCredits, graduationPlan);
+                    temporaryFallTerm =
+                            addCurriculumItemToTerm(temporaryFallTerm, Term.FALL, temporaryCourse,
+                                                    numberOfFallTerms, maxCredits, minCredits,
+                                                    graduationPlan);
                     numberOfFallTerms = temporaryFallTerm.getTermIndex();
                 } else if (winterCourses.contains(temporaryCourse)) {
                     temporaryWinterTerm = addCurriculumItemToTerm(temporaryWinterTerm, Term.WINTER,
-                                                                temporaryCourse,
-                                                                numberOfWinterTerms, maxCredits, minCredits,
-                                                                graduationPlan);
+                                                                  temporaryCourse,
+                                                                  numberOfWinterTerms, maxCredits,
+                                                                  minCredits, graduationPlan);
                     numberOfWinterTerms = temporaryWinterTerm.getTermIndex();
                 } else if (springCourses.contains(temporaryCourse)) {
                     temporarySpringTerm = addCurriculumItemToTerm(temporarySpringTerm, Term.SPRING,
-                                                                temporaryCourse,
-                                                                numberOfSpringTerms, maxCredits, minCredits,
-                                                                  graduationPlan);
+                                                                  temporaryCourse,
+                                                                  numberOfSpringTerms, maxCredits,
+                                                                  minCredits, graduationPlan);
                     numberOfSpringTerms = temporarySpringTerm.getTermIndex();
                 } else {
                     LOGGER.finer("COURSE NOT FOUND: Defaulting to add " + temporaryCourse.code() +
                                  " to FALL term.");
-                    temporaryFallTerm = addCurriculumItemToTerm(temporaryFallTerm, Term.FALL,
-                                                                temporaryCourse,
-                                                                numberOfFallTerms, maxCredits, minCredits, graduationPlan);
+                    temporaryFallTerm =
+                            addCurriculumItemToTerm(temporaryFallTerm, Term.FALL, temporaryCourse,
+                                                    numberOfFallTerms, maxCredits, minCredits,
+                                                    graduationPlan);
                     numberOfFallTerms = temporaryFallTerm.getTermIndex();
                 }
 
@@ -128,31 +130,33 @@ public class GraduationPlanCompiler {
                 if (temporaryFallTerm.compareTo(temporaryWinterTerm) <= 0 &&
                     temporaryFallTerm.compareTo(temporarySpringTerm) <= 0) {
 
-                    temporaryFallTerm = addCurriculumItemToTerm(temporaryFallTerm, Term.FALL,
-                                                                temporaryElective,
-                                                                numberOfFallTerms, maxCredits, minCredits, graduationPlan);
+                    temporaryFallTerm =
+                            addCurriculumItemToTerm(temporaryFallTerm, Term.FALL, temporaryElective,
+                                                    numberOfFallTerms, maxCredits, minCredits,
+                                                    graduationPlan);
                     numberOfFallTerms = temporaryFallTerm.getTermIndex();
                 } else if (temporaryWinterTerm.compareTo(temporaryFallTerm) < 0 &&
                            temporaryWinterTerm.compareTo(temporarySpringTerm) <= 0) {
                     temporaryWinterTerm = addCurriculumItemToTerm(temporaryWinterTerm, Term.WINTER,
                                                                   temporaryElective,
-                                                                  numberOfWinterTerms, maxCredits, minCredits,
-                                                                  graduationPlan);
+                                                                  numberOfWinterTerms, maxCredits,
+                                                                  minCredits, graduationPlan);
                     numberOfWinterTerms = temporaryWinterTerm.getTermIndex();
                 } else if (temporarySpringTerm.compareTo(temporaryFallTerm) < 0 &&
                            temporarySpringTerm.compareTo(temporaryWinterTerm) < 0) {
                     temporarySpringTerm = addCurriculumItemToTerm(temporarySpringTerm, Term.SPRING,
                                                                   temporaryElective,
-                                                                  numberOfSpringTerms, maxCredits, minCredits,
-                                                                  graduationPlan);
+                                                                  numberOfSpringTerms, maxCredits,
+                                                                  minCredits, graduationPlan);
                     numberOfSpringTerms = temporarySpringTerm.getTermIndex();
                 } else {
                     LOGGER.fine(
                             "ELECTIVE NOT FOUND: Defaulting to add " + temporaryElective.getCode() +
                             " to " + "FALL term.");
-                    temporaryFallTerm = addCurriculumItemToTerm(temporaryFallTerm, Term.FALL,
-                                                                temporaryElective,
-                                                                numberOfFallTerms, maxCredits, minCredits, graduationPlan);
+                    temporaryFallTerm =
+                            addCurriculumItemToTerm(temporaryFallTerm, Term.FALL, temporaryElective,
+                                                    numberOfFallTerms, maxCredits, minCredits,
+                                                    graduationPlan);
                     numberOfFallTerms = temporaryFallTerm.getTermIndex();
                 }
             }
@@ -165,31 +169,37 @@ public class GraduationPlanCompiler {
 
     /**
      * This method adds a given curriculum item to the given term
-     *
+     * <p>
      * This method will take in a curriculum item, a term, and data associated with that term in
      * order to add the item to the term. then if the term is full it will be added to the
      * graduation plan which is passed by reference.
      *
-     * @param temporaryTerm the Academic term to add the curriculum item to
-     * @param term the Calender term of the Academic Term ie: Term.Fall
+     * @param temporaryTerm           the Academic term to add the curriculum item to
+     * @param term                    the Calender term of the Academic Term ie: Term.Fall
      * @param temporaryCurriculumItem the curriculum item to add to the Academic term
-     * @param numberOfTerms the current ones based index of the Academic terms for the passed
-     *                      Calendar term.
-     * @param maxCredits the maximum number of credits to use when constructing the given term
-     * @param minCredits the minimum number of credits to use when constructing the given term
-     * @param graduationPlan the graduation plan which is a list of Academic terms passed by
-     *                       reference
+     * @param numberOfTerms           the current ones based index of the Academic terms for the
+     *                                passed
+     *                                Calendar term.
+     * @param maxCredits              the maximum number of credits to use when constructing the
+     *                                given term
+     * @param minCredits              the minimum number of credits to use when constructing the
+     *                                given term
+     * @param graduationPlan          the graduation plan which is a list of Academic terms
+     *                                passed by
+     *                                reference
      * @return the Academic term that was passed in with the passed course added to it when that
      * term is not full. otherwise it will return a new term for that calendar term
      * @author : Grant Fass
      * @since : Sun, 9 May 2021
      */
     private static AcademicTerm addCurriculumItemToTerm(AcademicTerm temporaryTerm, Term term,
-                                                        CurriculumItem temporaryCurriculumItem, int numberOfTerms,
-                                                        int maxCredits, int minCredits,
+                                                        CurriculumItem temporaryCurriculumItem,
+                                                        int numberOfTerms, int maxCredits,
+                                                        int minCredits,
                                                         List<AcademicTerm> graduationPlan) {
 
-        LOGGER.finer("Adding " + getCurriculumItemCode(temporaryCurriculumItem) + " to " + term.season() + " term.");
+        LOGGER.finer("Adding " + getCurriculumItemCode(temporaryCurriculumItem) + " to " +
+                     term.season() + " term.");
         temporaryTerm.addItems(temporaryCurriculumItem);
         if (temporaryTerm.getNumberOfCredits() <= maxCredits &&
             temporaryTerm.getNumberOfCredits() >= minCredits) {
@@ -202,6 +212,7 @@ public class GraduationPlanCompiler {
 
     /**
      * method to return the course code for the given item
+     *
      * @param item the item to get the code of
      * @return the items code
      * @author : Grant Fass

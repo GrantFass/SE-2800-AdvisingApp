@@ -1,9 +1,12 @@
 package msoe.se2800_2ndGroup.FileIO;
 
+import msoe.se2800_2ndGroup.Data.Compilers;
 import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
+import msoe.se2800_2ndGroup.models.CurriculumItem;
+import msoe.se2800_2ndGroup.models.Offering;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -237,8 +240,7 @@ public class TranscriptIO {
         if (line.endsWith("W") || line.endsWith("F")) {
             LOGGER.finest(String.format(
                     "Input line (%s) ends in W or F which signifies the class was failed or " +
-                    "withdrawn from and should be skipped",
-                    line));
+                    "withdrawn from and should be skipped", line));
             return null;
         }
         for (String ignore : IGNORE_WORDS) {
@@ -340,9 +342,9 @@ public class TranscriptIO {
      * @param scanner the scanner object to use to query the user for a file location.
      * @return an ArrayList of Course objects containing the courses from the transcript
      * @throws IOException                            for issues creating the specified file or
-     * reading it
+     *                                                reading it
      * @throws CustomExceptions.InvalidInputException for issues verifying the specified file
-     * location
+     *                                                location
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
@@ -371,18 +373,23 @@ public class TranscriptIO {
      * @author : Teresa T.
      * @since : Sat, 8 May 2021
      */
-    public static HashSet<String> readMultiplePDFs(String dirLocation) throws IOException {
+    public static HashSet<String> readMultiplePDFs(String dirLocation)
+    throws IOException, CustomExceptions.InvalidInputException {
         File directory = new File(dirLocation);
         File[] files = directory.listFiles();
         HashSet<String> enrollment = new HashSet<>();
         if (files != null && files.length != 0) {
-            ArrayList<Course> allCourses = new ArrayList<>();
+            ArrayList<CurriculumItem> allCourses = new ArrayList<>();
             //loop through the array of files from the directory
+            ArrayList<Offering> yearlyOfferings = Compilers.getCourseOfferings(true, true, true);
             for (File file : files) {
-                allCourses.addAll(readInFile(file));
+                List<CurriculumItem> unsatisfied = Compilers
+                        .getUnsatisfiedCurriculumItemsForSpecifiedTerm(yearlyOfferings, Compilers
+                                .getCurriculaExcludingCompletedCourses(readInFile(file)));
+                allCourses.addAll(unsatisfied);
             }
             ArrayList<String> allCourseCodes =
-                    (ArrayList<String>) Manipulators.getCourseCodes(allCourses);
+                    (ArrayList<String>) Manipulators.getCourseCodesFromCurriculumItem(allCourses);
             Collections.sort(allCourseCodes);
             enrollment = getCourseOccurrences(allCourseCodes);
         } else if (files == null) {
@@ -410,7 +417,7 @@ public class TranscriptIO {
     public static HashSet<String> getCourseOccurrences(ArrayList<String> allCourses) {
         HashSet<String> occurrences = new HashSet<>();
         for (String course : allCourses) {
-            occurrences.add(String.format("\tOccurrences of %-7s : %3d\n", course,
+            occurrences.add(String.format("\tMissing Occurrences of %-7s : %3d\n", course,
                                           Collections.frequency(allCourses, course)));
         }
         return occurrences;
