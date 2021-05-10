@@ -3,14 +3,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <VBox spacing="20" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="msoe.se2800_2ndGroup.UI.SecondaryController">
+      fx:controller="msoe.se2800_2ndGroup.ui.SecondaryController">
     <MenuBar>
         <!-- File IO menu -->
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" onAction="#close" text="Exit Program"/>
             <MenuItem mnemonicParsing="false" onAction="#loadTranscript" text="Load Transcript"/>
             <MenuItem mnemonicParsing="false" onAction="#loadCourseData" text="Load Course Data"/>
-            <MenuItem mnemonicParsing="false" onAction="#storeTranscript" text="Store Transcript"/>
+            <MenuItem mnemonicParsing="false" onAction="#storeTranscript" text="Store Default Transcript"/>
         </Menu>
         <!-- https://stackoverflow.com/questions/57911107/javafx-togglegroup-not-functioning-properly-with-accelerators-radiomenuitem -->
         <!-- Major Selection Radio Button Menu -->
@@ -33,6 +33,8 @@
             <MenuItem mnemonicParsing="false" onAction="#viewPrerequisiteGraph" text="View Graph of Prerequisites"/>
             <MenuItem mnemonicParsing="false" onAction="#viewProjectedCourseEnrollment"
                       text="View Projected Course Enrollment"/>
+            <MenuItem mnemonicParsing="false" onAction="#viewGraduationPlan"
+                      text="View Graduation Plan"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
             <MenuItem text="Help" onAction="#displayHelp"/>

@@ -24,6 +24,8 @@ import java.util.function.Predicate;
  *     - additional overridden Object methods added by Hunter Turcin on 2021-04-04
  *     - code cleanup using JDK 16 features done by Hunter Turcin on 2021-04-07
  *     - code cleanup from group feedback by Hunter Turcin on 2021-04-18
+ *     - override comparison by Grant Fass on 2021-05-09
+ *     - add elective descriptions by Hunter Turcin on 2021-05-09
  * Copyright (C): 2021
  *
  * @author : Hunter Turcin
@@ -98,5 +100,56 @@ public class Elective implements CurriculumItem {
 
     public String getCode() {
         return code;
+    }
+
+    /**
+     * Get the description for this elective.
+     *
+     * @return the description for this elective
+     * @author : Hunter Turcin
+     * @since : Sun, 9 May 2021
+     */
+    public String getDescription() {
+        return switch (code) {
+            case "FREE" -> "Free Elective";
+            case "SCIEL" -> "Science Elective";
+            case "MASCIEL" -> "Math/Science Elective";
+            case "HUSS" -> "Humanities/Social Science Elective";
+            case "TECHEL" -> "Technical Elective";
+            case "BUSEL" -> "Business Elective";
+            default -> throw new IllegalStateException("bad code: " + code);
+        };
+    }
+
+    /**
+     * Compares this object with the specified object for order.  Returns a
+     * negative integer, zero, or a positive integer as this object is less
+     * than, equal to, or greater than the specified object.
+     *
+     * This method overrides the default comparison. if the item being compared is a course then
+     * it is automatically greater, otherwise the value of the comparison of the codes is returned
+     *
+     * Sources:
+     *      *  <a href="#{@link}">{@link "https://www.geeksforgeeks
+     *      *  .org/how-to-override-compareto-method-in-java/"}</a>: Help overriding comparison
+     *      *
+     *
+     * @param o the object to be compared.
+     * @return a negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     * @throws NullPointerException if the specified object is null
+     * @throws ClassCastException   if the specified object's type prevents it
+     *                              from being compared to this object.
+     * @author : Grant Fass
+     * @since : Sun, 9 May 2021
+     */
+    @Override
+    public int compareTo(CurriculumItem o) {
+        if (o instanceof Course) {
+            //o is greater
+            return 1;
+        } else {
+            return this.code.compareTo(((Elective) o).code);
+        }
     }
 }

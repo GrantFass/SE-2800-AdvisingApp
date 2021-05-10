@@ -5,6 +5,7 @@ import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
 import msoe.se2800_2ndGroup.models.Curriculum;
 import msoe.se2800_2ndGroup.models.Offering;
+import msoe.se2800_2ndGroup.ui.CourseCheckedBooleanProperty;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -28,6 +29,7 @@ import java.util.logging.Logger;
  * * File Created by Grant on Thursday, 22 April 2021
  * * Moved variables, getters, and verification methods for datum objects from Model.java to Data.java by Grant Fass on Thu, 22 Apr 2021
  * * Moved store major method from Model.java to Data.java by Grant Fass on Thu, 22 Apr 2021
+ * * Add manual transcriptCourses manipulation methods by Hunter Turcin on Mon, 3 May 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -47,8 +49,11 @@ public class Data {
     // Variables to store the course data
     public static Collection<Curriculum> curricula;
     public static Collection<Course> prerequisiteCourses;
-    public static ArrayList<Course> transcriptCourses;
+    public static ArrayList<Course> transcriptCourses = new ArrayList<>();
+    public static ArrayList<Course> checkedCourses = new ArrayList<>();
     public static Collection<Offering> offerings;
+    
+    private static Collection<CourseCheckedBooleanProperty> uiProperties = new ArrayList<>();
 
     //endregion
 
@@ -107,7 +112,33 @@ public class Data {
      * @since : Thu, 15 Apr 2021
      */
     public static ArrayList<Course> getTranscriptCourses() {
-        return Objects.requireNonNullElseGet(transcriptCourses, ArrayList::new);
+        return transcriptCourses;
+    }
+
+    /**
+     * this method returns the list of all checked courses when called.
+     * @return the checked courses
+     * @author : Grant Fass
+     * @since : Thu, 6 May 2021
+     */
+    public static ArrayList<Course> getCheckedCourses() { return checkedCourses; }
+
+    /**
+     * Set the loaded transcript course list.
+     * 
+     * This also updates the checkboxes in the ui.
+     * 
+     * @param transcriptCourses new transcript courses
+     * @author : Hunter Turcin
+     * @since : Tue, 4 May 2021
+     */
+    public static void setTranscriptCourses(ArrayList<Course> transcriptCourses) {
+        Data.transcriptCourses = transcriptCourses;
+        
+        // Replace all checkbox data with the new transcript
+        for (final var property : uiProperties) {
+            property.set(isCourseChecked(property.getCourse()));
+        }
     }
     //endregion
 
@@ -152,9 +183,9 @@ public class Data {
     }
 
     /**
-     * This method will verify that the user transcript has been loaded
+     * This method will verify that some transcript data is available
      *
-     * This method checks to see if the transcriptCourses collection is null or empty
+     * This method checks to see if at least transcript or checked courses exist
      *
      * @throws CustomExceptions.InvalidTranscriptException when there is no data stored for the transcript courses
      * @author : Grant Fass
@@ -162,7 +193,14 @@ public class Data {
      */
     public static void verifyTranscript() throws CustomExceptions.InvalidInputException {
         LOGGER.finer("Verifying Transcript has been loaded");
-        if (getTranscriptCourses() == null || getTranscriptCourses().isEmpty()) {
+        final var courses = new HashSet<Course>();
+        if (getTranscriptCourses() != null) {
+            courses.addAll(getTranscriptCourses());
+        }
+        if (getCheckedCourses() != null) {
+            courses.addAll(getCheckedCourses());
+        }
+        if (courses.isEmpty()) {
             LOGGER.warning("Transcript course data is not yet loaded");
             throw new CustomExceptions.InvalidTranscriptException("Transcript course data is not yet loaded");
         }
@@ -208,5 +246,42 @@ public class Data {
         }
     }
 
+    /**
+     * Determine if a course has been checked already by the user.
+     * 
+     * @param course course to get the status of
+     * @return true if checked, false if not
+     * @author : Hunter Turcin
+     * @since : Mon, 3 May 2021
+     */
+    public static boolean isCourseChecked(Course course) {
+        return getCheckedCourses().contains(course);
+    }
 
+    /**
+     * Set the checked status of a course.
+     *
+     * @param course course to set the checked status of
+     * @param checked new checked status
+     * @author : Hunter Turcin
+     * @since : Mon, 3 May 2021
+     */
+    public static void setCourseChecked(Course course, boolean checked) {
+        if (checked) {
+            getCheckedCourses().add(course);
+        } else {
+            getCheckedCourses().remove(course);
+        }
+    }
+
+    /**
+     * Register a ui checkbox for updating when the transcript changes.
+     * 
+     * @param property the property to track
+     * @author : Hunter Turcin
+     * @since : Tue, 4 May 2021
+     */
+    public static void registerProperty(CourseCheckedBooleanProperty property) {
+        uiProperties.add(property);
+    }
 }

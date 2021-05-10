@@ -1,4 +1,4 @@
-package msoe.se2800_2ndGroup.UI;
+package msoe.se2800_2ndGroup.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -136,7 +136,7 @@ public abstract class Controller {
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
      */
-    private File getFileLocation(String fileChooserTitle, String extensionFilterDescription, String extensionFilterExtension) {
+    protected File getFileLocation(String fileChooserTitle, String extensionFilterDescription, String extensionFilterExtension) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter(extensionFilterDescription, "*" + extensionFilterExtension.toLowerCase()),

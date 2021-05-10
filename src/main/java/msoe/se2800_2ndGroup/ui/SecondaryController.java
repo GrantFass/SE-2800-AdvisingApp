@@ -1,19 +1,23 @@
-package msoe.se2800_2ndGroup.UI;
+package msoe.se2800_2ndGroup.ui;
 
-import javafx.event.ActionEvent;
+import static javafx.scene.control.Alert.AlertType.ERROR;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import msoe.se2800_2ndGroup.Data.GraduationPlanCompiler;
 import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.FileIO.TranscriptIO;
 import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
+import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.models.AcademicTerm;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
+import java.util.List;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -78,7 +82,43 @@ public class SecondaryController extends Controller {
         Model.ensureFXThread(() -> {
             mainLabel.setText("Viewing Prerequisite Graph:");
             String code = Manipulators.standardizeCourse(mainSearchBar.getText());
-            mainTextArea.setText(Model.getCourseGraph(code));
+            try {
+                final var graph = Model.getCourseGraph(code);
+                final var text = graph + "\n\n"
+                                 + "A course depends on the indented courses underneath it.\n"
+                                 + "All & courses must be taken to take the parent course.\n"
+                                 + "Only one | course must be taken to take the parent course.\n"
+                                 + "There is nothing special about + courses.";
+                mainTextArea.setText(text);
+            } catch (CustomExceptions.InvalidInputException e) {
+                displayAlert(ERROR, "Unknown course", "Unknown course", "There is no course for this code");
+            }
+        });
+    }
+
+    public void viewGraduationPlan() {
+        Model.ensureFXThread(() -> {
+            mainLabel.setText("Viewing Graduation Plan:");
+            int target = 16;
+            int tolerance = 2;
+            try {
+                String[] s = mainSearchBar.getText().split(" ");
+                target = Integer.parseInt(s[0]);
+                tolerance = Integer.parseInt(s[1]);
+            } catch (Exception ignored) { }
+            try {
+                AdvisingLogger.getLogger().fine(String.format("Generating graduation plan for %d +-%d " +
+                                                  "credits", target, tolerance));
+                List<AcademicTerm> graduationPlan = GraduationPlanCompiler
+                        .generateGraduationPlanVersion2(target, tolerance);
+                mainTextArea.setText(String.format("""
+                                                   Graduation Plan for %d - %d credit target per term:
+                                                   %s
+                                                   """, target - tolerance, target + tolerance,
+                                                   Manipulators.getGraduationPlanAsString(graduationPlan)));
+            } catch (CustomExceptions.InvalidInputException e) {
+                displayAlert(ERROR, "Data Not Loaded", "Missing Data", "Missing major");
+            }
         });
     }
 

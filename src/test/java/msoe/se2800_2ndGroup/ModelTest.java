@@ -328,13 +328,13 @@ class ModelTest {
     void getCourseRecommendation() {
         try {
             //Test that error is thrown when no offerings, major, or transcript have been loaded.
-            assertThrows(CustomExceptions.InvalidMajorException.class, () -> model.getCourseRecommendation(false, true, false));
+            assertThrows(CustomExceptions.InvalidMajorException.class, () -> model.getCourseRecommendationAsString(false, true, false));
             //Test that error is still thrown when offerings and transcript have not been loaded.
             Data.storeMajor("CS");
-            assertThrows(CustomExceptions.InvalidOfferingsException.class, () -> model.getCourseRecommendation(false, true, false));
+            assertThrows(CustomExceptions.InvalidOfferingsException.class, () -> model.getCourseRecommendationAsString(false, true, false));
             //Test that error is still thrown when transcript has not been loaded.
             CourseDataIO.loadCourseDataFromDefaults();
-            assertThrows(CustomExceptions.InvalidTranscriptException.class, () -> model.getCourseRecommendation(false, true, false));
+            assertThrows(CustomExceptions.InvalidTranscriptException.class, () -> model.getCourseRecommendationAsString(false, true, false));
 
             //TODO: Stuck for now since Feature #11 is needed first
             fail("TODO: Need Test Transcript to continue");

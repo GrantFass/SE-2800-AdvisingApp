@@ -6,8 +6,10 @@ import msoe.se2800_2ndGroup.Data.Data;
 import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.FileIO.CourseDataIO;
+import msoe.se2800_2ndGroup.FileIO.RecommendationsIO;
 import msoe.se2800_2ndGroup.FileIO.TranscriptIO;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
+import msoe.se2800_2ndGroup.models.Course;
 import msoe.se2800_2ndGroup.models.CurriculumItem;
 import msoe.se2800_2ndGroup.models.Offering;
 
@@ -57,6 +59,7 @@ import java.util.logging.Logger;
  * * Moved compilation methods from Model.java to Compilers.java by Grant Fass on Thu, 22 Apr 2021
  * * Moved course data loading methods from Model.java to CourseDataIO.java by Grant Fass on Thu, 22 Apr 2021
  * * Moved store major method from Model.java to Data.java by Grant Fass on Thu, 22 Apr 2021
+ * * Add storing course recommendations by Hunter Turcin on Sun, 9 May 2021
  *
  * @author : Grant
  * Copyright (C): TBD
@@ -110,6 +113,22 @@ public class Model {
         return Manipulators.getCourseOfferingsAsString(courseOfferings);
     }
 
+    /**
+     * Get the offerings for the specified terms.
+     *
+     * @param fall whether or not to include fall offerings
+     * @param winter whether or not to include winter offerings
+     * @param spring whether or not to include spring offerings
+     * @return all desired offerings
+     * @throws CustomExceptions.InvalidInputException major not found
+     * @author : Hunter Turcin
+     * @since : Tue, 27 Apr 2021
+     */
+    public static List<Offering> getCourseOfferings(boolean fall, boolean winter, boolean spring)
+            throws CustomExceptions.InvalidInputException {
+        return Compilers.getCourseOfferings(fall, winter, spring);
+    }
+
 
     //region Transcript FileIO
 
@@ -125,7 +144,7 @@ public class Model {
      */
     public static void loadUnofficialTranscript(Scanner in) throws CustomExceptions.InvalidInputException, IOException {
         LOGGER.finer("Loading unofficial transcript using default scanner and a new importTranscript object");
-        Data.transcriptCourses = TranscriptIO.readInFile(in);
+        Data.setTranscriptCourses(TranscriptIO.readInFile(in));
     }
 
     /**
@@ -139,7 +158,7 @@ public class Model {
      */
     public static void loadUnofficialTranscript(File file) throws IOException {
         AdvisingLogger.getLogger().log(Level.FINER, "Loading unofficial transcript using passed in File and a new importTranscript object");
-        Data.transcriptCourses = TranscriptIO.readInFile(file);
+        Data.setTranscriptCourses(TranscriptIO.readInFile(file));
     }
 
     /**
@@ -169,7 +188,29 @@ public class Model {
         TranscriptIO.writeFile(Data.getTranscriptCourses(), location);
     }
 
+    /**
+     * TODO: test me
+     * Method to store an the custom List of transcript courses to a new unofficial transcript pdf in the specified location
+     *
+     * @param outputLocation the directory to store the file in
+     * @throws IOException for issues creating the specified file or reading it
+     * @author : Grant Fass
+     * @since : Mon, 3 May 2021
+     */
+    public static void storeCustomUnofficialTranscript(String outputLocation, ArrayList<Course> courses) throws IOException {
+        String location = String.format("%s\\UnofficialTranscript-(%tF).pdf", outputLocation, System.currentTimeMillis());
+        LOGGER.finer("Saving current transcript courses to unofficial transcript using a new unofficialTranscript object in the location: " + location);
+        TranscriptIO.writeFile(courses, location);
+    }
+
     //endregion
+
+    public static void storeCourseRecommendations(String directory, boolean fall, boolean winter, boolean spring) throws IOException, CustomExceptions.InvalidInputException {
+        final var location = String.format("%s\\CourseRecommendations-(%tF).pdf", directory, System.currentTimeMillis());
+        LOGGER.finer("Saving current course recommendations at: " + location);
+        final var recommendations = getCourseRecommendation(fall, winter, spring);
+        RecommendationsIO.write(recommendations, location);
+    }
 
     /**
      * TODO: test me
@@ -183,12 +224,31 @@ public class Model {
      * @author : Grant Fass
      * @since : Sat, 20 Mar 2021
      */
-    public static String getCourseRecommendation(boolean getFall, boolean getWinter, boolean getSpring) throws CustomExceptions.InvalidInputException {
+    public static String getCourseRecommendationAsString(boolean getFall, boolean getWinter, boolean getSpring) throws CustomExceptions.InvalidInputException {
         if (!getFall && !getWinter && !getSpring) {
             return "No Terms Selected";
         }
         List<CurriculumItem> courseRecommendation = Compilers.getCourseRecommendation(getFall, getWinter, getSpring);
         return Manipulators.getCurriculumItemsAsString(courseRecommendation);
+    }
+
+    /**
+     * Get course recommendations for the specified terms.
+     *
+     * @param fall whether or not to include fall
+     * @param winter whether or not to include winter
+     * @param spring whether or not to include spring
+     * @return the requested recommendations
+     * @throws CustomExceptions.InvalidInputException bad major, bad data loaded, or no terms selected
+     * @author : Hunter Turcin
+     * @since : Tue, 27 Apr 2021
+     */
+    public static List<CurriculumItem> getCourseRecommendation(boolean fall, boolean winter, boolean spring) throws CustomExceptions.InvalidInputException {
+        if (!fall && !winter && !spring) {
+            throw new CustomExceptions.InvalidInputException("no terms selected");
+        }
+
+        return Compilers.getCourseRecommendation(fall, winter, spring);
     }
 
     /**
@@ -287,7 +347,7 @@ public class Model {
      * @param code the code of the course to analyze
      * @return the course's prerequisite graph
      */
-    public static String getCourseGraph(String code) {
+    public static String getCourseGraph(String code) throws CustomExceptions.InvalidInputException {
         return Compilers.getCoursePrerequisiteGraph(code);
     }
 
