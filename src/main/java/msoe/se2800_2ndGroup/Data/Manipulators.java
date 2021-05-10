@@ -7,9 +7,7 @@ import msoe.se2800_2ndGroup.models.CurriculumItem;
 import msoe.se2800_2ndGroup.models.Elective;
 import msoe.se2800_2ndGroup.models.Offering;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -179,6 +177,24 @@ public class Manipulators {
             out.add(course.code());
         }
         return out;
+    }
+
+    /**
+     * method to compile a hashset that contains strings with included newlines into a single string
+     * This method also sorts the output alphabetically
+     * @param hashSet the hashset to turn into a single string
+     * @return the single string of hashset output
+     * @author : Grant Fass
+     * @since : Mon, 10 May 2021
+     */
+    public static String outputHashSet(HashSet<String> hashSet) {
+        List<String> list = new ArrayList<>(hashSet);
+        Collections.sort(list);
+        StringBuilder builder = new StringBuilder();
+        for (String s: list) {
+            builder.append(s);
+        }
+        return builder.toString();
     }
 
     /**

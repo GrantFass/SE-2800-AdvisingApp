@@ -1,5 +1,6 @@
 package msoe.se2800_2ndGroup.UI;
 
+import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.FileIO.TranscriptIO;
 import msoe.se2800_2ndGroup.Model;
@@ -144,11 +145,8 @@ public class CLI {
                         System.out.println("Enter a directory location: ");
                         final var directory = in.nextLine().trim();
                         LOGGER.fine("Loading all transcripts using standard scanner");
-                        HashSet<String> enrollment = TranscriptIO.readMultiplePDFs(directory);
                         outputHyphenLine();
-                        for(String strings : enrollment) {
-                            System.out.print(strings);
-                        }
+                        System.out.print(Manipulators.outputHashSet(TranscriptIO.readMultiplePDFs(directory)));
                         LOGGER.fine("Enrollment Display Done!");
                     }
                 }

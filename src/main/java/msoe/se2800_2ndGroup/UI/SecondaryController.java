@@ -1,13 +1,19 @@
 package msoe.se2800_2ndGroup.UI;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import msoe.se2800_2ndGroup.Data.Manipulators;
+import msoe.se2800_2ndGroup.FileIO.TranscriptIO;
 import msoe.se2800_2ndGroup.Model;
+import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Project Authors: Fass, Grant; Poptile, Claudia; Toohill, Teresa; Turcin, Hunter;
@@ -93,4 +99,22 @@ public class SecondaryController extends Controller {
         super.switchTo("primary");
     }
 
+    /**
+     * method used to output the projected course enrollment to the main text area in the graph
+     * window.
+     * @author : Grant Fass
+     * @since : Mon, 10 May 2021
+     */
+    public void viewProjectedCourseEnrollment() {
+        File directory = getDirectoryLocation("Select Transcript PDF Directory");
+        mainLabel.setText("Viewing Projected Course Enrollment");
+        try {
+            AdvisingLogger.getLogger().info("Generating course enrollment for PDF Transcript " +
+                                            "files in the following directory:\n\t" + directory.getAbsolutePath());
+            mainTextArea.setText(Manipulators.outputHashSet(TranscriptIO.readMultiplePDFs(directory.getAbsolutePath())));
+        } catch (IOException e) {
+            AdvisingLogger.getLogger().warning(e.getMessage());
+            displayAlert(Alert.AlertType.ERROR, "IOException", null, e.getMessage());
+        }
+    }
 }

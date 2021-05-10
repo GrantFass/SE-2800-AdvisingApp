@@ -114,7 +114,7 @@ public abstract class Controller {
      * @author : Grant Fass
      * @since : Mon, 19 Apr 2021
      */
-    private File getDirectoryLocation(String directoryChooserTitle) {
+    protected File getDirectoryLocation(String directoryChooserTitle) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle(directoryChooserTitle);
         directoryChooser.setInitialDirectory(new File(getInitialDirectoryBasedOnOS()));

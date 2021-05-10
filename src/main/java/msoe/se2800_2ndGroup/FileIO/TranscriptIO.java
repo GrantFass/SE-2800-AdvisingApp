@@ -410,7 +410,7 @@ public class TranscriptIO {
     public static HashSet<String> getCourseOccurrences(ArrayList<String> allCourses) {
         HashSet<String> occurrences = new HashSet<>();
         for (String course : allCourses) {
-            occurrences.add(String.format("\tOccurrences of %7s: %3d\n", course,
+            occurrences.add(String.format("\tOccurrences of %-7s : %3d\n", course,
                                           Collections.frequency(allCourses, course)));
         }
         return occurrences;

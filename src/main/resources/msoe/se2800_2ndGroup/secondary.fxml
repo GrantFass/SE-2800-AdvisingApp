@@ -31,6 +31,8 @@
         <!-- Graph Manipulation Menu -->
         <Menu mnemonicParsing="false" text="Graph Manipulation">
             <MenuItem mnemonicParsing="false" onAction="#viewPrerequisiteGraph" text="View Graph of Prerequisites"/>
+            <MenuItem mnemonicParsing="false" onAction="#viewProjectedCourseEnrollment"
+                      text="View Projected Course Enrollment"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
             <MenuItem text="Help" onAction="#displayHelp"/>
