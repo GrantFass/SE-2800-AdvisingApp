@@ -1,4 +1,4 @@
-package msoe.se2800_2ndGroup;
+package msoe.se2800_2ndGroup.models;
 
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -30,8 +30,8 @@ import java.util.Iterator;
  * * <...>
  * * <...>
  * Modification Log:
- * * File Created by toohillt on Wednesday, 28 April 2021
- * <p>
+ * * File Created by Teresa, Toohill on Wednesday, 28 April 2021
+ * Methods Changed on 5/8
  * Copyright (C): TBD
  *
  * @author : toohillt
@@ -40,59 +40,56 @@ import java.util.Iterator;
 public class FutureCourseEnrollment {
 
     /**
-     * Sorts arraylist alphabetically
+     * Sorts arraylist of courses alphabetically.
+     * This allows for easy sorting.
+     * It gets the course codes to sort through that data
+     * of each Course object.
+     * It converts passed in arraylist to a string code arraylist
+     * for sorting alphabetically.
+     * Uses collections .sort() to sort.
      * @author : Teresa Toohill
      * @since : Wed, 28 Apr 2021
      */
-    public ArrayList<Course> sort(ArrayList<Course> courses){
-        //Converts passed in array to a string array for sorting alphabetically
+    public ArrayList<String> sort(ArrayList<Course> courses){
         ArrayList<String> courseSort = new ArrayList<String>();
-        ArrayList<Integer> numberSort = new ArrayList<Integer>();
-        for(int i = 0; i < courses.size(); i++){
-            courseSort.add(courses.get(i).code());
+        for(Course course : courses){
+            courseSort.add(course.code());
         }
 
-        ArrayList<Course> newCourseList = new ArrayList<>();
         //sorts string array alphabetically and in ascending order
         Collections.sort(courseSort);
-        for(int i = 0; i < newCourseList.size(); i++){
-            Course course = new Course(courseSort.get(i));
-            newCourseList.add(course);
-        }
         //returns the new course list
-        return newCourseList;
+        return courseSort;
     }
 
 
     /**
-     * Builds a Hashset
+     * Builds a Hashset by looping through
+     * arraylist and adding values.
      * @author : Teresa Toohill
      * @since : Wed, 5 May 2021
      */
-    public HashSet<Course> oneForEachCourse(ArrayList<Course> courses){
+    public HashSet<String> oneForEachCourse(ArrayList<String> courses){
         //Create a HashSet based on the arraylist (only contains one of each course)
-        HashSet<Course> hashSet = new HashSet<>();
-        for(int i = 0; i < courses.size(); i++){
-            hashSet.add(courses.get(i));
-        }
+        HashSet<String> hashSet = new HashSet<>();
+        hashSet.addAll(courses);
         return hashSet;
     }
 
     /**
      * Gets the number of occurrences
+     * by using a for each loop to
+     * loop through Hashset.
+     * Sees if
      * @author : Teresa Toohill
      * @since : Wed, 5 May 2021
      */
-    public HashSet<String> sumOccurences(HashSet<Course> courses){
+    public HashSet<String> sumOccurences(HashSet<String> courses, ArrayList<String> allCourses){
         //tack on the values to the courses in the hashset or do
         // the hash set as strings and append String.format("\n Occurances: number")
         HashSet<String> occurences = new HashSet<String>();
-        for(Course course : courses){
-            if(occurences.contains(course)) {
-                int num = -1;
-                num += Collections.frequency(courses, course);
-                occurences.add("\n Occurances of " + course + ": " + num);
-            }
+        for(String course : allCourses){
+            occurences.add("\n Occurances of " + course + ": " + Collections.frequency(allCourses, course));
         }
         return occurences;
     }

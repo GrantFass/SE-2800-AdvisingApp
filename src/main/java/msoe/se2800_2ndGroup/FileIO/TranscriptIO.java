@@ -1,7 +1,7 @@
 package msoe.se2800_2ndGroup.FileIO;
 
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
-import msoe.se2800_2ndGroup.FutureCourseEnrollment;
+import msoe.se2800_2ndGroup.models.FutureCourseEnrollment;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -313,22 +313,48 @@ public class TranscriptIO {
     }
 
 
+    /**
+     * This method reads in courses from multiple PDFs.
+     * It does so by splitting the directory into a file arary,
+     * accounting for empty directories.
+     * Gets courses arraylist from each file.
+     * Calls each FutureCourseEnrollment method to get
+     * enrollment, which includes .sort(), .oneForEachCourse(),
+     * and .sumOccurrences().
+     * These get the enrollment!
+     * @param dirLocation the directory file location
+     * @return enrollment in courses
+     * @throws IOException                            for issues creating the specified file or reading it
+     * @author : Teresa T.
+     * @since : Sat, 8 May 2021
+     */
     public static HashSet<String> readMultiplePDFs(String dirLocation) throws IOException {
-        //query the user
+        //Sets the file directory
         File directory = new File(dirLocation);
+        //with directory there are arrays
+        //90% sure this is working because it
+        // is in printing out all the courses read in
         File[] files = directory.listFiles();
+        //enrollment for each course store
         HashSet<String> enrollment = new HashSet<String>();
-        FutureCourseEnrollment futureCourseEnrollment = new FutureCourseEnrollment();
-        ArrayList<Course> courses = new ArrayList<>();
-        for(File file : files){
-            ArrayList<Course> coursesToAdd = readInFile(file);
-            for(int i = 0; i < coursesToAdd.size(); i++){
-                courses.add(coursesToAdd.get(i));
+        if(files.length != 0) {
+            //Call future course enrollment
+            FutureCourseEnrollment futureCourseEnrollment = new FutureCourseEnrollment();
+            //all the courses from every transcript :)
+            ArrayList<Course> courses = new ArrayList<>();
+            //loop through the array of files from the directory
+            for (File file : files) {
+                courses.addAll(readInFile(file));
             }
+            //sorts courses with Future Course Enrollment
+            ArrayList<String> newCourses = futureCourseEnrollment.sort(courses);
+            //Ensures only one course with Future Course Enrollment
+            HashSet<String> hashSet = futureCourseEnrollment.oneForEachCourse(newCourses);
+            //gets the enrollment Future Course Enrollment
+            enrollment = futureCourseEnrollment.sumOccurences(hashSet, newCourses);
+        } else {
+            System.out.println("There are no files in this directory!");
         }
-        courses = futureCourseEnrollment.sort(courses);
-        HashSet<Course> hashSet = futureCourseEnrollment.oneForEachCourse(courses);
-        enrollment = futureCourseEnrollment.sumOccurences(hashSet);
         return enrollment;
     }
 
