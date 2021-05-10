@@ -1,5 +1,6 @@
 package msoe.se2800_2ndGroup.FileIO;
 
+import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.Course;
@@ -32,24 +33,33 @@ import java.util.logging.Logger;
  * * Exporting transcript pdf files
  * ImportTranscript Modification Log:
  * * File Created by toohillt on Saturday, 20 March 2021
- * * Modify the readInFile method to return the list of courses directly instead of using a private var and a getter by Grant Fass on Tue, 13 Apr 2021
- * * Add methods to remove ignored words and extract course codes from each input line by Grant Fass on Thu, 15 Apr 2021
- * * Clean up main readInFile method by removing extra data structures, adding comments, and adding methods by Grant Fass on Thu, 15 Apr 2021
- * * Update parsing to skip courses that were withdrawn from or failed by Grant Fass on Thu, 15 Apr 2021
- * * Fix error preventing courses with the word 'organization' in the description from being read by Grant Fass on Thu, 15 Apr 2021
+ * * Modify the readInFile method to return the list of courses directly instead of using a
+ * private var and a getter by Grant Fass on Tue, 13 Apr 2021
+ * * Add methods to remove ignored words and extract course codes from each input line by Grant
+ * Fass on Thu, 15 Apr 2021
+ * * Clean up main readInFile method by removing extra data structures, adding comments, and
+ * adding methods by Grant Fass on Thu, 15 Apr 2021
+ * * Update parsing to skip courses that were withdrawn from or failed by Grant Fass on Thu, 15
+ * Apr 2021
+ * * Fix error preventing courses with the word 'organization' in the description from being read
+ * by Grant Fass on Thu, 15 Apr 2021
  * * Add logger by Grant Fass on Thu, 15 Apr 2021
  * * code cleanup from group feedback by turcinh on Tuesday, 20 April 2021
  * * Make methods static by Grant Fass on Thu, 22 Apr 2021
  * UnofficialTranscript (Export) Modification Log:
  * * File Created by toohillt on Saturday, 10 April 2021
- * * Add method to get a standard string representation of a course for output to PDF by Grant Fass on Thu, 15 Apr 2021
+ * * Add method to get a standard string representation of a course for output to PDF by Grant
+ * Fass on Thu, 15 Apr 2021
  * * Implement new lines when outputting to PDF by Grant Fass on Thu, 15 Apr 2021
  * * Break the PDF output method into smaller methods by Grant Fass on Thu, 15 Apr 2021
  * * code cleanup from group feedback by turcinh on Tuesday, 20 April 2021
  * Modification Log:
  * * File Created by Grant on Thursday, 22 April 2021
- * * Merged files from both ImportTranscript.java and UnofficialTranscript.java into a single class by Grant Fass on Thu, 22 Apr 2021
+ * * Merged files from both ImportTranscript.java and UnofficialTranscript.java into a single
+ * class by Grant Fass on Thu, 22 Apr 2021
  * * Fix pdf loading not closing files correctly by Grant Fass on Thu, 22 Apr 2021
+ * * Clean up code for generating future course enrollment and move the method to do so from the
+ * previously existing FutureCourseEnrollment.java class by Grant Fass on Mon, 10 May 2021
  * <p>
  * Copyright (C): TBD
  *
@@ -64,11 +74,13 @@ public class TranscriptIO {
     /**
      * Words that are ignored from the PDF when extracting text.
      */
-    private final static String[] IGNORE_WORDS = new String[]{"Milwaukee School of Engineering", "Unofficial Transcript",
-            "ID", "NAME", "SSN", "DATE PRINTED", "Undergraduate Division", "Number",
-            "Transfer Work", "Term Totals", "Cumulative Totals", "Total Credits Earned",
-            "Quarter", "Page", "Major Totals", "* * *   End of Academic Record * * *", "DEGREE SOUGHT",
-            "Qual", "Pts GPA", "Cred", "HrsGrade", "Generated On Date"};
+    private final static String[] IGNORE_WORDS =
+            new String[]{"Milwaukee School of Engineering", "Unofficial Transcript", "ID", "NAME",
+                         "SSN", "DATE PRINTED", "Undergraduate Division", "Number", "Transfer Work",
+                         "Term Totals", "Cumulative Totals", "Total Credits Earned", "Quarter",
+                         "Page", "Major Totals", "* * *   End of Academic Record * * *",
+                         "DEGREE SOUGHT", "Qual", "Pts GPA", "Cred", "HrsGrade",
+                         "Generated On Date"};
 
     //region transcript export methods
 
@@ -80,16 +92,19 @@ public class TranscriptIO {
      * can be used as input to this program.
      * <p>
      * Sources:
-     * <a href="#{@link}">{@link "https://www.tutorialspoint.com/pdfbox/pdfbox_adding_pages.htm"}</a>: Creating PDF
+     * <a href="#{@link}">{@link "https://www.tutorialspoint.com/pdfbox/pdfbox_adding_pages.htm"}
+     * </a>: Creating PDF
      * <a href="#{@link}">{@link "https://stackoverflow.com/a/47731904"}</a>: Newlines in output PDF
      *
      * @param courses        the list of courses to output to the PDF
-     * @param outputLocation the location to store the output location to, will default to "./out/Unofficial Transcript.pdf"
+     * @param outputLocation the location to store the output location to, will default to "
+     *                       ./out/Unofficial Transcript.pdf"
      * @throws IOException for errors in writing to the PDF file
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
-    public static void writeFile(ArrayList<Course> courses, String outputLocation) throws IOException {
+    public static void writeFile(ArrayList<Course> courses, String outputLocation)
+    throws IOException {
         if (outputLocation == null || outputLocation.isBlank()) {
             outputLocation = "./out/Unofficial Transcript.pdf";
         }
@@ -136,7 +151,8 @@ public class TranscriptIO {
     }
 
     /**
-     * Method to build the body of the PDF by outputting each course in the standard format on its own line
+     * Method to build the body of the PDF by outputting each course in the standard format on
+     * its own line
      *
      * @param contentStream the PDF to output the body on
      * @param courses       the list of courses to output
@@ -144,7 +160,8 @@ public class TranscriptIO {
      * @author : Grant Fass
      * @since : Thu, 15 Apr 2021
      */
-    private static void buildPDFBody(PDPageContentStream contentStream, ArrayList<Course> courses) throws IOException {
+    private static void buildPDFBody(PDPageContentStream contentStream, ArrayList<Course> courses)
+    throws IOException {
         for (Course course : courses) {
             contentStream.showText(getCourseForOutput(course));
             contentStream.newLineAtOffset(0, -15);
@@ -166,7 +183,8 @@ public class TranscriptIO {
         contentStream.newLineAtOffset(0, -15);
         contentStream.showText("--Degree Sought--");
         contentStream.newLineAtOffset(0, -15);
-        contentStream.showText(String.format("--Generated On Date: %tc--", new Date(System.currentTimeMillis())));
+        contentStream.showText(
+                String.format("--Generated On Date: %tc--", new Date(System.currentTimeMillis())));
         contentStream.newLineAtOffset(0, -15);
         contentStream.newLineAtOffset(0, -15);
     }
@@ -174,10 +192,13 @@ public class TranscriptIO {
     /**
      * method to format a course into a standard format used for outputting to a PDF document
      * <p>
-     * There is a listing of invalid chars for output such as \n and \r as per the below source link.
+     * There is a listing of invalid chars for output such as \n and \r as per the below source
+     * link.
      * <p>
      * Sources:
-     * <a href="#{@link}">{@link "https://stackoverflow.com/questions/46644570/pdfbox-u000a-controllf-is-not-available-in-this-font-helvetica-encoding"}</a>: Output string invalid chars
+     * <a href="#{@link}">{@link "https://stackoverflow.com/questions/46644570/pdfbox-u000a
+     * -controllf-is-not-available-in-this-font-helvetica-encoding"}</a>: Output string invalid
+     * chars
      *
      * @param course the course to format
      * @return the course formatted as a string
@@ -195,12 +216,16 @@ public class TranscriptIO {
     //region methods for importing transcripts
 
     /**
-     * This method will check if the current target line contains any of the values in the array of Ignored Words
+     * This method will check if the current target line contains any of the values in the array
+     * of Ignored Words
      * <p>
-     * This method iterates through the list of ignored words and compares them against the target line that is passed
-     * into the method as a parameter using the .contains method for strings. If an ignored line is found the method
+     * This method iterates through the list of ignored words and compares them against the
+     * target line that is passed
+     * into the method as a parameter using the .contains method for strings. If an ignored line
+     * is found the method
      * will return null, otherwise the method will return the line itself.
-     * This method will also return null if the line ends in a W or an F which indicates the course was not passed or withdrawn from.
+     * This method will also return null if the line ends in a W or an F which indicates the
+     * course was not passed or withdrawn from.
      *
      * @param line the String to check for ignored words
      * @return null if an ignored line is found, otherwise return the parameter string
@@ -210,12 +235,17 @@ public class TranscriptIO {
     private static String filterForPassedClasses(String line) {
         //can add ' || line.endsWith("WIP")' if Work in progress courses need to be excluded
         if (line.endsWith("W") || line.endsWith("F")) {
-            LOGGER.finest(String.format("Input line (%s) ends in W or F which signifies the class was failed or withdrawn from and should be skipped", line));
+            LOGGER.finest(String.format(
+                    "Input line (%s) ends in W or F which signifies the class was failed or " +
+                    "withdrawn from and should be skipped",
+                    line));
             return null;
         }
         for (String ignore : IGNORE_WORDS) {
             if (line.contains(ignore)) {
-                LOGGER.finest(String.format("Input line (length = %d) contains an ignored word (%s)", line.length(), ignore));
+                LOGGER.finest(
+                        String.format("Input line (length = %d) contains an ignored word (%s)",
+                                      line.length(), ignore));
                 return null;
             }
         }
@@ -227,9 +257,12 @@ public class TranscriptIO {
      * This method checks for the course code in the string and returns it
      * <p>
      * This method first splits the passed in inputLine on each space (' ').
-     * This method then checks to see if the each of the words that were separated contain ('.') or ('--') and that they contain a digit
-     * If the split words do not contain either of the strings, and they contain a digit then they are added to the output arrayList and returned.
-     * The returned list contains only the course codes then since all words containing descriptions or credits are removed
+     * This method then checks to see if the each of the words that were separated contain ('.')
+     * or ('--') and that they contain a digit
+     * If the split words do not contain either of the strings, and they contain a digit then
+     * they are added to the output arrayList and returned.
+     * The returned list contains only the course codes then since all words containing
+     * descriptions or credits are removed
      *
      * @param inputLine the String to split and scan for the course code
      * @return a String containing the course code or null if one was not found.
@@ -239,7 +272,8 @@ public class TranscriptIO {
     private static String checkStringForCourseCode(String inputLine) {
         for (String word : inputLine.split(" ")) {
             if (!word.contains(".") && !word.contains("--") && word.matches("\\w{2}\\d.*")) {
-                LOGGER.finer(String.format("Input Line (%s) contains course code (%s)", inputLine, word));
+                LOGGER.finer(String.format("Input Line (%s) contains course code (%s)", inputLine,
+                                           word));
                 return word.equals("SS415AMAmerican") ? "SS415AM" : word;
             }
         }
@@ -248,16 +282,19 @@ public class TranscriptIO {
     }
 
     /**
-     * This method reads in the entire pdf then parses out the course codes and returns them as an ArrayList of courses.
+     * This method reads in the entire pdf then parses out the course codes and returns them as
+     * an ArrayList of courses.
      * <p>
      * The method will use the PDF loader to load the entire PDF into a single String object.
      * The method then splits the pdf String into individual lines.
      * For each line the method removes all ignored words then extracts course codes if they exist.
      * Then each course code is turned into a Course object and returned as part of an ArrayList.
-     * This method converts both the input text array and output course array list to hash sets to remove duplicates
+     * This method converts both the input text array and output course array list to hash sets
+     * to remove duplicates
      * <p>
      * Sources:
-     * <a href="#{@link}">{@link "https://www.programiz.com/java-programming/examples/convert-array-set"}</a>: Help converting arrays to hash sets
+     * <a href="#{@link}">{@link "https://www.programiz.com/java-programming/examples/convert
+     * -array-set"}</a>: Help converting arrays to hash sets
      *
      * @param file the file object to use to create the PDDocument object to parse the PDF.
      * @return an ArrayList of Course objects containing the courses from the transcript
@@ -291,24 +328,92 @@ public class TranscriptIO {
     }
 
     /**
-     * This method reads in the entire pdf then parses out the course codes and returns them as an ArrayList of courses.
+     * This method reads in the entire pdf then parses out the course codes and returns them as
+     * an ArrayList of courses.
      * <p>
-     * This method first queries the user for a file location using the standard FileIO.getUserInputFileLocation
-     * method. Then the method passes off to the other readInFile(File file) method to create the PDF reading object
+     * This method first queries the user for a file location using the standard FileIO
+     * .getUserInputFileLocation
+     * method. Then the method passes off to the other readInFile(File file) method to create the
+     * PDF reading object
      * and parse the courses out.
      *
      * @param scanner the scanner object to use to query the user for a file location.
      * @return an ArrayList of Course objects containing the courses from the transcript
-     * @throws IOException                            for issues creating the specified file or reading it
-     * @throws CustomExceptions.InvalidInputException for issues verifying the specified file location
+     * @throws IOException                            for issues creating the specified file or
+     * reading it
+     * @throws CustomExceptions.InvalidInputException for issues verifying the specified file
+     * location
      * @author : Grant Fass, Teresa T.
      * @since : Thu, 15 Apr 2021
      */
-    public static ArrayList<Course> readInFile(Scanner scanner) throws IOException, CustomExceptions.InvalidInputException {
+    public static ArrayList<Course> readInFile(Scanner scanner)
+    throws IOException, CustomExceptions.InvalidInputException {
         //load entire pdf into a single string
-        String pathName = FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner, System.out);
+        String pathName =
+                FileIO.getUserInputFileLocation("Transcript.pdf", ".pdf", scanner, System.out);
         File file = new File(pathName);
         return readInFile(file);
+    }
+
+
+    /**
+     * Method to read all transcripts in a directory and return the occurrences of each course code
+     * <p>
+     * This method reads in courses from multiple PDFs.
+     * It does so by splitting the directory into a file array,
+     * accounting for empty directories.
+     * Gets courses arraylist from each file.
+     *
+     * @param dirLocation the directory file location
+     * @return enrollment in courses
+     * @throws IOException for issues creating the specified file or reading it
+     * @modified by Grant Fass on Mon, 10 May 2021
+     * @author : Teresa T.
+     * @since : Sat, 8 May 2021
+     */
+    public static HashSet<String> readMultiplePDFs(String dirLocation) throws IOException {
+        File directory = new File(dirLocation);
+        File[] files = directory.listFiles();
+        HashSet<String> enrollment = new HashSet<>();
+        if (files != null && files.length != 0) {
+            ArrayList<Course> allCourses = new ArrayList<>();
+            //loop through the array of files from the directory
+            for (File file : files) {
+                allCourses.addAll(readInFile(file));
+            }
+            ArrayList<String> allCourseCodes =
+                    (ArrayList<String>) Manipulators.getCourseCodes(allCourses);
+            Collections.sort(allCourseCodes);
+            enrollment = getCourseOccurrences(allCourseCodes);
+        } else if (files == null) {
+            System.out.println("The specified directory is invalid");
+        } else {
+            System.out.println("There are no files in this directory!");
+        }
+        return enrollment;
+    }
+
+    /**
+     * Method to sum the number of times each course occurs and return a hash set of string
+     * containing the information.
+     * <p>
+     * Gets the number of occurrences
+     * by using a for each loop to
+     * loop through Hashset.
+     *
+     * @param allCourses an Arraylist of course code strings for every instance of a course being
+     *                   taken.
+     * @modified by Grant Fass on Mon, 10 May 2021
+     * @author : Teresa Toohill
+     * @since : Wed, 5 May 2021
+     */
+    public static HashSet<String> getCourseOccurrences(ArrayList<String> allCourses) {
+        HashSet<String> occurrences = new HashSet<>();
+        for (String course : allCourses) {
+            occurrences.add(String.format("\tOccurrences of %-7s : %3d\n", course,
+                                          Collections.frequency(allCourses, course)));
+        }
+        return occurrences;
     }
 
     //endregion

@@ -126,7 +126,7 @@ public class Data {
     /**
      * Set the loaded transcript course list.
      * 
-     * This also updates the checkboxes in the UI.
+     * This also updates the checkboxes in the ui.
      * 
      * @param transcriptCourses new transcript courses
      * @author : Hunter Turcin
@@ -275,7 +275,7 @@ public class Data {
     }
 
     /**
-     * Register a UI checkbox for updating when the transcript changes.
+     * Register a ui checkbox for updating when the transcript changes.
      * 
      * @param property the property to track
      * @author : Hunter Turcin

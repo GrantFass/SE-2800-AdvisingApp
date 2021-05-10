@@ -3,6 +3,7 @@ package msoe.se2800_2ndGroup.ui;
 import msoe.se2800_2ndGroup.Data.GraduationPlanCompiler;
 import msoe.se2800_2ndGroup.Data.Manipulators;
 import msoe.se2800_2ndGroup.Exceptions.CustomExceptions;
+import msoe.se2800_2ndGroup.FileIO.TranscriptIO;
 import msoe.se2800_2ndGroup.Model;
 import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.AcademicTerm;
@@ -177,6 +178,14 @@ public class CLI {
                         System.out.println(graph);
                         LOGGER.log(Level.FINE, "Prerequisite Graph Generated: \n" + graph, graph);
                     }
+                    case "future course enrollment" -> {
+                        System.out.println("Enter a directory location: ");
+                        final var directory = in.nextLine().trim();
+                        LOGGER.fine("Loading all transcripts using standard scanner");
+                        outputHyphenLine();
+                        System.out.print(Manipulators.outputHashSet(TranscriptIO.readMultiplePDFs(directory)));
+                        LOGGER.fine("Enrollment Display Done!");
+                    }
                     case "view graduation plan" -> {
                         System.out.println("Enter the target number of credits and the tolerance " +
                                            "to generate the graduation plan with. IE: '16 2' will" +
@@ -204,7 +213,6 @@ public class CLI {
             }
         }
     }
-
 
     /**
      * This method queries the user for which terms they would like to display data for
