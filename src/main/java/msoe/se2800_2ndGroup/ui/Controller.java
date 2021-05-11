@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -85,6 +86,8 @@ public abstract class Controller {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
         alert.showAndWait();
     }
     //endregion
@@ -195,22 +198,26 @@ public abstract class Controller {
     @FXML
     private void displayHelp() {
         String message = """
-                         1.) To load a transcript, go to File -> Load Transcript.
-                         Choose the PDF file from the File Chooser window.
-                         2.) To save a course data files, go to File -> Load Course Data.
-                         Choose the CSV file from the File Chooser window.
-                         3.) To save a copy of the transcript, got to File -> Store Transcript.
-                         Chose a folder to store the filer in in the File Chooser window.
-                         4.) To select your major, go to Major Selection -> Choose Between Software Engineering
-                         and Computer Science.
-                         5.) To choose a term, go to Term Selection -> Select Either Fall, Winter, or Sprint.
-                         6.) To view course offerings, go to Data Manipulation -> View Course Offerings.
-                         7.) To get course recommendations, go to Data Manipulation -> View Course Recommendations.
-                         8.) To enter course code and view graph version of the course offerings,
-                         go to Switch to Graph Window.
-                         9.) To exit view graph version of the course offerings, go to Switch to Data Window.
-                         10.) To exit the application, go to File -> Exit.
-                         """;
+        1.) Load a transcript: File -> Load Transcript
+        Choose the PDF file from the File Chooser window.
+        2.) Load custom course data: File -> Load Course Data
+        3.) Save default transcript: File -> Store Default Transcript.
+        4.) Save custom transcript: File -> Store Custom Transcript of Selected Courses
+        5.) Save course recommendations: File -> Store Course Recommendations
+        6.) Select your major: Major Selection -> Choose Between Software Engineering and Computer Science.
+        7.) Select a term(s): Term Selection -> Select wanted term(s)
+        8.) View course offerings: Data Manipulation -> View Course Offerings
+        *** Major and terms must be selected beforehand
+        9.) View course recommendations: Data Manipulation -> Get Course Recommendations
+        *** Transcript must be loaded in beforehand
+        10.) View all courses: Data Manipulation -> Display All Courses
+        11.) View prerequisites: Switch to Graph Window -> Graph Manipulation -> Type in course code -> View Graph of Prerequisites
+        12.) View projected course enrollment: Switch to Graph Window -> Graph Manipulation -> View Projected Course Enrollment
+        *** Prompts to load in transcript
+        13.) View graduation plan: Switch to Graph Window -> Graph Manipulation -> View Graduation Plan
+        14.) Exit view graph version of the course offerings: go to Switch to Data Window.
+        15.) Exit the application: go to File -> Exit.
+        """;
         displayAlert(Alert.AlertType.INFORMATION, "Program Help", null, message);
         AdvisingLogger.getLogger().info("displaying help alert");
     }
