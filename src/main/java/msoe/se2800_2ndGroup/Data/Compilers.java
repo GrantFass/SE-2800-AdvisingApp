@@ -7,6 +7,7 @@ import msoe.se2800_2ndGroup.logger.AdvisingLogger;
 import msoe.se2800_2ndGroup.models.*;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -383,6 +384,28 @@ public class Compilers {
             output.add(temp);
         }
         return output;
+    }
+
+    /**
+     * This method is used to generate the projected graduation date
+     * <p>
+     * This method generates the graduation plan.
+     * This method retrieves how many terms are in the graduation plan to calculate year of graduation.
+     *
+     *
+     * @@author : Claudia Poptile
+     * @since : Sat, 8 May 2021
+     * @return expected graduation date as a string
+     * @throws InvalidInputException
+     */
+    public static String getGraduationDate() throws InvalidInputException {
+        List<AcademicTerm> graduationPlan = generateGraduationPlan(16, 2);
+        String season = graduationPlan.get(graduationPlan.size()-1).getTerm().season();
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int numberOfTerms = graduationPlan.size();
+        int gradYear = (numberOfTerms/3) +currentYear;
+
+        return season + " " + gradYear;
     }
 
     //endregion

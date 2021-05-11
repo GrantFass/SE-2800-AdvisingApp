@@ -162,6 +162,12 @@ public class CLI {
                         System.out.println(Manipulators.getGraduationPlanAsString(graduationPlan));
                         LOGGER.info("Graduation plan generated");
                     }
+                    case "view graduation date" -> {
+                        LOGGER.fine("Generating graduation date");
+                        String date = Compilers.getGraduationDate();
+                        System.out.println("Projected graduation date is " + date);
+                        LOGGER.info("Graduation date generated");
+                    }
                 }
             } catch (CustomExceptions.InvalidInputException | IOException | NullPointerException e) {
                 System.out.println(e.getMessage());
