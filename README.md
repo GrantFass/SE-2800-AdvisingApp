@@ -35,7 +35,7 @@
  Include a demo section with images of the software running later. 
  Follow the guide here: https://blog.bitsrc.io/how-to-write-beautiful-and-meaningful-readme-md-for-your-next-project-897045e3f991 )
 
-Currently, no features have been fully completed.
+This program is currently in a End of Life state. Development has completed (due to the class ending). ReadMe links pointing to gitlab wiki pages will not work without proper developer credentials.
 The program can be run from both a CLI and a GUI.
   
 ## Technologies Used
